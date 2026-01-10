@@ -1,1 +1,1 @@
-{"root":["./src/base-command.ts","./src/flags.ts","./src/index.ts","./src/paginated-command.ts","./src/table.ts","./src/commands/correspondents/list.ts"],"version":"5.9.3"}
+{"root":["./src/base-command.ts","./src/flags.ts","./src/index.ts","./src/paginated-command.ts","./src/table.ts","./src/commands/correspondents/list.ts","./src/commands/correspondents/show.ts","./src/types/correspondents.ts"],"version":"5.9.3"}

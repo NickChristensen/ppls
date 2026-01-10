@@ -38,6 +38,7 @@ Set the following environment variables before running the CLI (they are used as
 # Commands
 <!-- commands -->
 * [`ppls correspondents list`](#ppls-correspondents-list)
+* [`ppls correspondents show ID`](#ppls-correspondents-show-id)
 * [`ppls help [COMMAND]`](#ppls-help-command)
 
 ## `ppls correspondents list`
@@ -46,13 +47,14 @@ List correspondents
 
 ```
 USAGE
-  $ ppls correspondents list --hostname <value> --token <value> [--json] [--sort <value>] [--table] [--page <value>]
-    [--page-size <value>]
+  $ ppls correspondents list --hostname <value> --token <value> [--plain | --json | --table] [--sort <value>] [--page
+    <value>] [--page-size <value>]
 
 FLAGS
   --hostname=<value>   (required) [env: PPLS_HOSTNAME] Paperless-ngx base URL
   --page=<value>       Page number to fetch
   --page-size=<value>  Number of results per page
+  --plain              Output as plain text
   --sort=<value>       Sort results by the provided field
   --table              Output as a table
   --token=<value>      (required) [env: PPLS_TOKEN] Paperless-ngx API token
@@ -68,6 +70,36 @@ EXAMPLES
 ```
 
 _See code: [src/commands/correspondents/list.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/correspondents/list.ts)_
+
+## `ppls correspondents show ID`
+
+Show correspondent details
+
+```
+USAGE
+  $ ppls correspondents show ID --hostname <value> --token <value> [--plain | --json | --table] [--sort <value>]
+
+ARGUMENTS
+  ID  Correspondent id
+
+FLAGS
+  --hostname=<value>  (required) [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --plain             Output as plain text
+  --sort=<value>      Sort results by the provided field
+  --table             Output as a table
+  --token=<value>     (required) [env: PPLS_TOKEN] Paperless-ngx API token
+
+GLOBAL FLAGS
+  --json  Format output as json.
+
+DESCRIPTION
+  Show correspondent details
+
+EXAMPLES
+  $ ppls correspondents show 123
+```
+
+_See code: [src/commands/correspondents/show.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/correspondents/show.ts)_
 
 ## `ppls help [COMMAND]`
 

@@ -1,6 +1,7 @@
 import type {Correspondent} from '../../types/correspondents.js'
 
 import {PaginatedCommand} from '../../paginated-command.js'
+import {formatValue} from '../../table.js'
 
 export default class CorrespondentsList extends PaginatedCommand {
   static override description = 'List correspondents'
@@ -37,7 +38,15 @@ export default class CorrespondentsList extends PaginatedCommand {
         this.log(`[${correspondent.id}] ${correspondent.name}${suffix}`)
       }
     } else {
-      this.logTable([{value: 'id'}, {value: 'name'}, {value: 'slug'}, {value: 'document_count'}], results)
+      this.logTable(
+        [
+          {formatter: formatValue, value: 'id'},
+          {formatter: formatValue, value: 'name'},
+          {formatter: formatValue, value: 'slug'},
+          {formatter: formatValue, value: 'document_count'},
+        ],
+        results,
+      )
     }
 
     return results
