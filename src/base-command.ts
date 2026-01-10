@@ -7,8 +7,9 @@ import {renderTable, type TableColumn, type TableOptions, type TableRow} from '.
 export abstract class BaseCommand extends Command {
   static baseFlags = {
     hostname,
+    plain: Flags.boolean({description: 'Output as plain text', exclusive: ['json', 'table']}),
     sort: Flags.string({description: 'Sort results by the provided field'}),
-    table: Flags.boolean({description: 'Output as a table'}),
+    table: Flags.boolean({description: 'Output as a table', exclusive: ['json', 'plain']}),
     token,
   }
   static enableJsonFlag = true

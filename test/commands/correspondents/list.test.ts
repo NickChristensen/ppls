@@ -36,14 +36,14 @@ describe('correspondents:list', () => {
       {
         body: {
           next: '/api/correspondents/?page=2',
-          results: [{name: 'Acme'}],
+          results: [{'document_count': 2, id: 1, name: 'Acme', slug: 'acme'}],
         },
         status: 200,
       },
       {
         body: {
           next: null,
-          results: [{name: 'Umbrella Corp'}],
+          results: [{'document_count': 5, id: 2, name: 'Umbrella Corp', slug: 'umbrella'}],
         },
         status: 200,
       },
@@ -64,7 +64,9 @@ describe('correspondents:list', () => {
     }
 
     const {stdout} = await runCommand('correspondents:list')
-    expect(stdout.trim().split('\n')).to.deep.equal(['Acme', 'Umbrella Corp'])
+    expect(stdout).to.contain('Name')
+    expect(stdout).to.contain('Acme')
+    expect(stdout).to.contain('Umbrella Corp')
     expect(requests).to.have.lengthOf(2)
   })
 
@@ -74,7 +76,7 @@ describe('correspondents:list', () => {
       return new Response(
         JSON.stringify({
           next: 'https://paperless.example.test/api/correspondents/?page=3',
-          results: [{name: 'Page Two'}],
+          results: [{'document_count': 1, id: 2, name: 'Page Two', slug: 'page-two'}],
         }),
         {
           headers: {'Content-Type': 'application/json'},
@@ -84,7 +86,7 @@ describe('correspondents:list', () => {
     }
 
     const {stdout} = await runCommand('correspondents:list --page 2 --page-size 1')
-    expect(stdout.trim()).to.equal('Page Two')
+    expect(stdout).to.contain('Page Two')
     expect(requests).to.have.lengthOf(1)
 
     const requestUrl = new URL(requests[0])
@@ -119,7 +121,7 @@ describe('correspondents:list', () => {
       return new Response(
         JSON.stringify({
           next: 'https://paperless.example.test/api/correspondents/?page=2',
-          results: [{name: 'First Five'}],
+          results: [{'document_count': 3, id: 3, name: 'First Five', slug: 'first-five'}],
         }),
         {
           headers: {'Content-Type': 'application/json'},
@@ -129,7 +131,7 @@ describe('correspondents:list', () => {
     }
 
     const {stdout} = await runCommand('correspondents:list --page-size 5')
-    expect(stdout.trim()).to.equal('First Five')
+    expect(stdout).to.contain('First Five')
     expect(requests).to.have.lengthOf(1)
 
     const requestUrl = new URL(requests[0])
@@ -173,12 +175,12 @@ describe('correspondents:list', () => {
     expect(payload.results.map((item) => item.name)).to.deep.equal(['Acme', 'Umbrella Corp'])
   })
 
-  it('renders a table when requested', async () => {
+  it('renders a plain list when requested', async () => {
     globalThis.fetch = async () =>
       new Response(
         JSON.stringify({
           next: null,
-          results: [{name: 'Acme'}],
+          results: [{'document_count': 1, id: 10, name: 'Acme', slug: 'acme'}],
         }),
         {
           headers: {'Content-Type': 'application/json'},
@@ -186,8 +188,7 @@ describe('correspondents:list', () => {
         },
       )
 
-    const {stdout} = await runCommand('correspondents:list --table')
-    expect(stdout).to.contain('Name')
-    expect(stdout).to.contain('Acme')
+    const {stdout} = await runCommand('correspondents:list --plain')
+    expect(stdout.trim()).to.equal('[10] Acme (1 document)')
   })
 })

@@ -1,7 +1,10 @@
 import {PaginatedCommand} from '../../paginated-command.js'
 
 type Correspondent = {
+  document_count?: number
+  id?: number
   name: string
+  slug?: string
 }
 
 export default class CorrespondentsList extends PaginatedCommand {
@@ -27,14 +30,19 @@ export default class CorrespondentsList extends PaginatedCommand {
       url,
     })
 
-    if (flags.table) {
-      this.logTable([{value: 'id'}, {value: 'name'}, {value: 'slug'}, {value: 'document_count'}], results, {})
-    } else {
+    if (flags.plain) {
       for (const correspondent of results) {
-        if (correspondent.name) {
-          this.log(correspondent.name)
+        if (!correspondent.name) {
+          continue
         }
+
+        const count = correspondent.document_count
+        const suffix = count === undefined ? '' : ` (${count} ${count === 1 ? 'document' : 'documents'})`
+
+        this.log(`[${correspondent.id}] ${correspondent.name}${suffix}`)
       }
+    } else {
+      this.logTable([{value: 'id'}, {value: 'name'}, {value: 'slug'}, {value: 'document_count'}], results)
     }
 
     return {results}
