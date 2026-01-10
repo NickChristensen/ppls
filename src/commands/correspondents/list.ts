@@ -11,7 +11,7 @@ export default class CorrespondentsList extends PaginatedCommand {
   static override description = 'List correspondents'
   static override examples = ['<%= config.bin %> <%= command.id %>']
 
-  public async run(): Promise<{results: Correspondent[]}> {
+  public async run(): Promise<Correspondent[]> {
     const {flags} = await this.parse(CorrespondentsList)
     const pageSize = flags['page-size']
     const url = this.buildPaginatedUrl({
@@ -45,6 +45,6 @@ export default class CorrespondentsList extends PaginatedCommand {
       this.logTable([{value: 'id'}, {value: 'name'}, {value: 'slug'}, {value: 'document_count'}], results)
     }
 
-    return {results}
+    return results
   }
 }
