@@ -44,7 +44,7 @@ export const formatValue: TableFormatter = function (cellValue: unknown): string
   }
 
   if (typeof cellValue === 'boolean') {
-    return cellValue ? this.style('true', 'green', 'bold') : this.style('false', 'red', 'bold')
+    return cellValue ? this.style(String('✔︎'), 'green', 'bold') : this.style(String('×'), 'red', 'bold')
   }
 
   return this.style(JSON.stringify(cellValue), 'gray')
