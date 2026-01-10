@@ -38,34 +38,6 @@ export abstract class PaginatedCommand extends BaseCommand {
     })
   }
 
-  protected async *paginate<T>(
-    url: URL,
-    tokenValue: string,
-    autoPaginate: boolean,
-  ): AsyncGenerator<T> {
-    let nextUrl: null | URL = url
-
-    while (nextUrl) {
-      // eslint-disable-next-line no-await-in-loop -- pagination is sequential and depends on the next page URL.
-      const payload: PaginatedResponse<T> = await this.fetchJson<PaginatedResponse<T>>(nextUrl, tokenValue)
-      const results = payload.results ?? []
-
-      for (const result of results) {
-        yield result
-      }
-
-      if (!autoPaginate || !payload.next) {
-        break
-      }
-
-      try {
-        nextUrl = new URL(payload.next, nextUrl)
-      } catch {
-        this.error('API returned an invalid next URL for pagination.')
-      }
-    }
-  }
-
   protected async fetchPaginatedResults<T>(options: {
     autoPaginate: boolean
     spinnerText?: string
@@ -99,5 +71,33 @@ export abstract class PaginatedCommand extends BaseCommand {
     }
 
     return results
+  }
+
+  protected async *paginate<T>(
+    url: URL,
+    tokenValue: string,
+    autoPaginate: boolean,
+  ): AsyncGenerator<T> {
+    let nextUrl: null | URL = url
+
+    while (nextUrl) {
+      // eslint-disable-next-line no-await-in-loop -- pagination is sequential and depends on the next page URL.
+      const payload: PaginatedResponse<T> = await this.fetchJson<PaginatedResponse<T>>(nextUrl, tokenValue)
+      const results = payload.results ?? []
+
+      for (const result of results) {
+        yield result
+      }
+
+      if (!autoPaginate || !payload.next) {
+        break
+      }
+
+      try {
+        nextUrl = new URL(payload.next, nextUrl)
+      } catch {
+        this.error('API returned an invalid next URL for pagination.')
+      }
+    }
   }
 }

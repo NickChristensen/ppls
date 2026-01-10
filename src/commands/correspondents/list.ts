@@ -24,9 +24,13 @@ export default class CorrespondentsList extends PaginatedCommand {
       url,
     })
 
-    for (const correspondent of results) {
-      if (correspondent.name) {
-        this.log(correspondent.name)
+    if (flags.table) {
+      this.logTable([{value: 'id'}, {value: 'name'}, {value: 'slug'}, {value: 'document_count'}], results, {})
+    } else {
+      for (const correspondent of results) {
+        if (correspondent.name) {
+          this.log(correspondent.name)
+        }
       }
     }
 

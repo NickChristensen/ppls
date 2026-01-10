@@ -151,4 +151,22 @@ describe('correspondents:list', () => {
 
     expect(payload.results.map((item) => item.name)).to.deep.equal(['Acme', 'Umbrella Corp'])
   })
+
+  it('renders a table when requested', async () => {
+    globalThis.fetch = async () =>
+      new Response(
+        JSON.stringify({
+          next: null,
+          results: [{name: 'Acme'}],
+        }),
+        {
+          headers: {'Content-Type': 'application/json'},
+          status: 200,
+        },
+      )
+
+    const {stdout} = await runCommand('correspondents:list --table')
+    expect(stdout).to.contain('Name')
+    expect(stdout).to.contain('Acme')
+  })
 })

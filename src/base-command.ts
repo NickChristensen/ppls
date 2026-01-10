@@ -1,11 +1,13 @@
-import {Command} from '@oclif/core'
+import {Command, Flags} from '@oclif/core'
 import yoctoSpinner from 'yocto-spinner'
 
 import {hostname, token} from './flags.js'
+import {renderTable, type TableColumn, type TableOptions, type TableRow} from './table.js'
 
 export abstract class BaseCommand extends Command {
   static baseFlags = {
     hostname,
+    table: Flags.boolean({description: 'Output as a table'}),
     token,
   }
   static enableJsonFlag = true
@@ -47,11 +49,15 @@ export abstract class BaseCommand extends Command {
     return (await response.json()) as T
   }
 
-  protected startSpinner(text: string): ReturnType<typeof yoctoSpinner> | null {
-    return this.shouldShowSpinner() ? yoctoSpinner({text}).start() : null
+  protected logTable(headers: TableColumn[], rows: TableRow[], options?: TableOptions): void {
+    this.log(renderTable(headers, rows, options))
   }
 
   protected shouldShowSpinner(): boolean {
     return Boolean(process.stderr.isTTY)
+  }
+
+  protected startSpinner(text: string): null | ReturnType<typeof yoctoSpinner> {
+    return this.shouldShowSpinner() ? yoctoSpinner({text}).start() : null
   }
 }
