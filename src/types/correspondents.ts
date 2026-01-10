@@ -1,4 +1,4 @@
-export type MatchingAlgorithm = 0 | 1 | 2 | 3 | 4 | 5 | 6
+import type {MatchingAlgorithm} from './shared.js'
 
 export type Correspondent = {
   document_count: number
