@@ -15,6 +15,9 @@ export default class CorrespondentsList extends PaginatedCommand {
       hostname: flags.hostname,
       page: flags.page,
       pageSize,
+      params: {
+        ordering: flags.sort,
+      },
       path: '/api/correspondents/',
     })
     const autoPaginate = flags.page === undefined && pageSize === undefined

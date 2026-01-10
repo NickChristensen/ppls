@@ -92,6 +92,27 @@ describe('correspondents:list', () => {
     expect(requestUrl.searchParams.get('page_size')).to.equal('1')
   })
 
+  it('supports sort ordering', async () => {
+    globalThis.fetch = async (input) => {
+      requests.push(String(input))
+      return new Response(
+        JSON.stringify({
+          next: null,
+          results: [{name: 'Alpha'}],
+        }),
+        {
+          headers: {'Content-Type': 'application/json'},
+          status: 200,
+        },
+      )
+    }
+
+    await runCommand('correspondents:list --sort name')
+    const requestUrl = new URL(requests[0])
+
+    expect(requestUrl.searchParams.get('ordering')).to.equal('name')
+  })
+
   it('respects page size without auto-pagination', async () => {
     globalThis.fetch = async (input) => {
       requests.push(String(input))
