@@ -18,11 +18,13 @@ export default class CorrespondentsList extends PaginatedCommand {
       path: '/api/correspondents/',
     })
     const autoPaginate = flags.page === undefined && pageSize === undefined
-    const results: Correspondent[] = []
+    const results = await this.fetchPaginatedResults<Correspondent>({
+      autoPaginate,
+      token: flags.token,
+      url,
+    })
 
-    for await (const correspondent of this.paginate<Correspondent>(url, flags.token, autoPaginate)) {
-      results.push(correspondent)
-
+    for (const correspondent of results) {
       if (correspondent.name) {
         this.log(correspondent.name)
       }

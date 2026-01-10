@@ -10,7 +10,8 @@
   "dependencies": {
     "@oclif/core": "^4",
     "@oclif/plugin-help": "^6",
-    "@oclif/plugin-plugins": "^5"
+    "@oclif/plugin-plugins": "^5",
+    "yocto-spinner": "^1.0.0"
   },
   "devDependencies": {
     "@eslint/compat": "^1",

@@ -56,13 +56,16 @@ List correspondents
 
 ```
 USAGE
-  $ ppls correspondents list --hostname <value> --token <value> [--page <value>] [--page-size <value>]
+  $ ppls correspondents list --hostname <value> --token <value> [--json] [--page <value>] [--page-size <value>]
 
 FLAGS
   --hostname=<value>   (required) [env: PPLS_HOSTNAME] Paperless-ngx base URL
   --page=<value>       Page number to fetch
   --page-size=<value>  Number of results per page
   --token=<value>      (required) [env: PPLS_TOKEN] Paperless-ngx API token
+
+GLOBAL FLAGS
+  --json  Format output as json.
 
 DESCRIPTION
   List correspondents

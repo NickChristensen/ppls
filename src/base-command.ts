@@ -1,4 +1,5 @@
 import {Command} from '@oclif/core'
+import yoctoSpinner from 'yocto-spinner'
 
 import {hostname, token} from './flags.js'
 
@@ -44,5 +45,13 @@ export abstract class BaseCommand extends Command {
     }
 
     return (await response.json()) as T
+  }
+
+  protected startSpinner(text: string): ReturnType<typeof yoctoSpinner> | null {
+    return this.shouldShowSpinner() ? yoctoSpinner({text}).start() : null
+  }
+
+  protected shouldShowSpinner(): boolean {
+    return Boolean(process.stderr.isTTY)
   }
 }

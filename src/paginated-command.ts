@@ -65,4 +65,39 @@ export abstract class PaginatedCommand extends BaseCommand {
       }
     }
   }
+
+  protected async fetchPaginatedResults<T>(options: {
+    autoPaginate: boolean
+    spinnerText?: string
+    token: string
+    url: URL
+  }): Promise<T[]> {
+    const {autoPaginate, spinnerText, token, url} = options
+    const spinner = this.startSpinner(spinnerText ?? `Fetching ${url.pathname}`)
+    const results: T[] = []
+
+    try {
+      let nextUrl: null | URL = url
+
+      while (nextUrl) {
+        // eslint-disable-next-line no-await-in-loop -- pagination is sequential and depends on the next page URL.
+        const payload: PaginatedResponse<T> = await this.fetchJson<PaginatedResponse<T>>(nextUrl, token)
+        results.push(...(payload.results ?? []))
+
+        if (!autoPaginate || !payload.next) {
+          break
+        }
+
+        try {
+          nextUrl = new URL(payload.next, nextUrl)
+        } catch {
+          this.error('API returned an invalid next URL for pagination.')
+        }
+      }
+    } finally {
+      spinner?.stop()
+    }
+
+    return results
+  }
 }
