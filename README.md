@@ -11,6 +11,7 @@ A node-based paperless-ngx cli
 
 <!-- toc -->
 * [Usage](#usage)
+* [Configuration](#configuration)
 * [Commands](#commands)
 <!-- tocstop -->
 # Usage
@@ -20,17 +21,23 @@ $ npm install -g ppls
 $ ppls COMMAND
 running command...
 $ ppls (--version)
-ppls/0.0.0 darwin-arm64 node-v24.12.0
+ppls/0.0.0 darwin-arm64 node-v25.2.1
 $ ppls --help [COMMAND]
 USAGE
   $ ppls COMMAND
 ...
 ```
 <!-- usagestop -->
+# Configuration
+
+Set the following environment variables before running the CLI (they are used as defaults for `--hostname` and `--token` flags):
+
+- `PPLS_HOSTNAME`: Base URL for your paperless-ngx instance (for example, `https://paperless.example.com`)
+- `PPLS_TOKEN`: API token for your paperless-ngx user
+
 # Commands
 <!-- commands -->
-* [`ppls hello PERSON`](#ppls-hello-person)
-* [`ppls hello world`](#ppls-hello-world)
+* [`ppls correspondents list`](#ppls-correspondents-list)
 * [`ppls help [COMMAND]`](#ppls-help-command)
 * [`ppls plugins`](#ppls-plugins)
 * [`ppls plugins add PLUGIN`](#ppls-plugins-add-plugin)
@@ -43,47 +50,28 @@ USAGE
 * [`ppls plugins unlink [PLUGIN]`](#ppls-plugins-unlink-plugin)
 * [`ppls plugins update`](#ppls-plugins-update)
 
-## `ppls hello PERSON`
+## `ppls correspondents list`
 
-Say hello
+List correspondents
 
 ```
 USAGE
-  $ ppls hello PERSON -f <value>
-
-ARGUMENTS
-  PERSON  Person to say hello to
+  $ ppls correspondents list --hostname <value> --token <value> [--page <value>] [--page-size <value>]
 
 FLAGS
-  -f, --from=<value>  (required) Who is saying hello
+  --hostname=<value>   (required) [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --page=<value>       Page number to fetch
+  --page-size=<value>  Number of results per page
+  --token=<value>      (required) [env: PPLS_TOKEN] Paperless-ngx API token
 
 DESCRIPTION
-  Say hello
+  List correspondents
 
 EXAMPLES
-  $ ppls hello friend --from oclif
-  hello friend from oclif! (./src/commands/hello/index.ts)
+  $ ppls correspondents list
 ```
 
-_See code: [src/commands/hello/index.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/hello/index.ts)_
-
-## `ppls hello world`
-
-Say hello world
-
-```
-USAGE
-  $ ppls hello world
-
-DESCRIPTION
-  Say hello world
-
-EXAMPLES
-  $ ppls hello world
-  hello world! (./src/commands/hello/world.ts)
-```
-
-_See code: [src/commands/hello/world.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/hello/world.ts)_
+_See code: [src/commands/correspondents/list.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/correspondents/list.ts)_
 
 ## `ppls help [COMMAND]`
 
