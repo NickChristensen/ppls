@@ -2,10 +2,10 @@ import {Args} from '@oclif/core'
 
 import type {Correspondent} from '../../types/correspondents.js'
 
-import {BaseCommand} from '../../base-command.js'
+import {ShowCommand} from '../../show-command.js'
 import {formatField, formatValue} from '../../table.js'
 
-export default class CorrespondentsShow extends BaseCommand {
+export default class CorrespondentsShow extends ShowCommand {
   static override args = {
     id: Args.integer({description: 'Correspondent id', required: true}),
   }

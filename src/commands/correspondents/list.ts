@@ -1,54 +1,21 @@
 import type {Correspondent} from '../../types/correspondents.js'
 
-import {PaginatedCommand} from '../../paginated-command.js'
-import {formatValue} from '../../table.js'
+import {ListCommand} from '../../list-command.js'
 
-export default class CorrespondentsList extends PaginatedCommand {
+export default class CorrespondentsList extends ListCommand<Correspondent> {
   static override description = 'List correspondents'
   static override examples = ['<%= config.bin %> <%= command.id %>']
+  protected listPath = '/api/correspondents/'
+  protected tableAttrs = ['id', 'name', 'slug', 'document_count']
 
-  public async run(): Promise<Correspondent[]> {
-    const {flags} = await this.parse(CorrespondentsList)
-    const pageSize = flags['page-size']
-    const url = this.buildPaginatedUrl({
-      hostname: flags.hostname,
-      page: flags.page,
-      pageSize,
-      params: {
-        ordering: flags.sort,
-      },
-      path: '/api/correspondents/',
-    })
-    const autoPaginate = flags.page === undefined && pageSize === undefined
-    const results = await this.fetchPaginatedResults<Correspondent>({
-      autoPaginate,
-      token: flags.token,
-      url,
-    })
-
-    if (flags.plain) {
-      for (const correspondent of results) {
-        if (!correspondent.name) {
-          continue
-        }
-
-        const count = correspondent.document_count
-        const suffix = count === undefined ? '' : ` (${count} ${count === 1 ? 'document' : 'documents'})`
-
-        this.log(`[${correspondent.id}] ${correspondent.name}${suffix}`)
-      }
-    } else {
-      this.logTable(
-        [
-          {formatter: formatValue, value: 'id'},
-          {formatter: formatValue, value: 'name'},
-          {formatter: formatValue, value: 'slug'},
-          {formatter: formatValue, value: 'document_count'},
-        ],
-        results,
-      )
+  protected plainTemplate(correspondent: Correspondent): string | undefined {
+    if (!correspondent.name) {
+      return
     }
 
-    return results
+    const count = correspondent.document_count
+    const suffix = count === undefined ? '' : ` (${count} ${count === 1 ? 'document' : 'documents'})`
+
+    return `[${correspondent.id}] ${correspondent.name}${suffix}`
   }
 }
