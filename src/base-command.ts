@@ -7,11 +7,12 @@ export abstract class BaseCommand extends Command {
     hostname,
     token,
   }
+  static enableJsonFlag = true
 
   protected buildApiUrl(
     hostnameValue: string,
     path: string,
-    params: Record<string, string | number | undefined> = {},
+    params: Record<string, number | string | undefined> = {},
   ): URL {
     let url: URL
 
@@ -33,8 +34,8 @@ export abstract class BaseCommand extends Command {
   protected async fetchJson<T>(url: URL, tokenValue: string): Promise<T> {
     const response = await fetch(url, {
       headers: {
-        Authorization: `Token ${tokenValue}`,
         Accept: 'application/json',
+        Authorization: `Token ${tokenValue}`,
       },
     })
 

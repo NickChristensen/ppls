@@ -34,18 +34,18 @@ describe('correspondents:list', () => {
   it('lists correspondent names across pages by default', async () => {
     const responses = [
       {
-        status: 200,
         body: {
-          results: [{name: 'Acme'}],
           next: '/api/correspondents/?page=2',
+          results: [{name: 'Acme'}],
         },
+        status: 200,
       },
       {
-        status: 200,
         body: {
-          results: [{name: 'Umbrella Corp'}],
           next: null,
+          results: [{name: 'Umbrella Corp'}],
         },
+        status: 200,
       },
     ]
 
@@ -58,8 +58,8 @@ describe('correspondents:list', () => {
       }
 
       return new Response(JSON.stringify(response.body), {
-        status: response.status,
         headers: {'Content-Type': 'application/json'},
+        status: response.status,
       })
     }
 
@@ -73,12 +73,12 @@ describe('correspondents:list', () => {
       requests.push(String(input))
       return new Response(
         JSON.stringify({
-          results: [{name: 'Page Two'}],
           next: 'https://paperless.example.test/api/correspondents/?page=3',
+          results: [{name: 'Page Two'}],
         }),
         {
-          status: 200,
           headers: {'Content-Type': 'application/json'},
+          status: 200,
         },
       )
     }
@@ -97,12 +97,12 @@ describe('correspondents:list', () => {
       requests.push(String(input))
       return new Response(
         JSON.stringify({
-          results: [{name: 'First Five'}],
           next: 'https://paperless.example.test/api/correspondents/?page=2',
+          results: [{name: 'First Five'}],
         }),
         {
-          status: 200,
           headers: {'Content-Type': 'application/json'},
+          status: 200,
         },
       )
     }
@@ -113,5 +113,42 @@ describe('correspondents:list', () => {
 
     const requestUrl = new URL(requests[0])
     expect(requestUrl.searchParams.get('page_size')).to.equal('5')
+  })
+
+  it('returns the payload when json is enabled', async () => {
+    const responses = [
+      {
+        body: {
+          next: 'https://paperless.example.test/api/correspondents/?page=2',
+          results: [{name: 'Acme'}],
+        },
+        status: 200,
+      },
+      {
+        body: {
+          next: null,
+          results: [{name: 'Umbrella Corp'}],
+        },
+        status: 200,
+      },
+    ]
+
+    globalThis.fetch = async () => {
+      const response = responses.shift()
+
+      if (!response) {
+        throw new Error('Unexpected fetch call')
+      }
+
+      return new Response(JSON.stringify(response.body), {
+        headers: {'Content-Type': 'application/json'},
+        status: response.status,
+      })
+    }
+
+    const {stdout} = await runCommand('correspondents:list --json')
+    const payload = JSON.parse(stdout) as {results: Array<{name: string}>}
+
+    expect(payload.results.map((item) => item.name)).to.deep.equal(['Acme', 'Umbrella Corp'])
   })
 })

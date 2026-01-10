@@ -3,7 +3,7 @@ import {Flags} from '@oclif/core'
 import {BaseCommand} from './base-command.js'
 
 type PaginatedResponse<T> = {
-  next?: string | null
+  next?: null | string
   results?: T[]
 }
 
@@ -14,13 +14,15 @@ export abstract class PaginatedCommand extends BaseCommand {
     'page-size': Flags.integer({description: 'Number of results per page'}),
   }
 
-  protected buildPaginatedUrl(
-    hostnameValue: string,
-    path: string,
-    page?: number,
-    pageSize?: number,
-    params: Record<string, string | number | undefined> = {},
-  ): URL {
+  protected buildPaginatedUrl(options: {
+    hostname: string
+    page?: number
+    pageSize?: number
+    params?: Record<string, number | string | undefined>
+    path: string
+  }): URL {
+    const {hostname, page, pageSize, params = {}, path} = options
+
     if (page !== undefined && page < 1) {
       this.error('Invalid page value. Page must be 1 or greater.')
     }
@@ -29,10 +31,10 @@ export abstract class PaginatedCommand extends BaseCommand {
       this.error('Invalid page size. Page size must be 1 or greater.')
     }
 
-    return this.buildApiUrl(hostnameValue, path, {
+    return this.buildApiUrl(hostname, path, {
       ...params,
       page,
-      page_size: pageSize,
+      'page_size': pageSize,
     })
   }
 
@@ -41,9 +43,10 @@ export abstract class PaginatedCommand extends BaseCommand {
     tokenValue: string,
     autoPaginate: boolean,
   ): AsyncGenerator<T> {
-    let nextUrl: URL | null = url
+    let nextUrl: null | URL = url
 
     while (nextUrl) {
+      // eslint-disable-next-line no-await-in-loop -- pagination is sequential and depends on the next page URL.
       const payload: PaginatedResponse<T> = await this.fetchJson<PaginatedResponse<T>>(nextUrl, tokenValue)
       const results = payload.results ?? []
 
