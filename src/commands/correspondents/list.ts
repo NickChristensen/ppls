@@ -1,11 +1,6 @@
-import {PaginatedCommand} from '../../paginated-command.js'
+import type {Correspondent} from '../../types/correspondents.js'
 
-type Correspondent = {
-  document_count?: number
-  id?: number
-  name: string
-  slug?: string
-}
+import {PaginatedCommand} from '../../paginated-command.js'
 
 export default class CorrespondentsList extends PaginatedCommand {
   static override description = 'List correspondents'

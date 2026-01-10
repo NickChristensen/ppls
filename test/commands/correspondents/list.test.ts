@@ -170,9 +170,9 @@ describe('correspondents:list', () => {
     }
 
     const {stdout} = await runCommand('correspondents:list --json')
-    const payload = JSON.parse(stdout) as {results: Array<{name: string}>}
+    const payload = JSON.parse(stdout) as Array<{name: string}>
 
-    expect(payload.results.map((item) => item.name)).to.deep.equal(['Acme', 'Umbrella Corp'])
+    expect(payload.map((item) => item.name)).to.deep.equal(['Acme', 'Umbrella Corp'])
   })
 
   it('renders a plain list when requested', async () => {
