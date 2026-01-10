@@ -9,6 +9,8 @@
   "reporter": "spec",
   "timeout": 60000,
   "node-option": [
+    "disable-warning=DEP0180",
+    "disable-warning=ExperimentalWarning",
     "loader=ts-node/esm",
     "experimental-specifier-resolution=node"
   ]
