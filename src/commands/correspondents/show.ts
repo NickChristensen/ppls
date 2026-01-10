@@ -14,8 +14,7 @@ export default class CorrespondentsShow extends ShowCommand {
 
   public async run(): Promise<Correspondent> {
     const {args, flags} = await this.parse(CorrespondentsShow)
-    const url = this.buildApiUrl(flags.hostname, `/api/correspondents/${args.id}/`)
-    const result = await this.fetchJson<Correspondent>(url, flags.token)
+    const result = await this.fetchApiJson<Correspondent>(flags, `/api/correspondents/${args.id}/`)
 
     if (flags.plain) {
       const count = result.document_count

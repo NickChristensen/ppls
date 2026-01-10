@@ -2,6 +2,12 @@ import {Flags} from '@oclif/core'
 
 import {BaseCommand} from './base-command.js'
 
+type PaginatedFlags = {
+  hostname: string
+  page?: number
+  'page-size'?: number
+}
+
 type PaginatedResponse<T> = {
   next?: null | string
   results?: T[]
@@ -38,6 +44,21 @@ export abstract class PaginatedCommand extends BaseCommand {
     })
   }
 
+  protected buildPaginatedUrlFromFlags(options: {
+    flags: PaginatedFlags
+    params?: Record<string, number | string | undefined>
+    path: string
+  }): URL {
+    const {flags, params, path} = options
+    return this.buildPaginatedUrl({
+      hostname: flags.hostname,
+      page: flags.page,
+      pageSize: flags['page-size'],
+      params,
+      path,
+    })
+  }
+
   protected async fetchPaginatedResults<T>(options: {
     autoPaginate: boolean
     spinnerText?: string
@@ -71,6 +92,21 @@ export abstract class PaginatedCommand extends BaseCommand {
     }
 
     return results
+  }
+
+  protected async fetchPaginatedResultsFromFlags<T>(options: {
+    autoPaginate: boolean
+    flags: {token: string}
+    spinnerText?: string
+    url: URL
+  }): Promise<T[]> {
+    const {autoPaginate, flags, spinnerText, url} = options
+    return this.fetchPaginatedResults<T>({
+      autoPaginate,
+      spinnerText,
+      token: flags.token,
+      url,
+    })
   }
 
   protected async *paginate<T>(

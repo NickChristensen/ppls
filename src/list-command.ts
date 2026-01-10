@@ -1,12 +1,12 @@
+import type {ApiFlags} from './base-command.js'
+
 import {PaginatedCommand} from './paginated-command.js'
 import {formatValue, type TableColumn, type TableRow} from './table.js'
 
-type ListCommandFlags = {
-  hostname: string
+type ListCommandFlags = ApiFlags & {
   page?: number
   'page-size'?: number
   sort?: string
-  token: string
 }
 
 type ListOutputFlags = ListCommandFlags & {
@@ -26,11 +26,8 @@ export abstract class ListCommand<T extends TableRow = TableRow> extends Paginat
     path: string
   }): Promise<T[]> {
     const {flags, params = {}, path} = options
-    const pageSize = flags['page-size']
-    const url = this.buildPaginatedUrl({
-      hostname: flags.hostname,
-      page: flags.page,
-      pageSize,
+    const url = this.buildPaginatedUrlFromFlags({
+      flags,
       params: {
         ordering: flags.sort,
         ...params,
@@ -38,9 +35,9 @@ export abstract class ListCommand<T extends TableRow = TableRow> extends Paginat
       path,
     })
 
-    return this.fetchPaginatedResults<T>({
+    return this.fetchPaginatedResultsFromFlags<T>({
       autoPaginate: this.shouldAutoPaginate(flags),
-      token: flags.token,
+      flags,
       url,
     })
   }

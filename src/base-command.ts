@@ -4,6 +4,11 @@ import yoctoSpinner from 'yocto-spinner'
 import {hostname, token} from './flags.js'
 import {renderTable, type TableColumn, type TableOptions, type TableRow} from './table.js'
 
+export type ApiFlags = {
+  hostname: string
+  token: string
+}
+
 export abstract class BaseCommand extends Command {
   static baseFlags = {
     hostname,
@@ -34,6 +39,23 @@ export abstract class BaseCommand extends Command {
     }
 
     return url
+  }
+
+  protected buildApiUrlFromFlags(
+    flags: ApiFlags,
+    path: string,
+    params: Record<string, number | string | undefined> = {},
+  ): URL {
+    return this.buildApiUrl(flags.hostname, path, params)
+  }
+
+  protected async fetchApiJson<T>(
+    flags: ApiFlags,
+    path: string,
+    params: Record<string, number | string | undefined> = {},
+  ): Promise<T> {
+    const url = this.buildApiUrlFromFlags(flags, path, params)
+    return this.fetchJson<T>(url, flags.token)
   }
 
   protected async fetchJson<T>(url: URL, tokenValue: string): Promise<T> {
