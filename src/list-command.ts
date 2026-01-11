@@ -2,8 +2,8 @@ import {Flags} from '@oclif/core'
 
 import type {ApiFlags} from './base-command.js'
 
+import {createValueFormatter, type TableColumn, type TableRow} from './helpers/table.js'
 import {PaginatedCommand} from './paginated-command.js'
-import {formatValue, type TableColumn, type TableRow} from './table.js'
 
 type ListCommandFlags = ApiFlags & {
   'id-in'?: string
@@ -14,6 +14,7 @@ type ListCommandFlags = ApiFlags & {
 }
 
 type ListOutputFlags = ListCommandFlags & {
+  'date-format': string
   plain?: boolean
   table?: boolean
 }
@@ -75,6 +76,7 @@ export abstract class ListCommand<
     }
 
     const {flags, results} = options
+    const dateFormat = flags['date-format'] as string
 
     if (flags.plain) {
       for (const item of results) {
@@ -88,8 +90,9 @@ export abstract class ListCommand<
       return
     }
 
+    const valueFormatter = createValueFormatter(dateFormat)
     const columns: TableColumn[] = this.tableAttrs.map((value) =>
-      typeof value === 'string' ? {formatter: formatValue, value} : {formatter: formatValue, ...value},
+      typeof value === 'string' ? {formatter: valueFormatter, value} : {formatter: valueFormatter, ...value},
     )
 
     this.logTable(columns, results)
@@ -98,6 +101,7 @@ export abstract class ListCommand<
   public async run(): Promise<TOutput[]> {
     const {flags} = await this.parse()
     const apiFlags = await this.resolveApiFlags(flags)
+    const dateFormat = flags['date-format'] as string
     const listFlags: ListCommandFlags = {
       hostname: apiFlags.hostname,
       'id-in': flags['id-in'],
@@ -109,6 +113,7 @@ export abstract class ListCommand<
     }
     const outputFlags: ListOutputFlags = {
       ...listFlags,
+      'date-format': dateFormat,
       plain: flags.plain,
       table: flags.table,
     }

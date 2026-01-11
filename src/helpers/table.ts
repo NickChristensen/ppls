@@ -2,6 +2,8 @@ import type * as TtyTable from 'tty-table'
 
 import {createRequire} from 'node:module'
 
+import {formatDateString} from './date-utils.js'
+
 export type TableColumn = TtyTable.Header
 export type TableFormatterContext = {
   configure: (options: Record<string, unknown>) => void
@@ -30,25 +32,32 @@ export const formatField: TableFormatter = function (cellValue: unknown): string
   return formatLabel(String(cellValue))
 }
 
-export const formatValue: TableFormatter = function (cellValue: unknown): string {
-  if (cellValue === null || cellValue === undefined) {
-    return ''
-  }
+export const createValueFormatter = (dateFormat: string): TableFormatter =>
+  function (cellValue: unknown): string {
+    if (cellValue === null || cellValue === undefined) {
+      return ''
+    }
 
-  if (typeof cellValue === 'string') {
-    return cellValue
-  }
+    if (typeof cellValue === 'string') {
+      const formattedDate = formatDateString(cellValue, dateFormat)
 
-  if (typeof cellValue === 'number') {
-    return this.style(String(cellValue), 'blue')
-  }
+      if (formattedDate) {
+        return this.style(String(formattedDate), 'magenta')
+      }
 
-  if (typeof cellValue === 'boolean') {
-    return cellValue ? this.style(String('✔︎'), 'green', 'bold') : this.style(String('×'), 'red', 'bold')
-  }
+      return cellValue
+    }
 
-  return this.style(JSON.stringify(cellValue), 'yellow')
-}
+    if (typeof cellValue === 'number') {
+      return this.style(String(cellValue), 'blue')
+    }
+
+    if (typeof cellValue === 'boolean') {
+      return cellValue ? this.style(String('✔︎'), 'green', 'bold') : this.style(String('×'), 'red', 'bold')
+    }
+
+    return this.style(JSON.stringify(cellValue), 'yellow')
+  }
 
 type TtyTable = (
   headers: TableColumn[],

@@ -1,5 +1,7 @@
+import type {DateString, DateTimeString} from './shared.js'
+
 export type DocumentNote = {
-  created?: string
+  created?: DateTimeString
   id: number
   note?: string
   user?: {
@@ -17,20 +19,20 @@ export type CustomFieldInstance = {
 }
 
 export type Document = {
-  added: string
+  added: DateTimeString
   archive_serial_number?: null | number
   archived_file_name?: null | string
   content?: string
   correspondent: null | number
-  created: string
-  created_date?: string
+  created: DateString
+  created_date?: DateString
   custom_fields?: CustomFieldInstance[]
-  deleted_at?: null | string
+  deleted_at?: DateTimeString | null
   document_type: null | number
   id: number
   is_shared_by_requester?: boolean
   mime_type?: string
-  modified?: string
+  modified?: DateTimeString
   notes?: DocumentNote[]
   original_file_name?: null | string
   owner?: null | number

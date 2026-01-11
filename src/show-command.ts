@@ -1,13 +1,14 @@
 import type {ApiFlags} from './base-command.js'
 
 import {BaseCommand} from './base-command.js'
-import {formatField, formatValue} from './table.js'
+import {createValueFormatter, formatField} from './helpers/table.js'
 
 type ShowCommandArgs = {
   id: number | string
 }
 
 type ShowCommandFlags = ApiFlags & {
+  'date-format': string
   plain?: boolean
   table?: boolean
 }
@@ -29,6 +30,7 @@ export abstract class ShowCommand<
     }
 
     const {flags, result} = options
+    const dateFormat = flags['date-format'] as string
 
     if (flags.plain) {
       const line = this.plainTemplate(result)
@@ -40,10 +42,12 @@ export abstract class ShowCommand<
       return
     }
 
+    const valueFormatter = createValueFormatter(dateFormat)
+
     this.logTable(
       [
         {align: 'right', formatter: formatField, value: 'field'},
-        {formatter: formatValue, value: 'value'},
+        {formatter: valueFormatter, value: 'value'},
       ],
       this.showRows(result),
       {showHeader: false},
@@ -53,8 +57,10 @@ export abstract class ShowCommand<
   public async run(): Promise<TOutput> {
     const {args, flags} = await this.parse()
     const apiFlags = await this.resolveApiFlags(flags)
+    const dateFormat = flags['date-format'] as string
     const outputFlags: ShowCommandFlags = {
       ...apiFlags,
+      'date-format': dateFormat,
       plain: flags.plain,
       table: flags.table,
     }

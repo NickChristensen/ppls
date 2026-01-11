@@ -4,7 +4,7 @@ import path from 'node:path'
 import yoctoSpinner from 'yocto-spinner'
 
 import {hostname, token} from './flags.js'
-import {renderTable, type TableColumn, type TableOptions, type TableRow} from './table.js'
+import {renderTable, type TableColumn, type TableOptions, type TableRow} from './helpers/table.js'
 
 export type ApiFlags = {
   hostname: string
@@ -15,6 +15,11 @@ type UserConfig = Partial<ApiFlags>
 
 export abstract class BaseCommand extends Command {
   static baseFlags = {
+    'date-format': Flags.string({
+      default: 'yyyy-MM-dd',
+      description: 'Format output dates using a template.',
+      helpGroup: 'GLOBAL',
+    }),
     hostname,
     plain: Flags.boolean({
       description: 'Format output as plain text.',
