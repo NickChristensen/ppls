@@ -43,6 +43,8 @@ Set the following environment variables before running the CLI (they are used as
 * [`ppls custom-fields show ID`](#ppls-custom-fields-show-id)
 * [`ppls document-types list`](#ppls-document-types-list)
 * [`ppls document-types show ID`](#ppls-document-types-show-id)
+* [`ppls documents list`](#ppls-documents-list)
+* [`ppls documents show ID`](#ppls-documents-show-id)
 * [`ppls help [COMMAND]`](#ppls-help-command)
 * [`ppls profile`](#ppls-profile)
 * [`ppls tags list`](#ppls-tags-list)
@@ -246,6 +248,72 @@ EXAMPLES
 ```
 
 _See code: [src/commands/document-types/show.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/document-types/show.ts)_
+
+## `ppls documents list`
+
+List documents
+
+```
+USAGE
+  $ ppls documents list [--hostname <value>] [--plain | --json | --table] [--sort <value>] [--token <value>] [--page
+    <value>] [--page-size <value>] [--id-in <value> | --name-contains <value>]
+
+FLAGS
+  --id-in=<value>          Filter by id list (comma-separated)
+  --name-contains=<value>  Filter by name substring
+  --page=<value>           Page number to fetch
+  --page-size=<value>      Number of results per page
+  --sort=<value>           Sort results by the provided field
+
+ENVIRONMENT FLAGS
+  --hostname=<value>  [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>     [env: PPLS_TOKEN] Paperless-ngx API token
+
+GLOBAL FLAGS
+  --json   Format output as json.
+  --plain  Format output as plain text.
+  --table  Format output as table.
+
+DESCRIPTION
+  List documents
+
+EXAMPLES
+  $ ppls documents list
+```
+
+_See code: [src/commands/documents/list.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/documents/list.ts)_
+
+## `ppls documents show ID`
+
+Show document details
+
+```
+USAGE
+  $ ppls documents show ID [--hostname <value>] [--plain | --json | --table] [--sort <value>] [--token <value>]
+
+ARGUMENTS
+  ID  Document id
+
+FLAGS
+  --sort=<value>  Sort results by the provided field
+
+ENVIRONMENT FLAGS
+  --hostname=<value>  [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>     [env: PPLS_TOKEN] Paperless-ngx API token
+
+GLOBAL FLAGS
+  --json   Format output as json.
+  --plain  Format output as plain text.
+  --table  Format output as table.
+
+DESCRIPTION
+  Show document details
+
+EXAMPLES
+  $ ppls documents show 123
+```
+
+_See code: [src/commands/documents/show.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/documents/show.ts)_
 
 ## `ppls help [COMMAND]`
 
