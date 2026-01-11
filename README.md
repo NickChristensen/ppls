@@ -56,7 +56,7 @@ List correspondents
 ```
 USAGE
   $ ppls correspondents list [--hostname <value>] [--plain | --json | --table] [--sort <value>] [--token <value>] [--page
-    <value>] [--page-size <value>] [--id-in <value>] [--name-contains <value>]
+    <value>] [--page-size <value>] [--id-in <value> | --name-contains <value>]
 
 FLAGS
   --id-in=<value>          Filter by id list (comma-separated)
@@ -122,7 +122,7 @@ List custom fields
 ```
 USAGE
   $ ppls custom-fields list [--hostname <value>] [--plain | --json | --table] [--sort <value>] [--token <value>] [--page
-    <value>] [--page-size <value>] [--id-in <value>] [--name-contains <value>]
+    <value>] [--page-size <value>] [--id-in <value> | --name-contains <value>]
 
 FLAGS
   --id-in=<value>          Filter by id list (comma-separated)
@@ -188,7 +188,7 @@ List document types
 ```
 USAGE
   $ ppls document-types list [--hostname <value>] [--plain | --json | --table] [--sort <value>] [--token <value>] [--page
-    <value>] [--page-size <value>] [--id-in <value>] [--name-contains <value>]
+    <value>] [--page-size <value>] [--id-in <value> | --name-contains <value>]
 
 FLAGS
   --id-in=<value>          Filter by id list (comma-separated)
@@ -306,7 +306,7 @@ List tags
 ```
 USAGE
   $ ppls tags list [--hostname <value>] [--plain | --json | --table] [--sort <value>] [--token <value>] [--page
-    <value>] [--page-size <value>] [--id-in <value>] [--name-contains <value>]
+    <value>] [--page-size <value>] [--id-in <value> | --name-contains <value>]
 
 FLAGS
   --id-in=<value>          Filter by id list (comma-separated)

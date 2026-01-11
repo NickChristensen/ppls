@@ -130,15 +130,10 @@ describe('correspondents:list', () => {
       )
     }
 
-    const result = await runCommand('correspondents:list --id-in 1,2,3 --name-contains bank')
-    if (result.error) {
-      throw result.error
-    }
+    const {error} = await runCommand('correspondents:list --id-in 1,2,3 --name-contains bank')
 
-    const requestUrl = new URL(requests[0])
-
-    expect(requestUrl.searchParams.get('id__in')).to.equal('1,2,3')
-    expect(requestUrl.searchParams.get('name__icontains')).to.equal('bank')
+    expect(error).to.be.instanceOf(Error)
+    expect(error?.message).to.contain('cannot also be provided')
   })
 
   it('respects page size without auto-pagination', async () => {

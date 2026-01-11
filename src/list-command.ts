@@ -26,8 +26,14 @@ export abstract class ListCommand<
 > extends PaginatedCommand {
   static baseFlags = {
     ...PaginatedCommand.baseFlags,
-    'id-in': Flags.string({description: 'Filter by id list (comma-separated)'}),
-    'name-contains': Flags.string({description: 'Filter by name substring'}),
+    'id-in': Flags.string({
+      description: 'Filter by id list (comma-separated)',
+      exclusive: ['name-contains'],
+    }),
+    'name-contains': Flags.string({
+      description: 'Filter by name substring',
+      exclusive: ['id-in'],
+    }),
   }
   protected abstract listPath: string
   protected abstract tableAttrs: TableColumnInput[]
