@@ -1,9 +1,13 @@
+import {Flags} from '@oclif/core'
+
 import type {ApiFlags} from './base-command.js'
 
 import {PaginatedCommand} from './paginated-command.js'
 import {formatValue, type TableColumn, type TableRow} from './table.js'
 
 type ListCommandFlags = ApiFlags & {
+  'id-in'?: string
+  'name-contains'?: string
   page?: number
   'page-size'?: number
   sort?: string
@@ -20,6 +24,11 @@ export abstract class ListCommand<
   TRaw extends TableRow = TableRow,
   TOutput extends TableRow = TRaw,
 > extends PaginatedCommand {
+  static baseFlags = {
+    ...PaginatedCommand.baseFlags,
+    'id-in': Flags.string({description: 'Filter by id list (comma-separated)'}),
+    'name-contains': Flags.string({description: 'Filter by name substring'}),
+  }
   protected abstract listPath: string
   protected abstract tableAttrs: TableColumnInput[]
 
@@ -45,8 +54,11 @@ export abstract class ListCommand<
     })
   }
 
-  protected listParams(_flags: ListCommandFlags): Record<string, number | string | undefined> {
-    return {}
+  protected listParams(flags: ListCommandFlags): Record<string, number | string | undefined> {
+    return {
+      'id__in': flags['id-in'],
+      'name__icontains': flags['name-contains'],
+    }
   }
 
   protected abstract plainTemplate(item: TOutput): null | string | undefined
@@ -82,6 +94,8 @@ export abstract class ListCommand<
     const apiFlags = await this.resolveApiFlags(flags)
     const listFlags: ListCommandFlags = {
       hostname: apiFlags.hostname,
+      'id-in': flags['id-in'],
+      'name-contains': flags['name-contains'],
       page: flags.page,
       'page-size': flags['page-size'],
       sort: flags.sort,

@@ -115,6 +115,32 @@ describe('correspondents:list', () => {
     expect(requestUrl.searchParams.get('ordering')).to.equal('name')
   })
 
+  it('supports id and name filters', async () => {
+    globalThis.fetch = async (input) => {
+      requests.push(String(input))
+      return new Response(
+        JSON.stringify({
+          next: null,
+          results: [],
+        }),
+        {
+          headers: {'Content-Type': 'application/json'},
+          status: 200,
+        },
+      )
+    }
+
+    const result = await runCommand('correspondents:list --id-in 1,2,3 --name-contains bank')
+    if (result.error) {
+      throw result.error
+    }
+
+    const requestUrl = new URL(requests[0])
+
+    expect(requestUrl.searchParams.get('id__in')).to.equal('1,2,3')
+    expect(requestUrl.searchParams.get('name__icontains')).to.equal('bank')
+  })
+
   it('respects page size without auto-pagination', async () => {
     globalThis.fetch = async (input) => {
       requests.push(String(input))
