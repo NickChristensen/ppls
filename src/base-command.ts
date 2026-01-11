@@ -16,9 +16,17 @@ type UserConfig = Partial<ApiFlags>
 export abstract class BaseCommand extends Command {
   static baseFlags = {
     hostname,
-    plain: Flags.boolean({description: 'Output as plain text', exclusive: ['json', 'table']}),
+    plain: Flags.boolean({
+      description: 'Format output as plain text.',
+      exclusive: ['json', 'table'],
+      helpGroup: 'GLOBAL',
+    }),
     sort: Flags.string({description: 'Sort results by the provided field'}),
-    table: Flags.boolean({description: 'Output as a table', exclusive: ['json', 'plain']}),
+    table: Flags.boolean({
+      description: 'Format output as table.',
+      exclusive: ['json', 'plain'],
+      helpGroup: 'GLOBAL',
+    }),
     token,
   }
   static enableJsonFlag = true

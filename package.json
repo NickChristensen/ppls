@@ -49,6 +49,9 @@
     "bin": "ppls",
     "dirname": "ppls",
     "commands": "./dist/commands",
+    "helpOptions": {
+      "flagSortOrder": "none"
+    },
     "plugins": [
       "@oclif/plugin-help"
     ],
