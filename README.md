@@ -44,8 +44,10 @@ Set the following environment variables before running the CLI (they are used as
 * [`ppls document-types list`](#ppls-document-types-list)
 * [`ppls document-types show ID`](#ppls-document-types-show-id)
 * [`ppls help [COMMAND]`](#ppls-help-command)
+* [`ppls profile`](#ppls-profile)
 * [`ppls tags list`](#ppls-tags-list)
 * [`ppls tags show ID`](#ppls-tags-show-id)
+* [`ppls whoami`](#ppls-whoami)
 
 ## `ppls correspondents list`
 
@@ -247,6 +249,36 @@ DESCRIPTION
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.2.36/src/commands/help.ts)_
 
+## `ppls profile`
+
+Show profile details
+
+```
+USAGE
+  $ ppls profile [--hostname <value>] [--plain | --json | --table] [--sort <value>] [--token <value>]
+
+FLAGS
+  --hostname=<value>  [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --plain             Output as plain text
+  --sort=<value>      Sort results by the provided field
+  --table             Output as a table
+  --token=<value>     [env: PPLS_TOKEN] Paperless-ngx API token
+
+GLOBAL FLAGS
+  --json  Format output as json.
+
+DESCRIPTION
+  Show profile details
+
+ALIASES
+  $ ppls whoami
+
+EXAMPLES
+  $ ppls profile
+```
+
+_See code: [src/commands/profile.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/profile.ts)_
+
 ## `ppls tags list`
 
 List tags
@@ -306,4 +338,32 @@ EXAMPLES
 ```
 
 _See code: [src/commands/tags/show.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/tags/show.ts)_
+
+## `ppls whoami`
+
+Show profile details
+
+```
+USAGE
+  $ ppls whoami [--hostname <value>] [--plain | --json | --table] [--sort <value>] [--token <value>]
+
+FLAGS
+  --hostname=<value>  [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --plain             Output as plain text
+  --sort=<value>      Sort results by the provided field
+  --table             Output as a table
+  --token=<value>     [env: PPLS_TOKEN] Paperless-ngx API token
+
+GLOBAL FLAGS
+  --json  Format output as json.
+
+DESCRIPTION
+  Show profile details
+
+ALIASES
+  $ ppls whoami
+
+EXAMPLES
+  $ ppls whoami
+```
 <!-- commandsstop -->
