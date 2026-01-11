@@ -47,7 +47,7 @@ export const formatValue: TableFormatter = function (cellValue: unknown): string
     return cellValue ? this.style(String('✔︎'), 'green', 'bold') : this.style(String('×'), 'red', 'bold')
   }
 
-  return this.style(JSON.stringify(cellValue), 'gray')
+  return this.style(JSON.stringify(cellValue), 'yellow')
 }
 
 type TtyTable = (

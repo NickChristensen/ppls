@@ -16,7 +16,10 @@ type ListOutputFlags = ListCommandFlags & {
 
 type TableColumnInput = string | TableColumn
 
-export abstract class ListCommand<T extends TableRow = TableRow> extends PaginatedCommand {
+export abstract class ListCommand<
+  TRaw extends TableRow = TableRow,
+  TOutput extends TableRow = TRaw,
+> extends PaginatedCommand {
   protected abstract listPath: string
   protected abstract tableAttrs: TableColumnInput[]
 
@@ -46,9 +49,9 @@ export abstract class ListCommand<T extends TableRow = TableRow> extends Paginat
     return {}
   }
 
-  protected abstract plainTemplate(item: T): null | string | undefined
+  protected abstract plainTemplate(item: TOutput): null | string | undefined
 
-  protected renderListOutput(options: {flags: ListOutputFlags; results: T[]}): void {
+  protected renderListOutput(options: {flags: ListOutputFlags; results: TOutput[]}): void {
     if (this.jsonEnabled()) {
       return
     }
@@ -74,7 +77,7 @@ export abstract class ListCommand<T extends TableRow = TableRow> extends Paginat
     this.logTable(columns, results)
   }
 
-  public async run(): Promise<T[]> {
+  public async run(): Promise<TOutput[]> {
     const {flags} = await this.parse()
     const listFlags: ListCommandFlags = {
       hostname: flags.hostname,
@@ -88,11 +91,12 @@ export abstract class ListCommand<T extends TableRow = TableRow> extends Paginat
       plain: flags.plain,
       table: flags.table,
     }
-    const results = await this.fetchListResults<T>({
+    const rawResults = await this.fetchListResults<TRaw>({
       flags: listFlags,
       params: this.listParams(listFlags),
       path: this.listPath,
     })
+    const results = this.transformResults(rawResults)
 
     this.renderListOutput({
       flags: outputFlags,
@@ -104,5 +108,13 @@ export abstract class ListCommand<T extends TableRow = TableRow> extends Paginat
 
   protected shouldAutoPaginate(flags: ListCommandFlags): boolean {
     return flags.page === undefined && flags['page-size'] === undefined
+  }
+
+  protected transformResult(result: TRaw): TOutput {
+    return result as unknown as TOutput
+  }
+
+  protected transformResults(results: TRaw[]): TOutput[] {
+    return results.map((result) => this.transformResult(result))
   }
 }

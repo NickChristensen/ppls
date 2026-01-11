@@ -17,10 +17,13 @@ type ShowTableRow = {
   value: unknown
 }
 
-export abstract class ShowCommand<T extends Record<string, unknown> = Record<string, unknown>> extends BaseCommand {
-  protected abstract plainTemplate(item: T): null | string | undefined
+export abstract class ShowCommand<
+  TRaw extends Record<string, unknown> = Record<string, unknown>,
+  TOutput extends Record<string, unknown> = TRaw,
+> extends BaseCommand {
+  protected abstract plainTemplate(item: TOutput): null | string | undefined
 
-  protected renderShowOutput(options: {flags: ShowCommandFlags; result: T}): void {
+  protected renderShowOutput(options: {flags: ShowCommandFlags; result: TOutput}): void {
     if (this.jsonEnabled()) {
       return
     }
@@ -47,7 +50,7 @@ export abstract class ShowCommand<T extends Record<string, unknown> = Record<str
     )
   }
 
-  public async run(): Promise<T> {
+  public async run(): Promise<TOutput> {
     const {args, flags} = await this.parse()
     const apiFlags: ApiFlags = {
       hostname: flags.hostname,
@@ -59,7 +62,8 @@ export abstract class ShowCommand<T extends Record<string, unknown> = Record<str
       table: flags.table,
     }
     const id = this.showId(args as ShowCommandArgs)
-    const result = await this.fetchApiJson<T>(apiFlags, this.showPath(id))
+    const rawResult = await this.fetchApiJson<TRaw>(apiFlags, this.showPath(id))
+    const result = this.transformResult(rawResult)
 
     this.renderShowOutput({flags: outputFlags, result})
 
@@ -72,10 +76,14 @@ export abstract class ShowCommand<T extends Record<string, unknown> = Record<str
 
   protected abstract showPath(id: number | string): string
 
-  protected showRows(result: T): ShowTableRow[] {
+  protected showRows(result: TOutput): ShowTableRow[] {
     return Object.entries(result).map(([field, value]) => ({
       field,
       value,
     }))
+  }
+
+  protected transformResult(result: TRaw): TOutput {
+    return result as unknown as TOutput
   }
 }
