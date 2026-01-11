@@ -49,17 +49,17 @@ List correspondents
 
 ```
 USAGE
-  $ ppls correspondents list --hostname <value> --token <value> [--plain | --json | --table] [--sort <value>] [--page
+  $ ppls correspondents list [--hostname <value>] [--plain | --json | --table] [--sort <value>] [--token <value>] [--page
     <value>] [--page-size <value>]
 
 FLAGS
-  --hostname=<value>   (required) [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
   --page=<value>       Page number to fetch
   --page-size=<value>  Number of results per page
   --plain              Output as plain text
   --sort=<value>       Sort results by the provided field
   --table              Output as a table
-  --token=<value>      (required) [env: PPLS_TOKEN] Paperless-ngx API token
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
 
 GLOBAL FLAGS
   --json  Format output as json.
@@ -79,17 +79,17 @@ Show correspondent details
 
 ```
 USAGE
-  $ ppls correspondents show ID --hostname <value> --token <value> [--plain | --json | --table] [--sort <value>]
+  $ ppls correspondents show ID [--hostname <value>] [--plain | --json | --table] [--sort <value>] [--token <value>]
 
 ARGUMENTS
   ID  Correspondent id
 
 FLAGS
-  --hostname=<value>  (required) [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --hostname=<value>  [env: PPLS_HOSTNAME] Paperless-ngx base URL
   --plain             Output as plain text
   --sort=<value>      Sort results by the provided field
   --table             Output as a table
-  --token=<value>     (required) [env: PPLS_TOKEN] Paperless-ngx API token
+  --token=<value>     [env: PPLS_TOKEN] Paperless-ngx API token
 
 GLOBAL FLAGS
   --json  Format output as json.
@@ -129,17 +129,17 @@ List tags
 
 ```
 USAGE
-  $ ppls tags list --hostname <value> --token <value> [--plain | --json | --table] [--sort <value>] [--page
+  $ ppls tags list [--hostname <value>] [--plain | --json | --table] [--sort <value>] [--token <value>] [--page
     <value>] [--page-size <value>]
 
 FLAGS
-  --hostname=<value>   (required) [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
   --page=<value>       Page number to fetch
   --page-size=<value>  Number of results per page
   --plain              Output as plain text
   --sort=<value>       Sort results by the provided field
   --table              Output as a table
-  --token=<value>      (required) [env: PPLS_TOKEN] Paperless-ngx API token
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
 
 GLOBAL FLAGS
   --json  Format output as json.
@@ -159,17 +159,17 @@ Show tag details
 
 ```
 USAGE
-  $ ppls tags show ID --hostname <value> --token <value> [--plain | --json | --table] [--sort <value>]
+  $ ppls tags show ID [--hostname <value>] [--plain | --json | --table] [--sort <value>] [--token <value>]
 
 ARGUMENTS
   ID  Tag id
 
 FLAGS
-  --hostname=<value>  (required) [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --hostname=<value>  [env: PPLS_HOSTNAME] Paperless-ngx base URL
   --plain             Output as plain text
   --sort=<value>      Sort results by the provided field
   --table             Output as a table
-  --token=<value>     (required) [env: PPLS_TOKEN] Paperless-ngx API token
+  --token=<value>     [env: PPLS_TOKEN] Paperless-ngx API token
 
 GLOBAL FLAGS
   --json  Format output as json.

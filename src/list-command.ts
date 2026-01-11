@@ -79,12 +79,13 @@ export abstract class ListCommand<
 
   public async run(): Promise<TOutput[]> {
     const {flags} = await this.parse()
+    const apiFlags = await this.resolveApiFlags(flags)
     const listFlags: ListCommandFlags = {
-      hostname: flags.hostname,
+      hostname: apiFlags.hostname,
       page: flags.page,
       'page-size': flags['page-size'],
       sort: flags.sort,
-      token: flags.token,
+      token: apiFlags.token,
     }
     const outputFlags: ListOutputFlags = {
       ...listFlags,

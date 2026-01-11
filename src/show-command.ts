@@ -52,10 +52,7 @@ export abstract class ShowCommand<
 
   public async run(): Promise<TOutput> {
     const {args, flags} = await this.parse()
-    const apiFlags: ApiFlags = {
-      hostname: flags.hostname,
-      token: flags.token,
-    }
+    const apiFlags = await this.resolveApiFlags(flags)
     const outputFlags: ShowCommandFlags = {
       ...apiFlags,
       plain: flags.plain,

@@ -1,4 +1,6 @@
 import {Command, Flags} from '@oclif/core'
+import {readFile} from 'node:fs/promises'
+import path from 'node:path'
 import yoctoSpinner from 'yocto-spinner'
 
 import {hostname, token} from './flags.js'
@@ -8,6 +10,8 @@ export type ApiFlags = {
   hostname: string
   token: string
 }
+
+type UserConfig = Partial<ApiFlags>
 
 export abstract class BaseCommand extends Command {
   static baseFlags = {
@@ -73,8 +77,42 @@ export abstract class BaseCommand extends Command {
     return (await response.json()) as T
   }
 
+  protected async loadUserConfig(): Promise<UserConfig> {
+    const configPath = path.join(this.config.configDir, 'config.json')
+
+    try {
+      const rawConfig = await readFile(configPath, 'utf8')
+      return JSON.parse(rawConfig) as UserConfig
+    } catch (error) {
+      const typedError = error as NodeJS.ErrnoException
+
+      if (typedError.code === 'ENOENT') {
+        return {}
+      }
+
+      this.error(`Failed to read config at ${configPath}: ${typedError.message ?? String(error)}`)
+    }
+  }
+
   protected logTable(headers: TableColumn[], rows: TableRow[], options?: TableOptions): void {
     this.log(renderTable(headers, rows, options))
+  }
+
+  protected async resolveApiFlags(flags: Record<string, unknown>): Promise<ApiFlags> {
+    const userConfig = await this.loadUserConfig()
+    const inputFlags = flags as Partial<ApiFlags>
+    const hostname = inputFlags.hostname ?? userConfig.hostname
+    const token = inputFlags.token ?? userConfig.token
+
+    if (!hostname) {
+      this.error('Missing required hostname. Set --hostname, PPLS_HOSTNAME, or config.json.')
+    }
+
+    if (!token) {
+      this.error('Missing required token. Set --token, PPLS_TOKEN, or config.json.')
+    }
+
+    return {hostname, token}
   }
 
   protected shouldShowSpinner(): boolean {
