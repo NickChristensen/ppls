@@ -39,6 +39,10 @@ Set the following environment variables before running the CLI (they are used as
 <!-- commands -->
 * [`ppls correspondents list`](#ppls-correspondents-list)
 * [`ppls correspondents show ID`](#ppls-correspondents-show-id)
+* [`ppls custom-fields list`](#ppls-custom-fields-list)
+* [`ppls custom-fields show ID`](#ppls-custom-fields-show-id)
+* [`ppls document-types list`](#ppls-document-types-list)
+* [`ppls document-types show ID`](#ppls-document-types-show-id)
 * [`ppls help [COMMAND]`](#ppls-help-command)
 * [`ppls tags list`](#ppls-tags-list)
 * [`ppls tags show ID`](#ppls-tags-show-id)
@@ -102,6 +106,126 @@ EXAMPLES
 ```
 
 _See code: [src/commands/correspondents/show.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/correspondents/show.ts)_
+
+## `ppls custom-fields list`
+
+List custom fields
+
+```
+USAGE
+  $ ppls custom-fields list [--hostname <value>] [--plain | --json | --table] [--sort <value>] [--token <value>] [--page
+    <value>] [--page-size <value>]
+
+FLAGS
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --page=<value>       Page number to fetch
+  --page-size=<value>  Number of results per page
+  --plain              Output as plain text
+  --sort=<value>       Sort results by the provided field
+  --table              Output as a table
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
+
+GLOBAL FLAGS
+  --json  Format output as json.
+
+DESCRIPTION
+  List custom fields
+
+EXAMPLES
+  $ ppls custom-fields list
+```
+
+_See code: [src/commands/custom-fields/list.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/custom-fields/list.ts)_
+
+## `ppls custom-fields show ID`
+
+Show custom field details
+
+```
+USAGE
+  $ ppls custom-fields show ID [--hostname <value>] [--plain | --json | --table] [--sort <value>] [--token <value>]
+
+ARGUMENTS
+  ID  Custom field id
+
+FLAGS
+  --hostname=<value>  [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --plain             Output as plain text
+  --sort=<value>      Sort results by the provided field
+  --table             Output as a table
+  --token=<value>     [env: PPLS_TOKEN] Paperless-ngx API token
+
+GLOBAL FLAGS
+  --json  Format output as json.
+
+DESCRIPTION
+  Show custom field details
+
+EXAMPLES
+  $ ppls custom-fields show 123
+```
+
+_See code: [src/commands/custom-fields/show.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/custom-fields/show.ts)_
+
+## `ppls document-types list`
+
+List document types
+
+```
+USAGE
+  $ ppls document-types list [--hostname <value>] [--plain | --json | --table] [--sort <value>] [--token <value>] [--page
+    <value>] [--page-size <value>]
+
+FLAGS
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --page=<value>       Page number to fetch
+  --page-size=<value>  Number of results per page
+  --plain              Output as plain text
+  --sort=<value>       Sort results by the provided field
+  --table              Output as a table
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
+
+GLOBAL FLAGS
+  --json  Format output as json.
+
+DESCRIPTION
+  List document types
+
+EXAMPLES
+  $ ppls document-types list
+```
+
+_See code: [src/commands/document-types/list.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/document-types/list.ts)_
+
+## `ppls document-types show ID`
+
+Show document type details
+
+```
+USAGE
+  $ ppls document-types show ID [--hostname <value>] [--plain | --json | --table] [--sort <value>] [--token <value>]
+
+ARGUMENTS
+  ID  Document type id
+
+FLAGS
+  --hostname=<value>  [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --plain             Output as plain text
+  --sort=<value>      Sort results by the provided field
+  --table             Output as a table
+  --token=<value>     [env: PPLS_TOKEN] Paperless-ngx API token
+
+GLOBAL FLAGS
+  --json  Format output as json.
+
+DESCRIPTION
+  Show document type details
+
+EXAMPLES
+  $ ppls document-types show 123
+```
+
+_See code: [src/commands/document-types/show.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/document-types/show.ts)_
 
 ## `ppls help [COMMAND]`
 
