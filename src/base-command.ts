@@ -11,13 +11,21 @@ export type ApiFlags = {
   token: string
 }
 
-type UserConfig = Partial<ApiFlags>
+type UserConfig = Partial<ApiFlags> & {
+  'date-format'?: string
+  dateFormat?: string
+}
+
+type CommandMetadata = {
+  flags?: Record<string, {setFromDefault?: boolean}>
+}
 
 export abstract class BaseCommand extends Command {
   static baseFlags = {
     'date-format': Flags.string({
       default: 'yyyy-MM-dd',
       description: 'Format output dates using a template.',
+      env: 'PPLS_DATE_FORMAT',
       helpGroup: 'GLOBAL',
     }),
     hostname,
@@ -35,6 +43,7 @@ export abstract class BaseCommand extends Command {
     token,
   }
   static enableJsonFlag = true
+  private userConfigPromise?: Promise<UserConfig>
 
   protected buildApiUrl(
     hostnameValue: string,
@@ -91,20 +100,28 @@ export abstract class BaseCommand extends Command {
   }
 
   protected async loadUserConfig(): Promise<UserConfig> {
+    if (this.userConfigPromise) {
+      return this.userConfigPromise
+    }
+
     const configPath = path.join(this.config.configDir, 'config.json')
 
-    try {
-      const rawConfig = await readFile(configPath, 'utf8')
-      return JSON.parse(rawConfig) as UserConfig
-    } catch (error) {
-      const typedError = error as NodeJS.ErrnoException
+    this.userConfigPromise = (async () => {
+      try {
+        const rawConfig = await readFile(configPath, 'utf8')
+        return JSON.parse(rawConfig) as UserConfig
+      } catch (error) {
+        const typedError = error as NodeJS.ErrnoException
 
-      if (typedError.code === 'ENOENT') {
-        return {}
+        if (typedError.code === 'ENOENT') {
+          return {}
+        }
+
+        this.error(`Failed to read config at ${configPath}: ${typedError.message ?? String(error)}`)
       }
+    })()
 
-      this.error(`Failed to read config at ${configPath}: ${typedError.message ?? String(error)}`)
-    }
+    return this.userConfigPromise
   }
 
   protected logTable(headers: TableColumn[], rows: TableRow[], options?: TableOptions): void {
@@ -126,6 +143,19 @@ export abstract class BaseCommand extends Command {
     }
 
     return {hostname, token}
+  }
+
+  protected async resolveDateFormat(flags: Record<string, unknown>, metadata?: CommandMetadata): Promise<string> {
+    const userConfig = await this.loadUserConfig()
+    const configDateFormat = userConfig['date-format'] ?? userConfig.dateFormat
+    const flagValue = flags['date-format'] as string | undefined
+    const usedDefault = metadata?.flags?.['date-format']?.setFromDefault
+
+    if (usedDefault && configDateFormat) {
+      return configDateFormat
+    }
+
+    return flagValue ?? configDateFormat ?? 'yyyy-MM-dd'
   }
 
   protected shouldShowSpinner(): boolean {

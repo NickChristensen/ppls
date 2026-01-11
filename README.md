@@ -68,7 +68,7 @@ FLAGS
   --sort=<value>           Sort results by the provided field
 
 GLOBAL FLAGS
-  --date-format=<value>  [default: yyyy-MM-dd] Format output dates using a template.
+  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
@@ -102,7 +102,7 @@ FLAGS
   --sort=<value>  Sort results by the provided field
 
 GLOBAL FLAGS
-  --date-format=<value>  [default: yyyy-MM-dd] Format output dates using a template.
+  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
@@ -137,7 +137,7 @@ FLAGS
   --sort=<value>           Sort results by the provided field
 
 GLOBAL FLAGS
-  --date-format=<value>  [default: yyyy-MM-dd] Format output dates using a template.
+  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
@@ -171,7 +171,7 @@ FLAGS
   --sort=<value>  Sort results by the provided field
 
 GLOBAL FLAGS
-  --date-format=<value>  [default: yyyy-MM-dd] Format output dates using a template.
+  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
@@ -206,7 +206,7 @@ FLAGS
   --sort=<value>           Sort results by the provided field
 
 GLOBAL FLAGS
-  --date-format=<value>  [default: yyyy-MM-dd] Format output dates using a template.
+  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
@@ -240,7 +240,7 @@ FLAGS
   --sort=<value>  Sort results by the provided field
 
 GLOBAL FLAGS
-  --date-format=<value>  [default: yyyy-MM-dd] Format output dates using a template.
+  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
@@ -275,7 +275,7 @@ FLAGS
   --sort=<value>           Sort results by the provided field
 
 GLOBAL FLAGS
-  --date-format=<value>  [default: yyyy-MM-dd] Format output dates using a template.
+  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
@@ -309,7 +309,7 @@ FLAGS
   --sort=<value>  Sort results by the provided field
 
 GLOBAL FLAGS
-  --date-format=<value>  [default: yyyy-MM-dd] Format output dates using a template.
+  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
@@ -360,7 +360,7 @@ FLAGS
   --sort=<value>  Sort results by the provided field
 
 GLOBAL FLAGS
-  --date-format=<value>  [default: yyyy-MM-dd] Format output dates using a template.
+  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
@@ -398,7 +398,7 @@ FLAGS
   --sort=<value>           Sort results by the provided field
 
 GLOBAL FLAGS
-  --date-format=<value>  [default: yyyy-MM-dd] Format output dates using a template.
+  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
@@ -432,7 +432,7 @@ FLAGS
   --sort=<value>  Sort results by the provided field
 
 GLOBAL FLAGS
-  --date-format=<value>  [default: yyyy-MM-dd] Format output dates using a template.
+  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
@@ -463,7 +463,7 @@ FLAGS
   --sort=<value>  Sort results by the provided field
 
 GLOBAL FLAGS
-  --date-format=<value>  [default: yyyy-MM-dd] Format output dates using a template.
+  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.

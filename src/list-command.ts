@@ -99,9 +99,9 @@ export abstract class ListCommand<
   }
 
   public async run(): Promise<TOutput[]> {
-    const {flags} = await this.parse()
+    const {flags, metadata} = await this.parse()
     const apiFlags = await this.resolveApiFlags(flags)
-    const dateFormat = flags['date-format'] as string
+    const dateFormat = await this.resolveDateFormat(flags, metadata)
     const listFlags: ListCommandFlags = {
       hostname: apiFlags.hostname,
       'id-in': flags['id-in'],
