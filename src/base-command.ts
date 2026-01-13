@@ -3,13 +3,16 @@ import {readFile} from 'node:fs/promises'
 import path from 'node:path'
 import yoctoSpinner from 'yocto-spinner'
 
-import {hostname, token} from './flags.js'
 import {renderTable, type TableColumn, type TableOptions, type TableRow} from './helpers/table.js'
 
 export type ApiFlags = {
   headers: Record<string, string>
   hostname: string
   token: string
+}
+
+type ResolvedGlobalFlags = ApiFlags & {
+  dateFormat: string
 }
 
 type UserConfig = Partial<ApiFlags> & {
@@ -31,13 +34,6 @@ export abstract class BaseCommand extends Command {
       env: 'PPLS_DATE_FORMAT',
       helpGroup: 'GLOBAL',
     }),
-    header: Flags.string({
-      description: 'Add a custom request header (repeatable, format: Key=Value)',
-      env: 'PPLS_HEADERS',
-      helpGroup: 'GLOBAL',
-      multiple: true,
-    }),
-    hostname,
     plain: Flags.boolean({
       description: 'Format output as plain text.',
       exclusive: ['json', 'table'],
@@ -49,7 +45,22 @@ export abstract class BaseCommand extends Command {
       exclusive: ['json', 'plain'],
       helpGroup: 'GLOBAL',
     }),
-    token,
+    header: Flags.string({
+      description: 'Add a custom request header (repeatable, format: Key=Value)',
+      env: 'PPLS_HEADERS',
+      helpGroup: 'ENVIRONMENT',
+      multiple: true,
+    }),
+    hostname: Flags.string({
+      description: 'Paperless-ngx base URL',
+      env: 'PPLS_HOSTNAME',
+      helpGroup: 'ENVIRONMENT',
+    }),
+    token: Flags.string({
+      description: 'Paperless-ngx API token',
+      env: 'PPLS_TOKEN',
+      helpGroup: 'ENVIRONMENT',
+    }),
   }
   static enableJsonFlag = true
   private userConfigPromise?: Promise<UserConfig>
@@ -229,12 +240,16 @@ export abstract class BaseCommand extends Command {
     this.error(`Invalid headers from ${source}. Expected an object, array, or string.`)
   }
 
-  protected async resolveApiFlags(flags: Record<string, unknown>): Promise<ApiFlags> {
+  protected async resolveGlobalFlags(
+    flags: Record<string, unknown>,
+    metadata?: CommandMetadata,
+  ): Promise<ResolvedGlobalFlags> {
     const userConfig = await this.loadUserConfig()
     const inputFlags = flags as Partial<ApiFlags>
     const hostname = inputFlags.hostname ?? userConfig.hostname
     const token = inputFlags.token ?? userConfig.token
-    const headers = await this.resolveHeaders(flags, userConfig)
+    const dateFormat = this.resolveDateFormat(flags, metadata, userConfig)
+    const headers = this.resolveHeaders(flags, userConfig)
 
     if (!hostname) {
       this.error('Missing required hostname. Set --hostname, PPLS_HOSTNAME, or config.json.')
@@ -244,11 +259,14 @@ export abstract class BaseCommand extends Command {
       this.error('Missing required token. Set --token, PPLS_TOKEN, or config.json.')
     }
 
-    return {headers, hostname, token}
+    return {dateFormat, headers, hostname, token}
   }
 
-  protected async resolveDateFormat(flags: Record<string, unknown>, metadata?: CommandMetadata): Promise<string> {
-    const userConfig = await this.loadUserConfig()
+  protected resolveDateFormat(
+    flags: Record<string, unknown>,
+    metadata: undefined | CommandMetadata,
+    userConfig: UserConfig,
+  ): string {
     const configDateFormat = userConfig['date-format'] ?? userConfig.dateFormat
     const flagValue = flags['date-format'] as string | undefined
     const usedDefault = metadata?.flags?.['date-format']?.setFromDefault
@@ -260,9 +278,8 @@ export abstract class BaseCommand extends Command {
     return flagValue ?? configDateFormat ?? 'yyyy-MM-dd'
   }
 
-  protected async resolveHeaders(flags: Record<string, unknown>, userConfig?: UserConfig): Promise<Record<string, string>> {
-    const config = userConfig ?? (await this.loadUserConfig())
-    const configHeaders = this.parseHeadersInput(config.headers ?? config.header, 'config.json headers')
+  protected resolveHeaders(flags: Record<string, unknown>, userConfig: UserConfig): Record<string, string> {
+    const configHeaders = this.parseHeadersInput(userConfig.headers ?? userConfig.header, 'config.json headers')
     const envHeaders = this.parseHeadersInput(process.env.PPLS_HEADERS, 'PPLS_HEADERS')
     const flagHeaders = this.parseHeadersInput(flags.header, '--header')
 
