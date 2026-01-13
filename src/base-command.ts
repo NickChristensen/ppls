@@ -37,13 +37,13 @@ export abstract class BaseCommand extends Command {
     header: Flags.string({
       description: 'Add a custom request header (repeatable, format: Key=Value)',
       env: 'PPLS_HEADERS',
-      helpGroup: 'GLOBAL',
+      helpGroup: 'ENVIRONMENT',
       multiple: true,
     }),
     hostname: Flags.string({
       description: 'Paperless-ngx base URL',
       env: 'PPLS_HOSTNAME',
-      helpGroup: 'GLOBAL',
+      helpGroup: 'ENVIRONMENT',
     }),
     plain: Flags.boolean({
       description: 'Format output as plain text.',
@@ -59,7 +59,7 @@ export abstract class BaseCommand extends Command {
     token: Flags.string({
       description: 'Paperless-ngx API token',
       env: 'PPLS_TOKEN',
-      helpGroup: 'GLOBAL',
+      helpGroup: 'ENVIRONMENT',
     }),
   }
   static enableJsonFlag = true

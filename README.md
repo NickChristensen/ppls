@@ -70,14 +70,14 @@ FLAGS
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
-  --header=<value>...    [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
 
 ENVIRONMENT FLAGS
-  --hostname=<value>  [env: PPLS_HOSTNAME] Paperless-ngx base URL
-  --token=<value>     [env: PPLS_TOKEN] Paperless-ngx API token
+  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
 
 DESCRIPTION
   List correspondents
@@ -105,14 +105,14 @@ FLAGS
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
-  --header=<value>...    [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
 
 ENVIRONMENT FLAGS
-  --hostname=<value>  [env: PPLS_HOSTNAME] Paperless-ngx base URL
-  --token=<value>     [env: PPLS_TOKEN] Paperless-ngx API token
+  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
 
 DESCRIPTION
   Show correspondent details
@@ -142,14 +142,14 @@ FLAGS
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
-  --header=<value>...    [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
 
 ENVIRONMENT FLAGS
-  --hostname=<value>  [env: PPLS_HOSTNAME] Paperless-ngx base URL
-  --token=<value>     [env: PPLS_TOKEN] Paperless-ngx API token
+  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
 
 DESCRIPTION
   List custom fields
@@ -177,14 +177,14 @@ FLAGS
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
-  --header=<value>...    [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
 
 ENVIRONMENT FLAGS
-  --hostname=<value>  [env: PPLS_HOSTNAME] Paperless-ngx base URL
-  --token=<value>     [env: PPLS_TOKEN] Paperless-ngx API token
+  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
 
 DESCRIPTION
   Show custom field details
@@ -214,14 +214,14 @@ FLAGS
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
-  --header=<value>...    [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
 
 ENVIRONMENT FLAGS
-  --hostname=<value>  [env: PPLS_HOSTNAME] Paperless-ngx base URL
-  --token=<value>     [env: PPLS_TOKEN] Paperless-ngx API token
+  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
 
 DESCRIPTION
   List document types
@@ -249,14 +249,14 @@ FLAGS
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
-  --header=<value>...    [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
 
 ENVIRONMENT FLAGS
-  --hostname=<value>  [env: PPLS_HOSTNAME] Paperless-ngx base URL
-  --token=<value>     [env: PPLS_TOKEN] Paperless-ngx API token
+  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
 
 DESCRIPTION
   Show document type details
@@ -286,14 +286,14 @@ FLAGS
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
-  --header=<value>...    [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
 
 ENVIRONMENT FLAGS
-  --hostname=<value>  [env: PPLS_HOSTNAME] Paperless-ngx base URL
-  --token=<value>     [env: PPLS_TOKEN] Paperless-ngx API token
+  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
 
 DESCRIPTION
   List documents
@@ -321,14 +321,14 @@ FLAGS
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
-  --header=<value>...    [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
 
 ENVIRONMENT FLAGS
-  --hostname=<value>  [env: PPLS_HOSTNAME] Paperless-ngx base URL
-  --token=<value>     [env: PPLS_TOKEN] Paperless-ngx API token
+  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
 
 DESCRIPTION
   Show document details
@@ -373,14 +373,14 @@ FLAGS
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
-  --header=<value>...    [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
 
 ENVIRONMENT FLAGS
-  --hostname=<value>  [env: PPLS_HOSTNAME] Paperless-ngx base URL
-  --token=<value>     [env: PPLS_TOKEN] Paperless-ngx API token
+  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
 
 DESCRIPTION
   Show profile details
@@ -413,14 +413,14 @@ FLAGS
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
-  --header=<value>...    [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
 
 ENVIRONMENT FLAGS
-  --hostname=<value>  [env: PPLS_HOSTNAME] Paperless-ngx base URL
-  --token=<value>     [env: PPLS_TOKEN] Paperless-ngx API token
+  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
 
 DESCRIPTION
   List tags
@@ -448,14 +448,14 @@ FLAGS
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
-  --header=<value>...    [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
 
 ENVIRONMENT FLAGS
-  --hostname=<value>  [env: PPLS_HOSTNAME] Paperless-ngx base URL
-  --token=<value>     [env: PPLS_TOKEN] Paperless-ngx API token
+  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
 
 DESCRIPTION
   Show tag details
@@ -480,14 +480,14 @@ FLAGS
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
-  --header=<value>...    [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
 
 ENVIRONMENT FLAGS
-  --hostname=<value>  [env: PPLS_HOSTNAME] Paperless-ngx base URL
-  --token=<value>     [env: PPLS_TOKEN] Paperless-ngx API token
+  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
 
 DESCRIPTION
   Show profile details
