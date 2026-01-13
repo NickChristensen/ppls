@@ -3,6 +3,7 @@ import {expect} from 'chai'
 
 describe('correspondents:list', () => {
   const originalEnv = {
+    headers: process.env.PPLS_HEADERS,
     hostname: process.env.PPLS_HOSTNAME,
     token: process.env.PPLS_TOKEN,
   }
@@ -26,6 +27,12 @@ describe('correspondents:list', () => {
       delete process.env.PPLS_TOKEN
     } else {
       process.env.PPLS_TOKEN = originalEnv.token
+    }
+
+    if (originalEnv.headers === undefined) {
+      delete process.env.PPLS_HEADERS
+    } else {
+      process.env.PPLS_HEADERS = originalEnv.headers
     }
 
     globalThis.fetch = originalFetch
@@ -134,6 +141,33 @@ describe('correspondents:list', () => {
 
     expect(error).to.be.instanceOf(Error)
     expect(error?.message).to.contain('cannot also be provided')
+  })
+
+  it('includes custom headers from env and flags', async () => {
+    process.env.PPLS_HEADERS = 'X-Env=from-env'
+
+    globalThis.fetch = async (input, init) => {
+      requests.push(String(input))
+      const headers = new Headers(init?.headers)
+      expect(headers.get('Accept')).to.equal('application/json')
+      expect(headers.get('Authorization')).to.equal('Token test-token')
+      expect(headers.get('X-Env')).to.equal('from-env')
+      expect(headers.get('X-Flag')).to.equal('from-flag')
+
+      return new Response(
+        JSON.stringify({
+          next: null,
+          results: [{name: 'Headers'}],
+        }),
+        {
+          headers: {'Content-Type': 'application/json'},
+          status: 200,
+        },
+      )
+    }
+
+    await runCommand('correspondents:list --header X-Flag=from-flag --page-size 1')
+    expect(requests).to.have.lengthOf(1)
   })
 
   it('respects page size without auto-pagination', async () => {

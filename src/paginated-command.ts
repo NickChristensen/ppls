@@ -1,9 +1,10 @@
 import {Flags} from '@oclif/core'
 
+import type {ApiFlags} from './base-command.js'
+
 import {BaseCommand} from './base-command.js'
 
-type PaginatedFlags = {
-  hostname: string
+type PaginatedFlags = ApiFlags & {
   page?: number
   'page-size'?: number
 }
@@ -61,11 +62,12 @@ export abstract class PaginatedCommand extends BaseCommand {
 
   protected async fetchPaginatedResults<T>(options: {
     autoPaginate: boolean
+    headers: Record<string, string>
     spinnerText?: string
     token: string
     url: URL
   }): Promise<T[]> {
-    const {autoPaginate, spinnerText, token, url} = options
+    const {autoPaginate, headers, spinnerText, token, url} = options
     const spinner = this.startSpinner(spinnerText ?? `Fetching ${url.pathname}`)
     const results: T[] = []
 
@@ -74,7 +76,11 @@ export abstract class PaginatedCommand extends BaseCommand {
 
       while (nextUrl) {
         // eslint-disable-next-line no-await-in-loop -- pagination is sequential and depends on the next page URL.
-        const payload: PaginatedResponse<T> = await this.fetchJson<PaginatedResponse<T>>(nextUrl, token)
+        const payload: PaginatedResponse<T> = await this.fetchJson<PaginatedResponse<T>>(
+          nextUrl,
+          token,
+          headers,
+        )
         results.push(...(payload.results ?? []))
 
         if (!autoPaginate || !payload.next) {
@@ -96,13 +102,14 @@ export abstract class PaginatedCommand extends BaseCommand {
 
   protected async fetchPaginatedResultsFromFlags<T>(options: {
     autoPaginate: boolean
-    flags: {token: string}
+    flags: {headers: Record<string, string>; token: string}
     spinnerText?: string
     url: URL
   }): Promise<T[]> {
     const {autoPaginate, flags, spinnerText, url} = options
     return this.fetchPaginatedResults<T>({
       autoPaginate,
+      headers: flags.headers,
       spinnerText,
       token: flags.token,
       url,
@@ -112,13 +119,18 @@ export abstract class PaginatedCommand extends BaseCommand {
   protected async *paginate<T>(
     url: URL,
     tokenValue: string,
+    headers: Record<string, string>,
     autoPaginate: boolean,
   ): AsyncGenerator<T> {
     let nextUrl: null | URL = url
 
     while (nextUrl) {
       // eslint-disable-next-line no-await-in-loop -- pagination is sequential and depends on the next page URL.
-      const payload: PaginatedResponse<T> = await this.fetchJson<PaginatedResponse<T>>(nextUrl, tokenValue)
+      const payload: PaginatedResponse<T> = await this.fetchJson<PaginatedResponse<T>>(
+        nextUrl,
+        tokenValue,
+        headers,
+      )
       const results = payload.results ?? []
 
       for (const result of results) {

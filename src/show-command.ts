@@ -56,8 +56,7 @@ export abstract class ShowCommand<
 
   public async run(): Promise<TOutput> {
     const {args, flags, metadata} = await this.parse()
-    const apiFlags = await this.resolveApiFlags(flags)
-    const dateFormat = await this.resolveDateFormat(flags, metadata)
+    const {dateFormat, ...apiFlags} = await this.resolveGlobalFlags(flags, metadata)
     const outputFlags: ShowCommandFlags = {
       ...apiFlags,
       'date-format': dateFormat,
