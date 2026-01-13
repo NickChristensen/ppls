@@ -7,6 +7,7 @@ import {hostname, token} from './flags.js'
 import {renderTable, type TableColumn, type TableOptions, type TableRow} from './helpers/table.js'
 
 export type ApiFlags = {
+  headers: Record<string, string>
   hostname: string
   token: string
 }
@@ -14,6 +15,8 @@ export type ApiFlags = {
 type UserConfig = Partial<ApiFlags> & {
   'date-format'?: string
   dateFormat?: string
+  header?: string | string[]
+  headers?: Record<string, unknown> | string | string[]
 }
 
 type CommandMetadata = {
@@ -27,6 +30,12 @@ export abstract class BaseCommand extends Command {
       description: 'Format output dates using a template.',
       env: 'PPLS_DATE_FORMAT',
       helpGroup: 'GLOBAL',
+    }),
+    header: Flags.string({
+      description: 'Add a custom request header (repeatable, format: Key=Value)',
+      env: 'PPLS_HEADERS',
+      helpGroup: 'GLOBAL',
+      multiple: true,
     }),
     hostname,
     plain: Flags.boolean({
@@ -81,14 +90,15 @@ export abstract class BaseCommand extends Command {
     params: Record<string, number | string | undefined> = {},
   ): Promise<T> {
     const url = this.buildApiUrlFromFlags(flags, path, params)
-    return this.fetchJson<T>(url, flags.token)
+    return this.fetchJson<T>(url, flags.token, flags.headers)
   }
 
-  protected async fetchJson<T>(url: URL, tokenValue: string): Promise<T> {
+  protected async fetchJson<T>(url: URL, tokenValue: string, headers: Record<string, string> = {}): Promise<T> {
     const response = await fetch(url, {
       headers: {
         Accept: 'application/json',
         Authorization: `Token ${tokenValue}`,
+        ...headers,
       },
     })
 
@@ -128,11 +138,103 @@ export abstract class BaseCommand extends Command {
     this.log(renderTable(headers, rows, options))
   }
 
+  protected parseHeaderEntries(entries: string[], source: string): Record<string, string> {
+    const headers: Record<string, string> = {}
+
+    for (const entry of entries) {
+      const trimmed = entry.trim()
+
+      if (!trimmed) {
+        continue
+      }
+
+      const colonIndex = trimmed.indexOf(':')
+      const equalsIndex = trimmed.indexOf('=')
+      let separatorIndex = -1
+
+      if (colonIndex === -1) {
+        separatorIndex = equalsIndex
+      } else if (equalsIndex === -1) {
+        separatorIndex = colonIndex
+      } else {
+        separatorIndex = Math.min(colonIndex, equalsIndex)
+      }
+
+      if (separatorIndex === -1) {
+        this.error(`Invalid header "${entry}" from ${source}. Use "Key: Value" or "Key=Value".`)
+      }
+
+      const key = trimmed.slice(0, separatorIndex).trim()
+      const value = trimmed.slice(separatorIndex + 1).trim()
+
+      if (!key) {
+        this.error(`Invalid header "${entry}" from ${source}. Header name cannot be empty.`)
+      }
+
+      headers[key] = value
+    }
+
+    return headers
+  }
+
+  protected parseHeadersInput(input: unknown, source: string): Record<string, string> {
+    if (input === undefined || input === null) {
+      return {}
+    }
+
+    if (typeof input === 'string') {
+      const trimmed = input.trim()
+
+      if (!trimmed) {
+        return {}
+      }
+
+      if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
+        try {
+          const parsed = JSON.parse(trimmed)
+          return this.parseHeadersInput(parsed, `${source} JSON`)
+        } catch (error) {
+          const message = error instanceof Error ? error.message : String(error)
+          this.error(`Failed to parse headers from ${source}: ${message}`)
+        }
+      }
+
+      return this.parseHeaderEntries([trimmed], source)
+    }
+
+    if (Array.isArray(input)) {
+      const headers: Record<string, string> = {}
+
+      for (const [index, entry] of input.entries()) {
+        Object.assign(headers, this.parseHeadersInput(entry, `${source}[${index}]`))
+      }
+
+      return headers
+    }
+
+    if (typeof input === 'object') {
+      const headers: Record<string, string> = {}
+
+      for (const [key, value] of Object.entries(input as Record<string, unknown>)) {
+        if (value === undefined || value === null) {
+          continue
+        }
+
+        headers[key] = String(value)
+      }
+
+      return headers
+    }
+
+    this.error(`Invalid headers from ${source}. Expected an object, array, or string.`)
+  }
+
   protected async resolveApiFlags(flags: Record<string, unknown>): Promise<ApiFlags> {
     const userConfig = await this.loadUserConfig()
     const inputFlags = flags as Partial<ApiFlags>
     const hostname = inputFlags.hostname ?? userConfig.hostname
     const token = inputFlags.token ?? userConfig.token
+    const headers = await this.resolveHeaders(flags, userConfig)
 
     if (!hostname) {
       this.error('Missing required hostname. Set --hostname, PPLS_HOSTNAME, or config.json.')
@@ -142,7 +244,7 @@ export abstract class BaseCommand extends Command {
       this.error('Missing required token. Set --token, PPLS_TOKEN, or config.json.')
     }
 
-    return {hostname, token}
+    return {headers, hostname, token}
   }
 
   protected async resolveDateFormat(flags: Record<string, unknown>, metadata?: CommandMetadata): Promise<string> {
@@ -156,6 +258,19 @@ export abstract class BaseCommand extends Command {
     }
 
     return flagValue ?? configDateFormat ?? 'yyyy-MM-dd'
+  }
+
+  protected async resolveHeaders(flags: Record<string, unknown>, userConfig?: UserConfig): Promise<Record<string, string>> {
+    const config = userConfig ?? (await this.loadUserConfig())
+    const configHeaders = this.parseHeadersInput(config.headers ?? config.header, 'config.json headers')
+    const envHeaders = this.parseHeadersInput(process.env.PPLS_HEADERS, 'PPLS_HEADERS')
+    const flagHeaders = this.parseHeadersInput(flags.header, '--header')
+
+    return {
+      ...configHeaders,
+      ...envHeaders,
+      ...flagHeaders,
+    }
   }
 
   protected shouldShowSpinner(): boolean {

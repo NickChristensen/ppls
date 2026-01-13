@@ -103,6 +103,7 @@ export abstract class ListCommand<
     const apiFlags = await this.resolveApiFlags(flags)
     const dateFormat = await this.resolveDateFormat(flags, metadata)
     const listFlags: ListCommandFlags = {
+      headers: apiFlags.headers,
       hostname: apiFlags.hostname,
       'id-in': flags['id-in'],
       'name-contains': flags['name-contains'],

@@ -57,8 +57,9 @@ List correspondents
 
 ```
 USAGE
-  $ ppls correspondents list [--date-format <value>] [--hostname <value>] [--plain | --json | --table] [--sort <value>]
-    [--token <value>] [--page <value>] [--page-size <value>] [--id-in <value> | --name-contains <value>]
+  $ ppls correspondents list [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
+    --table] [--sort <value>] [--token <value>] [--page <value>] [--page-size <value>] [--id-in <value> |
+    --name-contains <value>]
 
 FLAGS
   --id-in=<value>          Filter by id list (comma-separated)
@@ -69,6 +70,7 @@ FLAGS
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
+  --header=<value>...    [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
@@ -92,8 +94,8 @@ Show correspondent details
 
 ```
 USAGE
-  $ ppls correspondents show ID [--date-format <value>] [--hostname <value>] [--plain | --json | --table] [--sort
-    <value>] [--token <value>]
+  $ ppls correspondents show ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
+    --table] [--sort <value>] [--token <value>]
 
 ARGUMENTS
   ID  Correspondent id
@@ -103,6 +105,7 @@ FLAGS
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
+  --header=<value>...    [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
@@ -126,8 +129,9 @@ List custom fields
 
 ```
 USAGE
-  $ ppls custom-fields list [--date-format <value>] [--hostname <value>] [--plain | --json | --table] [--sort <value>]
-    [--token <value>] [--page <value>] [--page-size <value>] [--id-in <value> | --name-contains <value>]
+  $ ppls custom-fields list [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
+    --table] [--sort <value>] [--token <value>] [--page <value>] [--page-size <value>] [--id-in <value> |
+    --name-contains <value>]
 
 FLAGS
   --id-in=<value>          Filter by id list (comma-separated)
@@ -138,6 +142,7 @@ FLAGS
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
+  --header=<value>...    [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
@@ -161,8 +166,8 @@ Show custom field details
 
 ```
 USAGE
-  $ ppls custom-fields show ID [--date-format <value>] [--hostname <value>] [--plain | --json | --table] [--sort
-    <value>] [--token <value>]
+  $ ppls custom-fields show ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
+    --table] [--sort <value>] [--token <value>]
 
 ARGUMENTS
   ID  Custom field id
@@ -172,6 +177,7 @@ FLAGS
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
+  --header=<value>...    [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
@@ -195,8 +201,9 @@ List document types
 
 ```
 USAGE
-  $ ppls document-types list [--date-format <value>] [--hostname <value>] [--plain | --json | --table] [--sort <value>]
-    [--token <value>] [--page <value>] [--page-size <value>] [--id-in <value> | --name-contains <value>]
+  $ ppls document-types list [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
+    --table] [--sort <value>] [--token <value>] [--page <value>] [--page-size <value>] [--id-in <value> |
+    --name-contains <value>]
 
 FLAGS
   --id-in=<value>          Filter by id list (comma-separated)
@@ -207,6 +214,7 @@ FLAGS
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
+  --header=<value>...    [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
@@ -230,8 +238,8 @@ Show document type details
 
 ```
 USAGE
-  $ ppls document-types show ID [--date-format <value>] [--hostname <value>] [--plain | --json | --table] [--sort
-    <value>] [--token <value>]
+  $ ppls document-types show ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
+    --table] [--sort <value>] [--token <value>]
 
 ARGUMENTS
   ID  Document type id
@@ -241,6 +249,7 @@ FLAGS
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
+  --header=<value>...    [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
@@ -264,8 +273,9 @@ List documents
 
 ```
 USAGE
-  $ ppls documents list [--date-format <value>] [--hostname <value>] [--plain | --json | --table] [--sort <value>]
-    [--token <value>] [--page <value>] [--page-size <value>] [--id-in <value> | --name-contains <value>]
+  $ ppls documents list [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
+    --table] [--sort <value>] [--token <value>] [--page <value>] [--page-size <value>] [--id-in <value> |
+    --name-contains <value>]
 
 FLAGS
   --id-in=<value>          Filter by id list (comma-separated)
@@ -276,6 +286,7 @@ FLAGS
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
+  --header=<value>...    [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
@@ -299,8 +310,8 @@ Show document details
 
 ```
 USAGE
-  $ ppls documents show ID [--date-format <value>] [--hostname <value>] [--plain | --json | --table] [--sort
-    <value>] [--token <value>]
+  $ ppls documents show ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
+    --table] [--sort <value>] [--token <value>]
 
 ARGUMENTS
   ID  Document id
@@ -310,6 +321,7 @@ FLAGS
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
+  --header=<value>...    [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
@@ -353,14 +365,15 @@ Show profile details
 
 ```
 USAGE
-  $ ppls profile [--date-format <value>] [--hostname <value>] [--plain | --json | --table] [--sort <value>]
-    [--token <value>]
+  $ ppls profile [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
+    --table] [--sort <value>] [--token <value>]
 
 FLAGS
   --sort=<value>  Sort results by the provided field
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
+  --header=<value>...    [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
@@ -387,8 +400,9 @@ List tags
 
 ```
 USAGE
-  $ ppls tags list [--date-format <value>] [--hostname <value>] [--plain | --json | --table] [--sort <value>]
-    [--token <value>] [--page <value>] [--page-size <value>] [--id-in <value> | --name-contains <value>]
+  $ ppls tags list [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
+    --table] [--sort <value>] [--token <value>] [--page <value>] [--page-size <value>] [--id-in <value> |
+    --name-contains <value>]
 
 FLAGS
   --id-in=<value>          Filter by id list (comma-separated)
@@ -399,6 +413,7 @@ FLAGS
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
+  --header=<value>...    [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
@@ -422,8 +437,8 @@ Show tag details
 
 ```
 USAGE
-  $ ppls tags show ID [--date-format <value>] [--hostname <value>] [--plain | --json | --table] [--sort
-    <value>] [--token <value>]
+  $ ppls tags show ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
+    --table] [--sort <value>] [--token <value>]
 
 ARGUMENTS
   ID  Tag id
@@ -433,6 +448,7 @@ FLAGS
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
+  --header=<value>...    [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
@@ -456,14 +472,15 @@ Show profile details
 
 ```
 USAGE
-  $ ppls whoami [--date-format <value>] [--hostname <value>] [--plain | --json | --table] [--sort <value>]
-    [--token <value>]
+  $ ppls whoami [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
+    --table] [--sort <value>] [--token <value>]
 
 FLAGS
   --sort=<value>  Sort results by the provided field
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
+  --header=<value>...    [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
   --json                 Format output as json.
   --plain                Format output as plain text.
   --table                Format output as table.
