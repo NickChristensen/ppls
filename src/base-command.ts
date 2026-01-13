@@ -34,6 +34,17 @@ export abstract class BaseCommand extends Command {
       env: 'PPLS_DATE_FORMAT',
       helpGroup: 'GLOBAL',
     }),
+    header: Flags.string({
+      description: 'Add a custom request header (repeatable, format: Key=Value)',
+      env: 'PPLS_HEADERS',
+      helpGroup: 'GLOBAL',
+      multiple: true,
+    }),
+    hostname: Flags.string({
+      description: 'Paperless-ngx base URL',
+      env: 'PPLS_HOSTNAME',
+      helpGroup: 'GLOBAL',
+    }),
     plain: Flags.boolean({
       description: 'Format output as plain text.',
       exclusive: ['json', 'table'],
@@ -45,21 +56,10 @@ export abstract class BaseCommand extends Command {
       exclusive: ['json', 'plain'],
       helpGroup: 'GLOBAL',
     }),
-    header: Flags.string({
-      description: 'Add a custom request header (repeatable, format: Key=Value)',
-      env: 'PPLS_HEADERS',
-      helpGroup: 'ENVIRONMENT',
-      multiple: true,
-    }),
-    hostname: Flags.string({
-      description: 'Paperless-ngx base URL',
-      env: 'PPLS_HOSTNAME',
-      helpGroup: 'ENVIRONMENT',
-    }),
     token: Flags.string({
       description: 'Paperless-ngx API token',
       env: 'PPLS_TOKEN',
-      helpGroup: 'ENVIRONMENT',
+      helpGroup: 'GLOBAL',
     }),
   }
   static enableJsonFlag = true
@@ -240,6 +240,22 @@ export abstract class BaseCommand extends Command {
     this.error(`Invalid headers from ${source}. Expected an object, array, or string.`)
   }
 
+  protected resolveDateFormat(
+    flags: Record<string, unknown>,
+    metadata: CommandMetadata | undefined,
+    userConfig: UserConfig,
+  ): string {
+    const configDateFormat = userConfig['date-format'] ?? userConfig.dateFormat
+    const flagValue = flags['date-format'] as string | undefined
+    const usedDefault = metadata?.flags?.['date-format']?.setFromDefault
+
+    if (usedDefault && configDateFormat) {
+      return configDateFormat
+    }
+
+    return flagValue ?? configDateFormat ?? 'yyyy-MM-dd'
+  }
+
   protected async resolveGlobalFlags(
     flags: Record<string, unknown>,
     metadata?: CommandMetadata,
@@ -260,22 +276,6 @@ export abstract class BaseCommand extends Command {
     }
 
     return {dateFormat, headers, hostname, token}
-  }
-
-  protected resolveDateFormat(
-    flags: Record<string, unknown>,
-    metadata: undefined | CommandMetadata,
-    userConfig: UserConfig,
-  ): string {
-    const configDateFormat = userConfig['date-format'] ?? userConfig.dateFormat
-    const flagValue = flags['date-format'] as string | undefined
-    const usedDefault = metadata?.flags?.['date-format']?.setFromDefault
-
-    if (usedDefault && configDateFormat) {
-      return configDateFormat
-    }
-
-    return flagValue ?? configDateFormat ?? 'yyyy-MM-dd'
   }
 
   protected resolveHeaders(flags: Record<string, unknown>, userConfig: UserConfig): Record<string, string> {
