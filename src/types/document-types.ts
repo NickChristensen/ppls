@@ -21,3 +21,8 @@ export type DocumentType = {
   slug: string
   user_can_change: boolean
 }
+
+export type DocumentTypeCreate = {
+  matching_algorithm?: MatchingAlgorithm
+  name: string
+}
