@@ -113,6 +113,30 @@ export abstract class BaseCommand extends Command {
     })
   }
 
+  // Error: Request failed with 400 Bad Request: Object violates owner / name unique constraint
+
+  protected async formatErrorMessage(response: Response): Promise<string> {
+    const baseMessage = `Request failed with ${response.status} ${response.statusText}`.trim()
+
+    if (response.status >= 400 && response.status < 600) {
+      try {
+        const payloadText = await response.clone().text()
+
+        if (payloadText) {
+          const payload = JSON.parse(payloadText) as {error?: unknown}
+
+          if (typeof payload?.error === 'string' && payload.error.trim()) {
+            return `${payload.error}`
+          }
+        }
+      } catch {
+        // Fall back to generic error when response isn't JSON.
+      }
+    }
+
+    return baseMessage
+  }
+
   protected async loadUserConfig(): Promise<UserConfig> {
     if (this.userConfigPromise) {
       return this.userConfigPromise
@@ -266,7 +290,7 @@ export abstract class BaseCommand extends Command {
     })
 
     if (!response.ok) {
-      this.error(`Request failed with ${response.status} ${response.statusText}`)
+      this.error(await this.formatErrorMessage(response))
     }
 
     return (await response.json()) as T
