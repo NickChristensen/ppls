@@ -1,6 +1,6 @@
 import {Args, Flags} from '@oclif/core'
 
-import type {Tag, TagApi, TagCreate} from '../../types/tags.js'
+import type {Tag, TagCreate} from '../../types/tags.js'
 
 import {AddCommand} from '../../add-command.js'
 
@@ -14,7 +14,7 @@ type TagsAddFlags = {
   parent?: number
 }
 
-export default class TagsAdd extends AddCommand<TagCreate, TagApi, Tag> {
+export default class TagsAdd extends AddCommand<TagCreate, Tag> {
   static override args = {
     name: Args.string({description: 'Tag name', required: true}),
   }
@@ -42,12 +42,5 @@ export default class TagsAdd extends AddCommand<TagCreate, TagApi, Tag> {
 
   protected plainTemplate(tag: Tag): string | undefined {
     return `[${tag.id}] ${tag.name}`
-  }
-
-  protected transformResult(tag: TagApi): Tag {
-    return {
-      ...tag,
-      children: tag.children.map((child) => child.id),
-    }
   }
 }
