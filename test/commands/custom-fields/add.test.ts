@@ -98,4 +98,15 @@ describe('custom-fields:add', () => {
     expect(error).to.be.instanceOf(Error)
     expect(error?.message).to.contain('must be provided when using --data-type: --option')
   })
+
+  it('rejects options for non-select fields', async () => {
+    globalThis.fetch = async () => {
+      throw new Error('Unexpected fetch call')
+    }
+
+    const {error} = await runCommand('custom-fields:add "Amount" --data-type number --option apple')
+
+    expect(error).to.be.instanceOf(Error)
+    expect(error?.message).to.contain('Only the following can be provided when using --option')
+  })
 })
