@@ -22,3 +22,8 @@ export type Correspondent = {
   slug: string
   user_can_change: boolean
 }
+
+export type CorrespondentCreate = {
+  matching_algorithm?: MatchingAlgorithm
+  name: string
+}
