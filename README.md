@@ -37,6 +37,7 @@ Set the following environment variables before running the CLI (they are used as
 
 # Commands
 <!-- commands -->
+* [`ppls correspondents add NAME`](#ppls-correspondents-add-name)
 * [`ppls correspondents list`](#ppls-correspondents-list)
 * [`ppls correspondents show ID`](#ppls-correspondents-show-id)
 * [`ppls custom-fields add NAME`](#ppls-custom-fields-add-name)
@@ -53,6 +54,41 @@ Set the following environment variables before running the CLI (they are used as
 * [`ppls tags list`](#ppls-tags-list)
 * [`ppls tags show ID`](#ppls-tags-show-id)
 * [`ppls whoami`](#ppls-whoami)
+
+## `ppls correspondents add NAME`
+
+Create a correspondent
+
+```
+USAGE
+  $ ppls correspondents add NAME [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
+    --table] [--sort <value>] [--token <value>]
+
+ARGUMENTS
+  NAME  Correspondent name
+
+FLAGS
+  --sort=<value>  Sort results by the provided field
+
+GLOBAL FLAGS
+  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
+  --json                 Format output as json.
+  --plain                Format output as plain text.
+  --table                Format output as table.
+
+ENVIRONMENT FLAGS
+  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
+
+DESCRIPTION
+  Create a correspondent
+
+EXAMPLES
+  $ ppls correspondents add "Acme Corp"
+```
+
+_See code: [src/commands/correspondents/add.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/correspondents/add.ts)_
 
 ## `ppls correspondents list`
 
