@@ -65,6 +65,17 @@ export default class CustomFieldsAdd extends AddCommand<CustomFieldCreate, Custo
     option: Flags.string({
       description: 'Select option label (repeatable)',
       multiple: true,
+      relationships: [
+        {
+          flags: [
+            {
+              name: 'data-type',
+              when: async (flags: Record<string, unknown>) => flags['data-type'] !== 'select',
+            },
+          ],
+          type: 'none',
+        },
+      ],
     }),
   }
   protected createPath = '/api/custom_fields/'
@@ -78,10 +89,6 @@ export default class CustomFieldsAdd extends AddCommand<CustomFieldCreate, Custo
 
     if (!mappedType) {
       this.error(`Unsupported data type "${dataType}".`)
-    }
-
-    if (mappedType !== 'select' && selectOptions.length > 0) {
-      this.error('Select options are only supported for data-type select.')
     }
 
     return {

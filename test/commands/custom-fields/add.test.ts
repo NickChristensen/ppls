@@ -107,6 +107,6 @@ describe('custom-fields:add', () => {
     const {error} = await runCommand('custom-fields:add "Amount" --data-type number --option apple')
 
     expect(error).to.be.instanceOf(Error)
-    expect(error?.message).to.contain('Select options are only supported for data-type select.')
+    expect(error?.message).to.contain('cannot also be provided when using --option')
   })
 })
