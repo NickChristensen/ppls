@@ -65,6 +65,17 @@ export default class CustomFieldsAdd extends AddCommand<CustomFieldCreate, Custo
     option: Flags.string({
       description: 'Select option label (repeatable)',
       multiple: true,
+      relationships: [
+        {
+          flags: [
+            {
+              name: 'data-type',
+              when: async (flags: Record<string, unknown>) => flags['data-type'] === 'select',
+            },
+          ],
+          type: 'only',
+        },
+      ],
     }),
   }
   protected createPath = '/api/custom_fields/'
