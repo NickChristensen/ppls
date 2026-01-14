@@ -37,8 +37,8 @@ describe('tags:add', () => {
       const body = JSON.parse(init?.body as string) as Record<string, unknown>
       expect(body).to.deep.equal({
         color: '#ff0000',
-        is_inbox_tag: true,
-        matching_algorithm: 6,
+        'is_inbox_tag': true,
+        'matching_algorithm': 6,
         name: 'Inbox',
         parent: 12,
       })

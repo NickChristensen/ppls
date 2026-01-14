@@ -33,8 +33,8 @@ export default class TagsAdd extends AddCommand<TagCreate, TagApi, Tag> {
 
     return {
       color: typedFlags.color,
-      is_inbox_tag: typedFlags.inbox ? true : undefined,
-      matching_algorithm: 6,
+      'is_inbox_tag': typedFlags.inbox ? true : undefined,
+      'matching_algorithm': 6,
       name: typedArgs.name,
       parent: typedFlags.parent,
     }
