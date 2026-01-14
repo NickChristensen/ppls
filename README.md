@@ -40,8 +40,10 @@ Set the following environment variables before running the CLI (they are used as
 * [`ppls correspondents add NAME`](#ppls-correspondents-add-name)
 * [`ppls correspondents list`](#ppls-correspondents-list)
 * [`ppls correspondents show ID`](#ppls-correspondents-show-id)
+* [`ppls custom-fields add NAME`](#ppls-custom-fields-add-name)
 * [`ppls custom-fields list`](#ppls-custom-fields-list)
 * [`ppls custom-fields show ID`](#ppls-custom-fields-show-id)
+* [`ppls document-types add NAME`](#ppls-document-types-add-name)
 * [`ppls document-types list`](#ppls-document-types-list)
 * [`ppls document-types show ID`](#ppls-document-types-show-id)
 * [`ppls documents list`](#ppls-documents-list)
@@ -160,6 +162,45 @@ EXAMPLES
 
 _See code: [src/commands/correspondents/show.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/correspondents/show.ts)_
 
+## `ppls custom-fields add NAME`
+
+Create a custom field
+
+```
+USAGE
+  $ ppls custom-fields add NAME --data-type boolean|date|integer|number|monetary|text|url|document link|select|long
+    text [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json | --table] [--sort
+    <value>] [--token <value>] [--option <value>...]
+
+ARGUMENTS
+  NAME  Custom field name
+
+FLAGS
+  --data-type=<option>  (required) Custom field data type
+                        <options: boolean|date|integer|number|monetary|text|url|document link|select|long text>
+  --option=<value>...   Select option label (repeatable)
+  --sort=<value>        Sort results by the provided field
+
+GLOBAL FLAGS
+  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
+  --json                 Format output as json.
+  --plain                Format output as plain text.
+  --table                Format output as table.
+
+ENVIRONMENT FLAGS
+  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
+
+DESCRIPTION
+  Create a custom field
+
+EXAMPLES
+  $ ppls custom-fields add "Due Date" --data-type date
+```
+
+_See code: [src/commands/custom-fields/add.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/custom-fields/add.ts)_
+
 ## `ppls custom-fields list`
 
 List custom fields
@@ -231,6 +272,41 @@ EXAMPLES
 ```
 
 _See code: [src/commands/custom-fields/show.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/custom-fields/show.ts)_
+
+## `ppls document-types add NAME`
+
+Create a document type
+
+```
+USAGE
+  $ ppls document-types add NAME [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
+    --table] [--sort <value>] [--token <value>]
+
+ARGUMENTS
+  NAME  Document type name
+
+FLAGS
+  --sort=<value>  Sort results by the provided field
+
+GLOBAL FLAGS
+  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
+  --json                 Format output as json.
+  --plain                Format output as plain text.
+  --table                Format output as table.
+
+ENVIRONMENT FLAGS
+  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
+
+DESCRIPTION
+  Create a document type
+
+EXAMPLES
+  $ ppls document-types add "Invoice"
+```
+
+_See code: [src/commands/document-types/add.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/document-types/add.ts)_
 
 ## `ppls document-types list`
 

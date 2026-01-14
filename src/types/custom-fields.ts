@@ -7,3 +7,11 @@ export type CustomField = {
   id: number
   name: string
 }
+
+export type CustomFieldCreate = {
+  data_type: DataTypeEnum
+  extra_data?: {
+    select_options: Array<{label: string}>
+  }
+  name: string
+}
