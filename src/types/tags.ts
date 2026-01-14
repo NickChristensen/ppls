@@ -16,6 +16,14 @@ type TagBase = {
   user_can_change: boolean
 }
 
+export type TagCreate = {
+  color?: string
+  is_inbox_tag?: boolean
+  matching_algorithm?: MatchingAlgorithm
+  name: string
+  parent?: number
+}
+
 export type Tag = TagBase & {
   children: number[]
 }

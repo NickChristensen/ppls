@@ -105,19 +105,12 @@ export abstract class BaseCommand extends Command {
   }
 
   protected async fetchJson<T>(url: URL, tokenValue: string, headers: Record<string, string> = {}): Promise<T> {
-    const response = await fetch(url, {
-      headers: {
-        Accept: 'application/json',
-        Authorization: `Token ${tokenValue}`,
-        ...headers,
-      },
+    return this.requestJson<T>({
+      headers,
+      method: 'GET',
+      token: tokenValue,
+      url,
     })
-
-    if (!response.ok) {
-      this.error(`Request failed with ${response.status} ${response.statusText}`)
-    }
-
-    return (await response.json()) as T
   }
 
   protected async loadUserConfig(): Promise<UserConfig> {
@@ -238,6 +231,45 @@ export abstract class BaseCommand extends Command {
     }
 
     this.error(`Invalid headers from ${source}. Expected an object, array, or string.`)
+  }
+
+  protected async postApiJson<T>(flags: ApiFlags, path: string, body: unknown): Promise<T> {
+    const url = this.buildApiUrlFromFlags(flags, path)
+
+    return this.requestJson<T>({
+      body,
+      headers: flags.headers,
+      method: 'POST',
+      token: flags.token,
+      url,
+    })
+  }
+
+  protected async requestJson<T>(options: {
+    body?: unknown
+    headers: Record<string, string>
+    method: string
+    token: string
+    url: URL
+  }): Promise<T> {
+    const {body, headers, method, token, url} = options
+    const requestHeaders: Record<string, string> = {
+      Accept: 'application/json',
+      Authorization: `Token ${token}`,
+      ...(body === undefined ? {} : {'Content-Type': 'application/json'}),
+      ...headers,
+    }
+    const response = await fetch(url, {
+      body: body === undefined ? undefined : JSON.stringify(body),
+      headers: requestHeaders,
+      method,
+    })
+
+    if (!response.ok) {
+      this.error(`Request failed with ${response.status} ${response.statusText}`)
+    }
+
+    return (await response.json()) as T
   }
 
   protected resolveDateFormat(

@@ -47,6 +47,7 @@ Set the following environment variables before running the CLI (they are used as
 * [`ppls documents show ID`](#ppls-documents-show-id)
 * [`ppls help [COMMAND]`](#ppls-help-command)
 * [`ppls profile`](#ppls-profile)
+* [`ppls tags add NAME`](#ppls-tags-add-name)
 * [`ppls tags list`](#ppls-tags-list)
 * [`ppls tags show ID`](#ppls-tags-show-id)
 * [`ppls whoami`](#ppls-whoami)
@@ -393,6 +394,44 @@ EXAMPLES
 ```
 
 _See code: [src/commands/profile.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/profile.ts)_
+
+## `ppls tags add NAME`
+
+Create a tag
+
+```
+USAGE
+  $ ppls tags add NAME [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
+    --table] [--sort <value>] [--token <value>] [--color <value>] [--inbox] [--parent <value>]
+
+ARGUMENTS
+  NAME  Tag name
+
+FLAGS
+  --color=<value>   Tag color (hex value)
+  --inbox           Mark tag as an inbox tag
+  --parent=<value>  Parent tag id
+  --sort=<value>    Sort results by the provided field
+
+GLOBAL FLAGS
+  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
+  --json                 Format output as json.
+  --plain                Format output as plain text.
+  --table                Format output as table.
+
+ENVIRONMENT FLAGS
+  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
+
+DESCRIPTION
+  Create a tag
+
+EXAMPLES
+  $ ppls tags add Inbox
+```
+
+_See code: [src/commands/tags/add.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/tags/add.ts)_
 
 ## `ppls tags list`
 
