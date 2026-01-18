@@ -21,7 +21,7 @@ $ npm install -g ppls
 $ ppls COMMAND
 running command...
 $ ppls (--version)
-ppls/0.0.0 darwin-arm64 node-v25.2.1
+ppls/0.0.0 darwin-arm64 node-v24.13.0
 $ ppls --help [COMMAND]
 USAGE
   $ ppls COMMAND
@@ -40,12 +40,15 @@ Set the following environment variables before running the CLI (they are used as
 * [`ppls correspondents add NAME`](#ppls-correspondents-add-name)
 * [`ppls correspondents list`](#ppls-correspondents-list)
 * [`ppls correspondents show ID`](#ppls-correspondents-show-id)
+* [`ppls correspondents update ID`](#ppls-correspondents-update-id)
 * [`ppls custom-fields add NAME`](#ppls-custom-fields-add-name)
 * [`ppls custom-fields list`](#ppls-custom-fields-list)
 * [`ppls custom-fields show ID`](#ppls-custom-fields-show-id)
+* [`ppls custom-fields update ID`](#ppls-custom-fields-update-id)
 * [`ppls document-types add NAME`](#ppls-document-types-add-name)
 * [`ppls document-types list`](#ppls-document-types-list)
 * [`ppls document-types show ID`](#ppls-document-types-show-id)
+* [`ppls document-types update ID`](#ppls-document-types-update-id)
 * [`ppls documents list`](#ppls-documents-list)
 * [`ppls documents show ID`](#ppls-documents-show-id)
 * [`ppls help [COMMAND]`](#ppls-help-command)
@@ -53,6 +56,7 @@ Set the following environment variables before running the CLI (they are used as
 * [`ppls tags add NAME`](#ppls-tags-add-name)
 * [`ppls tags list`](#ppls-tags-list)
 * [`ppls tags show ID`](#ppls-tags-show-id)
+* [`ppls tags update ID`](#ppls-tags-update-id)
 * [`ppls whoami`](#ppls-whoami)
 
 ## `ppls correspondents add NAME`
@@ -161,6 +165,42 @@ EXAMPLES
 ```
 
 _See code: [src/commands/correspondents/show.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/correspondents/show.ts)_
+
+## `ppls correspondents update ID`
+
+Update a correspondent
+
+```
+USAGE
+  $ ppls correspondents update ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
+    --table] [--sort <value>] [--token <value>] [--name <value>]
+
+ARGUMENTS
+  ID  Correspondent id
+
+FLAGS
+  --name=<value>  Correspondent name
+  --sort=<value>  Sort results by the provided field
+
+GLOBAL FLAGS
+  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
+  --json                 Format output as json.
+  --plain                Format output as plain text.
+  --table                Format output as table.
+
+ENVIRONMENT FLAGS
+  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
+
+DESCRIPTION
+  Update a correspondent
+
+EXAMPLES
+  $ ppls correspondents update 123 --name "Acme Corp"
+```
+
+_See code: [src/commands/correspondents/update.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/correspondents/update.ts)_
 
 ## `ppls custom-fields add NAME`
 
@@ -273,6 +313,46 @@ EXAMPLES
 
 _See code: [src/commands/custom-fields/show.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/custom-fields/show.ts)_
 
+## `ppls custom-fields update ID`
+
+Update a custom field
+
+```
+USAGE
+  $ ppls custom-fields update ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
+    --table] [--sort <value>] [--token <value>] [--data-type boolean|date|integer|number|monetary|text|url|document
+    link|select|long text] [--name <value>] [--option <value>...]
+
+ARGUMENTS
+  ID  Custom field id
+
+FLAGS
+  --data-type=<option>  Custom field data type
+                        <options: boolean|date|integer|number|monetary|text|url|document link|select|long text>
+  --name=<value>        Custom field name
+  --option=<value>...   Select option label (repeatable)
+  --sort=<value>        Sort results by the provided field
+
+GLOBAL FLAGS
+  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
+  --json                 Format output as json.
+  --plain                Format output as plain text.
+  --table                Format output as table.
+
+ENVIRONMENT FLAGS
+  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
+
+DESCRIPTION
+  Update a custom field
+
+EXAMPLES
+  $ ppls custom-fields update 123 --name "Due Date"
+```
+
+_See code: [src/commands/custom-fields/update.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/custom-fields/update.ts)_
+
 ## `ppls document-types add NAME`
 
 Create a document type
@@ -379,6 +459,42 @@ EXAMPLES
 ```
 
 _See code: [src/commands/document-types/show.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/document-types/show.ts)_
+
+## `ppls document-types update ID`
+
+Update a document type
+
+```
+USAGE
+  $ ppls document-types update ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
+    --table] [--sort <value>] [--token <value>] [--name <value>]
+
+ARGUMENTS
+  ID  Document type id
+
+FLAGS
+  --name=<value>  Document type name
+  --sort=<value>  Sort results by the provided field
+
+GLOBAL FLAGS
+  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
+  --json                 Format output as json.
+  --plain                Format output as plain text.
+  --table                Format output as table.
+
+ENVIRONMENT FLAGS
+  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
+
+DESCRIPTION
+  Update a document type
+
+EXAMPLES
+  $ ppls document-types update 123 --name "Invoice"
+```
+
+_See code: [src/commands/document-types/update.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/document-types/update.ts)_
 
 ## `ppls documents list`
 
@@ -616,6 +732,45 @@ EXAMPLES
 ```
 
 _See code: [src/commands/tags/show.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/tags/show.ts)_
+
+## `ppls tags update ID`
+
+Update a tag
+
+```
+USAGE
+  $ ppls tags update ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
+    --table] [--sort <value>] [--token <value>] [--color <value>] [--inbox] [--name <value>] [--parent <value>]
+
+ARGUMENTS
+  ID  Tag id
+
+FLAGS
+  --color=<value>   Tag color (hex value)
+  --[no-]inbox      Mark tag as an inbox tag
+  --name=<value>    Tag name
+  --parent=<value>  Parent tag id
+  --sort=<value>    Sort results by the provided field
+
+GLOBAL FLAGS
+  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
+  --json                 Format output as json.
+  --plain                Format output as plain text.
+  --table                Format output as table.
+
+ENVIRONMENT FLAGS
+  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
+
+DESCRIPTION
+  Update a tag
+
+EXAMPLES
+  $ ppls tags update 123 --name Inbox
+```
+
+_See code: [src/commands/tags/update.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/tags/update.ts)_
 
 ## `ppls whoami`
 

@@ -27,3 +27,5 @@ export type CorrespondentCreate = {
   matching_algorithm?: MatchingAlgorithm
   name: string
 }
+
+export type CorrespondentUpdate = Partial<CorrespondentCreate>

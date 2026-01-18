@@ -26,3 +26,5 @@ export type DocumentTypeCreate = {
   matching_algorithm?: MatchingAlgorithm
   name: string
 }
+
+export type DocumentTypeUpdate = Partial<DocumentTypeCreate>

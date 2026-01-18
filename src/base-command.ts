@@ -113,8 +113,6 @@ export abstract class BaseCommand extends Command {
     })
   }
 
-  // Error: Request failed with 400 Bad Request: Object violates owner / name unique constraint
-
   protected async formatErrorMessage(response: Response): Promise<string> {
     const baseMessage = `Request failed with ${response.status} ${response.statusText}`.trim()
 
@@ -255,6 +253,18 @@ export abstract class BaseCommand extends Command {
     }
 
     this.error(`Invalid headers from ${source}. Expected an object, array, or string.`)
+  }
+
+  protected async patchApiJson<T>(flags: ApiFlags, path: string, body: unknown): Promise<T> {
+    const url = this.buildApiUrlFromFlags(flags, path)
+
+    return this.requestJson<T>({
+      body,
+      headers: flags.headers,
+      method: 'PATCH',
+      token: flags.token,
+      url,
+    })
   }
 
   protected async postApiJson<T>(flags: ApiFlags, path: string, body: unknown): Promise<T> {
