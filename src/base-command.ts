@@ -95,6 +95,36 @@ export abstract class BaseCommand extends Command {
     return this.buildApiUrl(flags.hostname, path, params)
   }
 
+  protected async deleteApiJson<T>(flags: ApiFlags, path: string): Promise<null | T> {
+    const url = this.buildApiUrlFromFlags(flags, path)
+    const requestHeaders: Record<string, string> = {
+      Accept: 'application/json',
+      Authorization: `Token ${flags.token}`,
+      ...flags.headers,
+    }
+    const response = await fetch(url, {
+      headers: requestHeaders,
+      method: 'DELETE',
+    })
+
+    if (!response.ok) {
+      this.error(await this.formatErrorMessage(response))
+    }
+
+    const contentType = response.headers.get('content-type') ?? ''
+    const payloadText = await response.text()
+
+    if (!payloadText.trim()) {
+      return null
+    }
+
+    if (contentType.includes('application/json')) {
+      return JSON.parse(payloadText) as T
+    }
+
+    return payloadText as T
+  }
+
   protected async fetchApiJson<T>(
     flags: ApiFlags,
     path: string,

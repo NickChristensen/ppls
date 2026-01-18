@@ -38,14 +38,17 @@ Set the following environment variables before running the CLI (they are used as
 # Commands
 <!-- commands -->
 * [`ppls correspondents add NAME`](#ppls-correspondents-add-name)
+* [`ppls correspondents delete ID`](#ppls-correspondents-delete-id)
 * [`ppls correspondents list`](#ppls-correspondents-list)
 * [`ppls correspondents show ID`](#ppls-correspondents-show-id)
 * [`ppls correspondents update ID`](#ppls-correspondents-update-id)
 * [`ppls custom-fields add NAME`](#ppls-custom-fields-add-name)
+* [`ppls custom-fields delete ID`](#ppls-custom-fields-delete-id)
 * [`ppls custom-fields list`](#ppls-custom-fields-list)
 * [`ppls custom-fields show ID`](#ppls-custom-fields-show-id)
 * [`ppls custom-fields update ID`](#ppls-custom-fields-update-id)
 * [`ppls document-types add NAME`](#ppls-document-types-add-name)
+* [`ppls document-types delete ID`](#ppls-document-types-delete-id)
 * [`ppls document-types list`](#ppls-document-types-list)
 * [`ppls document-types show ID`](#ppls-document-types-show-id)
 * [`ppls document-types update ID`](#ppls-document-types-update-id)
@@ -54,6 +57,7 @@ Set the following environment variables before running the CLI (they are used as
 * [`ppls help [COMMAND]`](#ppls-help-command)
 * [`ppls profile`](#ppls-profile)
 * [`ppls tags add NAME`](#ppls-tags-add-name)
+* [`ppls tags delete ID`](#ppls-tags-delete-id)
 * [`ppls tags list`](#ppls-tags-list)
 * [`ppls tags show ID`](#ppls-tags-show-id)
 * [`ppls tags update ID`](#ppls-tags-update-id)
@@ -93,6 +97,42 @@ EXAMPLES
 ```
 
 _See code: [src/commands/correspondents/add.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/correspondents/add.ts)_
+
+## `ppls correspondents delete ID`
+
+Delete a correspondent
+
+```
+USAGE
+  $ ppls correspondents delete ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
+    --table] [--sort <value>] [--token <value>] [-y]
+
+ARGUMENTS
+  ID  Correspondent id
+
+FLAGS
+  -y, --yes           Skip confirmation prompt
+      --sort=<value>  Sort results by the provided field
+
+GLOBAL FLAGS
+  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
+  --json                 Format output as json.
+  --plain                Format output as plain text.
+  --table                Format output as table.
+
+ENVIRONMENT FLAGS
+  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
+
+DESCRIPTION
+  Delete a correspondent
+
+EXAMPLES
+  $ ppls correspondents delete 123
+```
+
+_See code: [src/commands/correspondents/delete.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/correspondents/delete.ts)_
 
 ## `ppls correspondents list`
 
@@ -241,6 +281,42 @@ EXAMPLES
 
 _See code: [src/commands/custom-fields/add.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/custom-fields/add.ts)_
 
+## `ppls custom-fields delete ID`
+
+Delete a custom field
+
+```
+USAGE
+  $ ppls custom-fields delete ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
+    --table] [--sort <value>] [--token <value>] [-y]
+
+ARGUMENTS
+  ID  Custom field id
+
+FLAGS
+  -y, --yes           Skip confirmation prompt
+      --sort=<value>  Sort results by the provided field
+
+GLOBAL FLAGS
+  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
+  --json                 Format output as json.
+  --plain                Format output as plain text.
+  --table                Format output as table.
+
+ENVIRONMENT FLAGS
+  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
+
+DESCRIPTION
+  Delete a custom field
+
+EXAMPLES
+  $ ppls custom-fields delete 123
+```
+
+_See code: [src/commands/custom-fields/delete.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/custom-fields/delete.ts)_
+
 ## `ppls custom-fields list`
 
 List custom fields
@@ -387,6 +463,42 @@ EXAMPLES
 ```
 
 _See code: [src/commands/document-types/add.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/document-types/add.ts)_
+
+## `ppls document-types delete ID`
+
+Delete a document type
+
+```
+USAGE
+  $ ppls document-types delete ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
+    --table] [--sort <value>] [--token <value>] [-y]
+
+ARGUMENTS
+  ID  Document type id
+
+FLAGS
+  -y, --yes           Skip confirmation prompt
+      --sort=<value>  Sort results by the provided field
+
+GLOBAL FLAGS
+  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
+  --json                 Format output as json.
+  --plain                Format output as plain text.
+  --table                Format output as table.
+
+ENVIRONMENT FLAGS
+  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
+
+DESCRIPTION
+  Delete a document type
+
+EXAMPLES
+  $ ppls document-types delete 123
+```
+
+_See code: [src/commands/document-types/delete.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/document-types/delete.ts)_
 
 ## `ppls document-types list`
 
@@ -660,6 +772,42 @@ EXAMPLES
 ```
 
 _See code: [src/commands/tags/add.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/tags/add.ts)_
+
+## `ppls tags delete ID`
+
+Delete a tag
+
+```
+USAGE
+  $ ppls tags delete ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
+    --table] [--sort <value>] [--token <value>] [-y]
+
+ARGUMENTS
+  ID  Tag id
+
+FLAGS
+  -y, --yes           Skip confirmation prompt
+      --sort=<value>  Sort results by the provided field
+
+GLOBAL FLAGS
+  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
+  --json                 Format output as json.
+  --plain                Format output as plain text.
+  --table                Format output as table.
+
+ENVIRONMENT FLAGS
+  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
+
+DESCRIPTION
+  Delete a tag
+
+EXAMPLES
+  $ ppls tags delete 123
+```
+
+_See code: [src/commands/tags/delete.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/tags/delete.ts)_
 
 ## `ppls tags list`
 
