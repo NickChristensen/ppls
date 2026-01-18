@@ -24,6 +24,8 @@ export type TagCreate = {
   parent?: number
 }
 
+export type TagUpdate = Partial<TagCreate>
+
 export type Tag = TagBase & {
   children: number[]
 }

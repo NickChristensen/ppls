@@ -15,3 +15,5 @@ export type CustomFieldCreate = {
   }
   name: string
 }
+
+export type CustomFieldUpdate = Partial<CustomFieldCreate>
