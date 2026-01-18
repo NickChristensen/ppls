@@ -19,7 +19,7 @@ export default class TagsUpdate extends UpdateCommand<TagUpdate, Tag> {
   static override examples = ['<%= config.bin %> <%= command.id %> 123 --name Inbox']
   static override flags = {
     color: Flags.string({description: 'Tag color (hex value)'}),
-    inbox: Flags.boolean({description: 'Mark tag as an inbox tag'}),
+    inbox: Flags.boolean({allowNo: true, description: 'Mark tag as an inbox tag'}),
     name: Flags.string({description: 'Tag name'}),
     parent: Flags.integer({description: 'Parent tag id'}),
   }
@@ -29,7 +29,7 @@ export default class TagsUpdate extends UpdateCommand<TagUpdate, Tag> {
 
     return {
       color: typedFlags.color,
-      'is_inbox_tag': typedFlags.inbox ? true : undefined,
+      'is_inbox_tag': typedFlags.inbox,
       name: typedFlags.name,
       parent: typedFlags.parent,
     }

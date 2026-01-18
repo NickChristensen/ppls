@@ -747,7 +747,7 @@ ARGUMENTS
 
 FLAGS
   --color=<value>   Tag color (hex value)
-  --inbox           Mark tag as an inbox tag
+  --[no-]inbox      Mark tag as an inbox tag
   --name=<value>    Tag name
   --parent=<value>  Parent tag id
   --sort=<value>    Sort results by the provided field
