@@ -21,7 +21,7 @@ $ npm install -g ppls
 $ ppls COMMAND
 running command...
 $ ppls (--version)
-ppls/0.0.0 darwin-arm64 node-v25.3.0
+ppls/0.0.0 darwin-arm64 node-v24.13.0
 $ ppls --help [COMMAND]
 USAGE
   $ ppls COMMAND
@@ -37,6 +37,11 @@ Set the following environment variables before running the CLI (they are used as
 
 # Commands
 <!-- commands -->
+* [`ppls config get KEY`](#ppls-config-get-key)
+* [`ppls config init`](#ppls-config-init)
+* [`ppls config list`](#ppls-config-list)
+* [`ppls config remove KEY`](#ppls-config-remove-key)
+* [`ppls config set KEY VALUE`](#ppls-config-set-key-value)
 * [`ppls correspondents add NAME`](#ppls-correspondents-add-name)
 * [`ppls correspondents delete ID`](#ppls-correspondents-delete-id)
 * [`ppls correspondents list`](#ppls-correspondents-list)
@@ -66,6 +71,179 @@ Set the following environment variables before running the CLI (they are used as
 * [`ppls tags show ID`](#ppls-tags-show-id)
 * [`ppls tags update ID`](#ppls-tags-update-id)
 * [`ppls whoami`](#ppls-whoami)
+
+## `ppls config get KEY`
+
+Get a config value
+
+```
+USAGE
+  $ ppls config get KEY [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
+    --table] [--sort <value>] [--token <value>]
+
+ARGUMENTS
+  KEY  Config key
+
+FLAGS
+  --sort=<value>  Sort results by the provided field
+
+GLOBAL FLAGS
+  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
+  --json                 Format output as json.
+  --plain                Format output as plain text.
+  --table                Format output as table.
+
+ENVIRONMENT FLAGS
+  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
+
+DESCRIPTION
+  Get a config value
+
+EXAMPLES
+  $ ppls config get hostname
+```
+
+_See code: [src/commands/config/get.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/config/get.ts)_
+
+## `ppls config init`
+
+Initialize a config file
+
+```
+USAGE
+  $ ppls config init [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
+    --table] [--sort <value>] [--token <value>] [-f]
+
+FLAGS
+  -f, --force         Overwrite existing config file
+      --sort=<value>  Sort results by the provided field
+
+GLOBAL FLAGS
+  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
+  --json                 Format output as json.
+  --plain                Format output as plain text.
+  --table                Format output as table.
+
+ENVIRONMENT FLAGS
+  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
+
+DESCRIPTION
+  Initialize a config file
+
+EXAMPLES
+  $ ppls config init
+```
+
+_See code: [src/commands/config/init.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/config/init.ts)_
+
+## `ppls config list`
+
+List config values
+
+```
+USAGE
+  $ ppls config list [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
+    --table] [--sort <value>] [--token <value>]
+
+FLAGS
+  --sort=<value>  Sort results by the provided field
+
+GLOBAL FLAGS
+  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
+  --json                 Format output as json.
+  --plain                Format output as plain text.
+  --table                Format output as table.
+
+ENVIRONMENT FLAGS
+  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
+
+DESCRIPTION
+  List config values
+
+EXAMPLES
+  $ ppls config list
+```
+
+_See code: [src/commands/config/list.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/config/list.ts)_
+
+## `ppls config remove KEY`
+
+Remove a config value
+
+```
+USAGE
+  $ ppls config remove KEY [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
+    --table] [--sort <value>] [--token <value>]
+
+ARGUMENTS
+  KEY  Config key
+
+FLAGS
+  --sort=<value>  Sort results by the provided field
+
+GLOBAL FLAGS
+  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
+  --json                 Format output as json.
+  --plain                Format output as plain text.
+  --table                Format output as table.
+
+ENVIRONMENT FLAGS
+  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
+
+DESCRIPTION
+  Remove a config value
+
+EXAMPLES
+  $ ppls config remove token
+```
+
+_See code: [src/commands/config/remove.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/config/remove.ts)_
+
+## `ppls config set KEY VALUE`
+
+Set a config value
+
+```
+USAGE
+  $ ppls config set KEY VALUE [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain |
+    --json | --table] [--sort <value>] [--token <value>]
+
+ARGUMENTS
+  KEY    Config key
+  VALUE  Config value
+
+FLAGS
+  --sort=<value>  Sort results by the provided field
+
+GLOBAL FLAGS
+  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
+  --json                 Format output as json.
+  --plain                Format output as plain text.
+  --table                Format output as table.
+
+ENVIRONMENT FLAGS
+  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
+
+DESCRIPTION
+  Set a config value
+
+EXAMPLES
+  $ ppls config set hostname https://paperless.example.com
+
+  $ ppls config set headers '{"X-Api-Key":"token"}'
+```
+
+_See code: [src/commands/config/set.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/config/set.ts)_
 
 ## `ppls correspondents add NAME`
 

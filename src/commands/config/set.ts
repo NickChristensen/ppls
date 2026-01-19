@@ -1,0 +1,69 @@
+import {Args} from '@oclif/core'
+
+import {ConfigCommand, type ConfigData} from '../../config-command.js'
+
+type ConfigSetArgs = {
+  key: string
+  value: string
+}
+
+const parseConfigValue = (raw: string): unknown => {
+  let trimmed = raw.trim()
+
+  if (!trimmed) {
+    return ''
+  }
+
+  if (
+    (trimmed.startsWith("'") && trimmed.endsWith("'")) ||
+    (trimmed.startsWith('"') && trimmed.endsWith('"'))
+  ) {
+    trimmed = trimmed.slice(1, -1).trim()
+  }
+
+  if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
+    try {
+      return JSON.parse(trimmed)
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error)
+      throw new Error(`Invalid JSON value: ${message}`)
+    }
+  }
+
+  return trimmed
+}
+
+export default class ConfigSet extends ConfigCommand {
+  static override args = {
+    key: Args.string({description: 'Config key', required: true}),
+    value: Args.string({description: 'Config value', required: true}),
+  }
+  static override description = 'Set a config value'
+  static override examples = [
+    '<%= config.bin %> <%= command.id %> hostname https://paperless.example.com',
+    '<%= config.bin %> <%= command.id %> headers \'{"X-Api-Key":"token"}\'',
+  ]
+
+  public async run(): Promise<ConfigData> {
+    const {args} = await this.parse()
+    const typedArgs = args as ConfigSetArgs
+    const config = await this.loadConfig()
+    let parsedValue: unknown
+
+    try {
+      parsedValue = parseConfigValue(typedArgs.value)
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error)
+      this.error(message)
+    }
+
+    config[typedArgs.key] = parsedValue
+    await this.saveConfig(config)
+
+    if (!this.jsonEnabled()) {
+      this.log(`Set ${typedArgs.key}`)
+    }
+
+    return config
+  }
+}
