@@ -21,7 +21,7 @@ $ npm install -g ppls
 $ ppls COMMAND
 running command...
 $ ppls (--version)
-ppls/0.0.0 darwin-arm64 node-v24.13.0
+ppls/0.0.0 darwin-arm64 node-v25.3.0
 $ ppls --help [COMMAND]
 USAGE
   $ ppls COMMAND
@@ -52,8 +52,12 @@ Set the following environment variables before running the CLI (they are used as
 * [`ppls document-types list`](#ppls-document-types-list)
 * [`ppls document-types show ID`](#ppls-document-types-show-id)
 * [`ppls document-types update ID`](#ppls-document-types-update-id)
+* [`ppls documents add PATH`](#ppls-documents-add-path)
+* [`ppls documents delete ID`](#ppls-documents-delete-id)
+* [`ppls documents download ID`](#ppls-documents-download-id)
 * [`ppls documents list`](#ppls-documents-list)
 * [`ppls documents show ID`](#ppls-documents-show-id)
+* [`ppls documents update ID`](#ppls-documents-update-id)
 * [`ppls help [COMMAND]`](#ppls-help-command)
 * [`ppls profile`](#ppls-profile)
 * [`ppls tags add NAME`](#ppls-tags-add-name)
@@ -608,6 +612,122 @@ EXAMPLES
 
 _See code: [src/commands/document-types/update.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/document-types/update.ts)_
 
+## `ppls documents add PATH`
+
+Upload a document
+
+```
+USAGE
+  $ ppls documents add PATH [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
+    --table] [--sort <value>] [--token <value>] [--archive-serial-number <value>] [--correspondent <value>] [--created
+    <value>] [--document-type <value>] [--storage-path <value>] [--tag <value>...] [--title <value>]
+
+ARGUMENTS
+  PATH  Path to document file
+
+FLAGS
+  --archive-serial-number=<value>  Archive serial number
+  --correspondent=<value>          Correspondent id
+  --created=<value>                Document created date-time
+  --document-type=<value>          Document type id
+  --sort=<value>                   Sort results by the provided field
+  --storage-path=<value>           Storage path id
+  --tag=<value>...                 Tag id (repeatable)
+  --title=<value>                  Document title
+
+GLOBAL FLAGS
+  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
+  --json                 Format output as json.
+  --plain                Format output as plain text.
+  --table                Format output as table.
+
+ENVIRONMENT FLAGS
+  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
+
+DESCRIPTION
+  Upload a document
+
+EXAMPLES
+  $ ppls documents add ./receipt.pdf --title "Receipt"
+```
+
+_See code: [src/commands/documents/add.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/documents/add.ts)_
+
+## `ppls documents delete ID`
+
+Delete a document
+
+```
+USAGE
+  $ ppls documents delete ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
+    --table] [--sort <value>] [--token <value>] [-y]
+
+ARGUMENTS
+  ID  Document id
+
+FLAGS
+  -y, --yes           Skip confirmation prompt
+      --sort=<value>  Sort results by the provided field
+
+GLOBAL FLAGS
+  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
+  --json                 Format output as json.
+  --plain                Format output as plain text.
+  --table                Format output as table.
+
+ENVIRONMENT FLAGS
+  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
+
+DESCRIPTION
+  Delete a document
+
+EXAMPLES
+  $ ppls documents delete 123
+```
+
+_See code: [src/commands/documents/delete.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/documents/delete.ts)_
+
+## `ppls documents download ID`
+
+Download a document
+
+```
+USAGE
+  $ ppls documents download ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
+    --table] [--sort <value>] [--token <value>] [--original] [-o <value>]
+
+ARGUMENTS
+  ID  Document id
+
+FLAGS
+  -o, --output=<value>  Output file path
+      --original        Download original file
+      --sort=<value>    Sort results by the provided field
+
+GLOBAL FLAGS
+  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
+  --json                 Format output as json.
+  --plain                Format output as plain text.
+  --table                Format output as table.
+
+ENVIRONMENT FLAGS
+  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
+
+DESCRIPTION
+  Download a document
+
+EXAMPLES
+  $ ppls documents download 123 --output ./document.pdf
+```
+
+_See code: [src/commands/documents/download.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/documents/download.ts)_
+
 ## `ppls documents list`
 
 List documents
@@ -679,6 +799,50 @@ EXAMPLES
 ```
 
 _See code: [src/commands/documents/show.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/documents/show.ts)_
+
+## `ppls documents update ID`
+
+Update a document
+
+```
+USAGE
+  $ ppls documents update ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
+    --table] [--sort <value>] [--token <value>] [--archive-serial-number <value>] [--content <value>] [--correspondent
+    <value>] [--created <value>] [--document-type <value>] [--storage-path <value>] [--tag <value>...] [--title <value>]
+
+ARGUMENTS
+  ID  Document id
+
+FLAGS
+  --archive-serial-number=<value>  Archive serial number
+  --content=<value>                Document content
+  --correspondent=<value>          Correspondent id
+  --created=<value>                Document created date
+  --document-type=<value>          Document type id
+  --sort=<value>                   Sort results by the provided field
+  --storage-path=<value>           Storage path id
+  --tag=<value>...                 Tag id (repeatable)
+  --title=<value>                  Document title
+
+GLOBAL FLAGS
+  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
+  --json                 Format output as json.
+  --plain                Format output as plain text.
+  --table                Format output as table.
+
+ENVIRONMENT FLAGS
+  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
+  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
+  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
+
+DESCRIPTION
+  Update a document
+
+EXAMPLES
+  $ ppls documents update 123 --title "Receipt"
+```
+
+_See code: [src/commands/documents/update.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/documents/update.ts)_
 
 ## `ppls help [COMMAND]`
 
