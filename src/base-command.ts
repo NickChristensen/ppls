@@ -125,6 +125,31 @@ export abstract class BaseCommand extends Command {
     return payloadText as T
   }
 
+  protected async fetchApiBinary(
+    flags: ApiFlags,
+    path: string,
+    params: Record<string, number | string | undefined> = {},
+  ): Promise<{data: Uint8Array; headers: Headers}> {
+    const url = this.buildApiUrlFromFlags(flags, path, params)
+    const requestHeaders: Record<string, string> = {
+      Accept: '*/*',
+      Authorization: `Token ${flags.token}`,
+      ...flags.headers,
+    }
+    const response = await fetch(url, {
+      headers: requestHeaders,
+    })
+
+    if (!response.ok) {
+      this.error(await this.formatErrorMessage(response))
+    }
+
+    return {
+      data: new Uint8Array(await response.arrayBuffer()),
+      headers: response.headers,
+    }
+  }
+
   protected async fetchApiJson<T>(
     flags: ApiFlags,
     path: string,
@@ -295,6 +320,32 @@ export abstract class BaseCommand extends Command {
       token: flags.token,
       url,
     })
+  }
+
+  protected async postApiFormData<T>(flags: ApiFlags, path: string, body: FormData): Promise<T> {
+    const url = this.buildApiUrlFromFlags(flags, path)
+    const requestHeaders: Record<string, string> = {
+      Accept: 'application/json',
+      Authorization: `Token ${flags.token}`,
+      ...flags.headers,
+    }
+    const response = await fetch(url, {
+      body,
+      headers: requestHeaders,
+      method: 'POST',
+    })
+
+    if (!response.ok) {
+      this.error(await this.formatErrorMessage(response))
+    }
+
+    const contentType = response.headers.get('content-type') ?? ''
+
+    if (contentType.includes('application/json')) {
+      return (await response.json()) as T
+    }
+
+    return (await response.text()) as T
   }
 
   protected async postApiJson<T>(flags: ApiFlags, path: string, body: unknown): Promise<T> {

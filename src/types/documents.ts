@@ -18,6 +18,27 @@ export type CustomFieldInstance = {
   value: null | number | object | string
 }
 
+export type DocumentCreate = {
+  archive_serial_number?: number
+  correspondent?: null | number
+  created?: DateTimeString
+  document_type?: null | number
+  storage_path?: null | number
+  tags?: number[]
+  title?: string
+}
+
+export type DocumentUpdate = {
+  archive_serial_number?: null | number
+  content?: string
+  correspondent?: null | number
+  created?: DateString
+  document_type?: null | number
+  storage_path?: null | number
+  tags?: number[]
+  title?: string
+}
+
 export type Document = {
   added: DateTimeString
   archive_serial_number?: null | number
