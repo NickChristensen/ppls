@@ -5,12 +5,13 @@ import path from 'node:path'
 import {BaseCommand} from '../../base-command.js'
 
 type DocumentsDownloadArgs = {
-  id: number
+  id: string
 }
 
 type DocumentsDownloadFlags = {
   original?: boolean
   output?: string
+  'output-dir'?: string
 }
 
 type DownloadResult = {
@@ -20,6 +21,22 @@ type DownloadResult = {
   id: number
   original: boolean
   output: string
+}
+
+type DownloadDocumentOptions = {
+  apiFlags: {headers: Record<string, string>; hostname: string; token: string}
+  id: number
+  original?: boolean
+  output?: string
+  outputDir?: string
+}
+
+type DownloadDocumentsOptions = {
+  apiFlags: {headers: Record<string, string>; hostname: string; token: string}
+  ids: number[]
+  original?: boolean
+  output?: string
+  outputDir?: string
 }
 
 const parseContentDispositionFilename = (header: null | string): string | undefined => {
@@ -69,51 +86,127 @@ const resolveOutputPath = async (output: string | undefined, filename: string): 
 
 export default class DocumentsDownload extends BaseCommand {
   static override args = {
-    id: Args.integer({description: 'Document id', required: true}),
+    id: Args.string({description: 'Document id or comma-separated list of ids', required: true}),
   }
-  static override description = 'Download a document'
-  static override examples = ['<%= config.bin %> <%= command.id %> 123 --output ./document.pdf']
+  static override description = 'Download one or more documents'
+  static override examples = [
+    '<%= config.bin %> <%= command.id %> 123 --output document.pdf',
+    '<%= config.bin %> <%= command.id %> 123,124 --output-dir ./downloads',
+  ]
   static override flags = {
     original: Flags.boolean({description: 'Download original file'}),
-    output: Flags.string({char: 'o', description: 'Output file path'}),
+    output: Flags.string({
+      char: 'o',
+      description: 'Output file path (single document)',
+      exclusive: ['output-dir'],
+    }),
+    'output-dir': Flags.directory({
+      description: 'Output directory (multiple documents)',
+      exists: true,
+      exclusive: ['output'],
+    }),
   }
 
-  public async run(): Promise<DownloadResult> {
+  protected async downloadDocument(options: DownloadDocumentOptions): Promise<DownloadResult> {
+    const {apiFlags, id, original, output, outputDir} = options
+    const {data, headers: responseHeaders} = await this.fetchApiBinary(apiFlags, `/api/documents/${id}/download/`, {
+      original: original ? 'true' : undefined,
+    })
+    const contentDisposition = responseHeaders.get('content-disposition')
+    const contentType = responseHeaders.get('content-type') ?? undefined
+    const headerFilename = parseContentDispositionFilename(contentDisposition)
+    const safeFilename = path.basename(headerFilename ?? resolveFallbackFilename(id, contentType))
+    const outputPath = outputDir ? path.join(outputDir, safeFilename) : await resolveOutputPath(output, safeFilename)
+
+    await writeFile(outputPath, data)
+
+    return {
+      bytes: data.length,
+      contentType,
+      filename: path.basename(outputPath),
+      id,
+      original: Boolean(original),
+      output: outputPath,
+    }
+  }
+
+  protected async downloadDocuments(options: DownloadDocumentsOptions): Promise<DownloadResult[]> {
+    const {apiFlags, ids, original, output, outputDir} = options
+    const results: DownloadResult[] = []
+    const spinner = this.startSpinner('')
+
+    try {
+      for (let index = 0; index < ids.length; index += 1) {
+        const id = ids[index]
+        const prefix = ids.length > 1 ? `[${index + 1}/${ids.length}] ` : ''
+
+        if (spinner) {
+          spinner.text = `${prefix}Downloading document ${id}`
+        }
+
+        // eslint-disable-next-line no-await-in-loop -- downloads are sequential to keep spinner output in order.
+        const result = await this.downloadDocument({apiFlags, id, original, output, outputDir})
+        results.push(result)
+      }
+    } finally {
+      spinner?.stop()
+    }
+
+    return results
+  }
+
+  protected parseIds(raw: string): number[] {
+    const values = raw
+      .split(',')
+      .map((value) => value.trim())
+      .filter((value) => value.length > 0)
+
+    if (values.length === 0) {
+      this.error('Provide at least one document id.')
+    }
+
+    return values.map((value) => {
+      if (!/^-?\d+$/.test(value)) {
+        this.error(`Invalid document id: ${value}`)
+      }
+
+      return Number.parseInt(value, 10)
+    })
+  }
+
+  public async run(): Promise<DownloadResult | DownloadResult[]> {
     const {args, flags, metadata} = await this.parse()
     const {headers: apiHeaders, hostname, token} = await this.resolveGlobalFlags(flags, metadata)
     const apiFlags = {headers: apiHeaders, hostname, token}
     const typedArgs = args as DocumentsDownloadArgs
     const typedFlags = flags as DocumentsDownloadFlags
-    const {data, headers: responseHeaders} = await this.fetchApiBinary(
-      apiFlags,
-      `/api/documents/${typedArgs.id}/download/`,
-      {
-      original: typedFlags.original ? 'true' : undefined,
-      },
-    )
-    const contentDisposition = responseHeaders.get('content-disposition')
-    const contentType = responseHeaders.get('content-type') ?? undefined
-    const headerFilename = parseContentDispositionFilename(contentDisposition)
-    const safeFilename = path.basename(
-      headerFilename ?? resolveFallbackFilename(typedArgs.id, contentType),
-    )
-    const outputPath = await resolveOutputPath(typedFlags.output, safeFilename)
+    const ids = this.parseIds(typedArgs.id)
+    let outputDir = typedFlags['output-dir']
 
-    await writeFile(outputPath, data)
+    if (ids.length > 1) {
+      if (typedFlags.output) {
+        this.error('Use --output-dir when downloading multiple documents.')
+      }
 
-    const result: DownloadResult = {
-      bytes: data.length,
-      contentType,
-      filename: path.basename(outputPath),
-      id: typedArgs.id,
-      original: Boolean(typedFlags.original),
-      output: outputPath,
+      outputDir = path.resolve(outputDir ?? process.cwd())
+    } else if (outputDir) {
+      this.error('Use --output for a single document download.')
     }
+
+    const results = await this.downloadDocuments({
+      apiFlags,
+      ids,
+      original: typedFlags.original,
+      output: typedFlags.output,
+      outputDir,
+    })
 
     if (!this.jsonEnabled()) {
-      this.log(`Saved ${outputPath}`)
+      for (const result of results) {
+        this.log(`Saved ${result.output}`)
+      }
     }
 
-    return result
+    return results.length === 1 ? results[0] : results
   }
 }

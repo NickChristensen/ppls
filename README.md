@@ -1,20 +1,20 @@
-ppls
-=================
+# ppls
 
 A node-based paperless-ngx cli
-
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/ppls.svg)](https://npmjs.org/package/ppls)
 [![Downloads/week](https://img.shields.io/npm/dw/ppls.svg)](https://npmjs.org/package/ppls)
 
-
 <!-- toc -->
+* [ppls](#ppls)
 * [Usage](#usage)
 * [Configuration](#configuration)
 * [Commands](#commands)
 <!-- tocstop -->
+
 # Usage
+
 <!-- usage -->
 ```sh-session
 $ npm install -g ppls
@@ -28,6 +28,7 @@ USAGE
 ...
 ```
 <!-- usagestop -->
+
 # Configuration
 
 Set the following environment variables before running the CLI (they are used as defaults for `--hostname` and `--token` flags):
@@ -36,6 +37,7 @@ Set the following environment variables before running the CLI (they are used as
 - `PPLS_TOKEN`: API token for your paperless-ngx user
 
 # Commands
+
 <!-- commands -->
 * [`ppls config get KEY`](#ppls-config-get-key)
 * [`ppls config init`](#ppls-config-init)
@@ -871,20 +873,21 @@ _See code: [src/commands/documents/delete.ts](https://github.com/nickchristensen
 
 ## `ppls documents download ID`
 
-Download a document
+Download one or more documents
 
 ```
 USAGE
   $ ppls documents download ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>] [--original] [-o <value>]
+    --table] [--sort <value>] [--token <value>] [--original] [-o <value> | --output-dir <value>]
 
 ARGUMENTS
-  ID  Document id
+  ID  Document id or comma-separated list of ids
 
 FLAGS
-  -o, --output=<value>  Output file path
-      --original        Download original file
-      --sort=<value>    Sort results by the provided field
+  -o, --output=<value>      Output file path (single document)
+      --original            Download original file
+      --output-dir=<value>  Output directory (multiple documents)
+      --sort=<value>        Sort results by the provided field
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
@@ -898,10 +901,12 @@ ENVIRONMENT FLAGS
   --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
 
 DESCRIPTION
-  Download a document
+  Download one or more documents
 
 EXAMPLES
-  $ ppls documents download 123 --output ./document.pdf
+  $ ppls documents download 123 --output document.pdf
+
+  $ ppls documents download 123,124 --output-dir ./downloads
 ```
 
 _See code: [src/commands/documents/download.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/documents/download.ts)_
