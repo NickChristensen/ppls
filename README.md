@@ -72,7 +72,6 @@ Set the following environment variables before running the CLI (they are used as
 * [`ppls tags list`](#ppls-tags-list)
 * [`ppls tags show ID`](#ppls-tags-show-id)
 * [`ppls tags update ID`](#ppls-tags-update-id)
-* [`ppls whoami`](#ppls-whoami)
 
 ## `ppls config get KEY`
 
@@ -1215,34 +1214,4 @@ EXAMPLES
 ```
 
 _See code: [src/commands/tags/update.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/tags/update.ts)_
-
-## `ppls whoami`
-
-Show profile details
-
-```
-USAGE
-  $ ppls whoami [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--token <value>]
-
-GLOBAL FLAGS
-  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
-  --json                 Format output as json.
-  --plain                Format output as plain text.
-  --table                Format output as table.
-
-ENVIRONMENT FLAGS
-  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
-  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
-  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
-
-DESCRIPTION
-  Show profile details
-
-ALIASES
-  $ ppls whoami
-
-EXAMPLES
-  $ ppls whoami
-```
 <!-- commandsstop -->
