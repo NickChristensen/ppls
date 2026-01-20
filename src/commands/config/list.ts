@@ -1,4 +1,5 @@
-import {ConfigCommand, type ConfigData} from '../../config-command.js'
+import {BaseCommand} from '../../base-command.js'
+import {type ConfigData, readConfig} from '../../helpers/config-store.js'
 import {renderTable} from '../../helpers/table.js'
 
 type ConfigListFlags = {
@@ -27,14 +28,14 @@ const formatConfigValue = (value: unknown): string => {
   return JSON.stringify(value)
 }
 
-export default class ConfigList extends ConfigCommand {
+export default class ConfigList extends BaseCommand {
   static override description = 'List config values'
   static override examples = ['<%= config.bin %> <%= command.id %>']
 
   public async run(): Promise<ConfigData> {
     const {flags} = await this.parse()
     const typedFlags = flags as ConfigListFlags
-    const config = await this.loadConfig()
+    const config = await readConfig(this.config.configDir)
 
     if (this.jsonEnabled()) {
       return config

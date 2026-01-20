@@ -1,12 +1,13 @@
 import {Args} from '@oclif/core'
 
-import {ConfigCommand, type ConfigData} from '../../config-command.js'
+import {BaseCommand} from '../../base-command.js'
+import {type ConfigData, readConfig} from '../../helpers/config-store.js'
 
 type ConfigGetArgs = {
   key: string
 }
 
-export default class ConfigGet extends ConfigCommand {
+export default class ConfigGet extends BaseCommand {
   static override args = {
     key: Args.string({description: 'Config key', required: true}),
   }
@@ -16,7 +17,7 @@ export default class ConfigGet extends ConfigCommand {
   public async run(): Promise<ConfigData> {
     const {args} = await this.parse()
     const typedArgs = args as ConfigGetArgs
-    const config = await this.loadConfig()
+    const config = await readConfig(this.config.configDir)
 
     if (!Object.hasOwn(config, typedArgs.key)) {
       if (!this.jsonEnabled()) {

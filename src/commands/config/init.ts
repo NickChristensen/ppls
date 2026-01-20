@@ -1,7 +1,8 @@
 import {Flags} from '@oclif/core'
 import {stat} from 'node:fs/promises'
 
-import {ConfigCommand} from '../../config-command.js'
+import {BaseCommand} from '../../base-command.js'
+import {configPath, writeConfig} from '../../helpers/config-store.js'
 
 type ConfigInitFlags = {
   force?: boolean
@@ -12,7 +13,7 @@ type ConfigInitResult = {
   path: string
 }
 
-export default class ConfigInit extends ConfigCommand {
+export default class ConfigInit extends BaseCommand {
   static override description = 'Initialize a config file'
   static override examples = ['<%= config.bin %> <%= command.id %>']
   static override flags = {
@@ -22,30 +23,30 @@ export default class ConfigInit extends ConfigCommand {
   public async run(): Promise<ConfigInitResult> {
     const {flags} = await this.parse()
     const typedFlags = flags as ConfigInitFlags
-    const configPath = this.configFilePath()
+    const configFile = configPath(this.config.configDir)
     let exists = false
 
     try {
-      await stat(configPath)
+      await stat(configFile)
       exists = true
     } catch (error) {
       const typedError = error as NodeJS.ErrnoException
 
       if (typedError.code !== 'ENOENT') {
-        this.error(`Failed to access config at ${configPath}: ${typedError.message ?? String(error)}`)
+        this.error(`Failed to access config at ${configFile}: ${typedError.message ?? String(error)}`)
       }
     }
 
     if (exists && !typedFlags.force) {
-      this.error(`Config already exists at ${configPath}. Use --force to overwrite.`)
+      this.error(`Config already exists at ${configFile}. Use --force to overwrite.`)
     }
 
-    await this.saveConfig({})
+    await writeConfig(this.config.configDir, {})
 
-    const result: ConfigInitResult = {overwritten: exists, path: configPath}
+    const result: ConfigInitResult = {overwritten: exists, path: configFile}
 
     if (!this.jsonEnabled()) {
-      this.log(`Created config at ${configPath}`)
+      this.log(`Created config at ${configFile}`)
     }
 
     return result

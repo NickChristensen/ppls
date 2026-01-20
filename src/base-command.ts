@@ -1,8 +1,7 @@
 import {Command, Flags} from '@oclif/core'
-import {readFile} from 'node:fs/promises'
-import path from 'node:path'
 import yoctoSpinner from 'yocto-spinner'
 
+import {readConfig} from './helpers/config-store.js'
 import {renderTable, type TableColumn, type TableOptions, type TableRow} from './helpers/table.js'
 
 export type ApiFlags = {
@@ -195,20 +194,12 @@ export abstract class BaseCommand extends Command {
       return this.userConfigPromise
     }
 
-    const configPath = path.join(this.config.configDir, 'config.json')
-
     this.userConfigPromise = (async () => {
       try {
-        const rawConfig = await readFile(configPath, 'utf8')
-        return JSON.parse(rawConfig) as UserConfig
+        return (await readConfig(this.config.configDir)) as UserConfig
       } catch (error) {
-        const typedError = error as NodeJS.ErrnoException
-
-        if (typedError.code === 'ENOENT') {
-          return {}
-        }
-
-        this.error(`Failed to read config at ${configPath}: ${typedError.message ?? String(error)}`)
+        const message = error instanceof Error ? error.message : String(error)
+        this.error(message)
       }
     })()
 
