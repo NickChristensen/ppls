@@ -58,6 +58,14 @@ export default class ConfigSet extends BaseCommand {
       this.error(message)
     }
 
+    if (
+      typedArgs.key === 'headers' &&
+      (!parsedValue || typeof parsedValue !== 'object' || Array.isArray(parsedValue))
+    ) {
+      this.warn('Config key "headers" must be a JSON object. Example: {"X-Api-Key":"token"}')
+      return config
+    }
+
     config[typedArgs.key] = parsedValue
     await writeConfig(this.config.configDir, config)
 

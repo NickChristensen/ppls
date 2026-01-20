@@ -1,6 +1,6 @@
 import {runCommand} from '@oclif/test'
 import {expect} from 'chai'
-import {mkdtemp, readFile, rm} from 'node:fs/promises'
+import {mkdtemp, readFile, rm, stat} from 'node:fs/promises'
 import {tmpdir} from 'node:os'
 import path from 'node:path'
 
@@ -42,5 +42,24 @@ describe('config:set', () => {
     const payload = JSON.parse(stdout) as {headers: Record<string, string>}
 
     expect(payload.headers['X-Api-Key']).to.equal('token')
+  })
+
+  it('warns and skips when headers is not an object', async () => {
+    const {stderr} = await runCommand('config:set headers not-json', loadOpts)
+
+    expect(stderr).to.include('Config key "headers" must be a JSON object.')
+
+    const configPath = path.join(tempDir, 'config.json')
+    let exists = true
+
+    try {
+      await stat(configPath)
+    } catch (error) {
+      const typedError = error as NodeJS.ErrnoException
+      expect(typedError.code).to.equal('ENOENT')
+      exists = false
+    }
+
+    expect(exists).to.equal(false)
   })
 })

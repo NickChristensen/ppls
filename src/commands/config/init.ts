@@ -41,7 +41,14 @@ export default class ConfigInit extends BaseCommand {
       this.error(`Config already exists at ${configFile}. Use --force to overwrite.`)
     }
 
-    await writeConfig(this.config.configDir, {})
+    await writeConfig(this.config.configDir, {
+      dateFormat: 'YYYY-MM-DD',
+      headers: {
+        'Custom-Header': 'value',
+      },
+      hostname: 'http://example.com',
+      token: 'your-api-token-here',
+    })
 
     const result: ConfigInitResult = {overwritten: exists, path: configFile}
 
