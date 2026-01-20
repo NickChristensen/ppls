@@ -1,33 +1,34 @@
-ppls
-=================
+# ppls
 
 A node-based paperless-ngx cli
-
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/ppls.svg)](https://npmjs.org/package/ppls)
 [![Downloads/week](https://img.shields.io/npm/dw/ppls.svg)](https://npmjs.org/package/ppls)
 
-
 <!-- toc -->
+* [ppls](#ppls)
 * [Usage](#usage)
 * [Configuration](#configuration)
 * [Commands](#commands)
 <!-- tocstop -->
+
 # Usage
+
 <!-- usage -->
 ```sh-session
 $ npm install -g ppls
 $ ppls COMMAND
 running command...
 $ ppls (--version)
-ppls/0.0.0 darwin-arm64 node-v24.13.0
+ppls/0.0.0 darwin-arm64 node-v25.3.0
 $ ppls --help [COMMAND]
 USAGE
   $ ppls COMMAND
 ...
 ```
 <!-- usagestop -->
+
 # Configuration
 
 Set the following environment variables before running the CLI (they are used as defaults for `--hostname` and `--token` flags):
@@ -36,6 +37,7 @@ Set the following environment variables before running the CLI (they are used as
 - `PPLS_TOKEN`: API token for your paperless-ngx user
 
 # Commands
+
 <!-- commands -->
 * [`ppls config get KEY`](#ppls-config-get-key)
 * [`ppls config init`](#ppls-config-init)
@@ -57,7 +59,7 @@ Set the following environment variables before running the CLI (they are used as
 * [`ppls document-types list`](#ppls-document-types-list)
 * [`ppls document-types show ID`](#ppls-document-types-show-id)
 * [`ppls document-types update ID`](#ppls-document-types-update-id)
-* [`ppls documents add PATH`](#ppls-documents-add-path)
+* [`ppls documents add [PATH]`](#ppls-documents-add-path)
 * [`ppls documents delete ID`](#ppls-documents-delete-id)
 * [`ppls documents download ID`](#ppls-documents-download-id)
 * [`ppls documents list`](#ppls-documents-list)
@@ -790,18 +792,18 @@ EXAMPLES
 
 _See code: [src/commands/document-types/update.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/document-types/update.ts)_
 
-## `ppls documents add PATH`
+## `ppls documents add [PATH]`
 
-Upload a document
+Upload one or more documents. Supports multiple arguments or a glob.
 
 ```
 USAGE
-  $ ppls documents add PATH [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>] [--archive-serial-number <value>] [--correspondent <value>] [--created
-    <value>] [--document-type <value>] [--storage-path <value>] [--tag <value>...] [--title <value>]
+  $ ppls documents add [PATH...] [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain |
+    --json | --table] [--sort <value>] [--token <value>] [--archive-serial-number <value>] [--correspondent <value>]
+    [--created <value>] [--document-type <value>] [--storage-path <value>] [--tag <value>...] [--title <value>]
 
 ARGUMENTS
-  PATH  Path to document file
+  [PATH...]  Document file path(s)
 
 FLAGS
   --archive-serial-number=<value>  Archive serial number
@@ -825,7 +827,7 @@ ENVIRONMENT FLAGS
   --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
 
 DESCRIPTION
-  Upload a document
+  Upload one or more documents. Supports multiple arguments or a glob.
 
 EXAMPLES
   $ ppls documents add ./receipt.pdf --title "Receipt"
@@ -871,20 +873,21 @@ _See code: [src/commands/documents/delete.ts](https://github.com/nickchristensen
 
 ## `ppls documents download ID`
 
-Download a document
+Download one or more documents
 
 ```
 USAGE
   $ ppls documents download ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>] [--original] [-o <value>]
+    --table] [--sort <value>] [--token <value>] [--original] [-o <value> | --output-dir <value>]
 
 ARGUMENTS
-  ID  Document id
+  ID  Document id or comma-separated list of ids
 
 FLAGS
-  -o, --output=<value>  Output file path
-      --original        Download original file
-      --sort=<value>    Sort results by the provided field
+  -o, --output=<value>      Output file path (single document)
+      --original            Download original file
+      --output-dir=<value>  Output directory (multiple documents)
+      --sort=<value>        Sort results by the provided field
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
@@ -898,10 +901,12 @@ ENVIRONMENT FLAGS
   --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
 
 DESCRIPTION
-  Download a document
+  Download one or more documents
 
 EXAMPLES
-  $ ppls documents download 123 --output ./document.pdf
+  $ ppls documents download 123 --output document.pdf
+
+  $ ppls documents download 123,124 --output-dir ./downloads
 ```
 
 _See code: [src/commands/documents/download.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/documents/download.ts)_
