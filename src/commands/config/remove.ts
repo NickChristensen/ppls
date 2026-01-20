@@ -1,12 +1,13 @@
 import {Args} from '@oclif/core'
 
-import {ConfigCommand, type ConfigData} from '../../config-command.js'
+import {BaseCommand} from '../../base-command.js'
+import {type ConfigData, readConfig, writeConfig} from '../../helpers/config-store.js'
 
 type ConfigRemoveArgs = {
   key: string
 }
 
-export default class ConfigRemove extends ConfigCommand {
+export default class ConfigRemove extends BaseCommand {
   static override args = {
     key: Args.string({description: 'Config key', required: true}),
   }
@@ -16,11 +17,11 @@ export default class ConfigRemove extends ConfigCommand {
   public async run(): Promise<ConfigData> {
     const {args} = await this.parse()
     const typedArgs = args as ConfigRemoveArgs
-    const config = await this.loadConfig()
+    const config = await readConfig(this.config.configDir)
 
     if (Object.hasOwn(config, typedArgs.key)) {
       delete config[typedArgs.key]
-      await this.saveConfig(config)
+      await writeConfig(this.config.configDir, config)
 
       if (!this.jsonEnabled()) {
         this.log(`Removed ${typedArgs.key}`)

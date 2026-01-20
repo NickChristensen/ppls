@@ -1,6 +1,7 @@
 import {Args} from '@oclif/core'
 
-import {ConfigCommand, type ConfigData} from '../../config-command.js'
+import {BaseCommand} from '../../base-command.js'
+import {type ConfigData, readConfig, writeConfig} from '../../helpers/config-store.js'
 
 type ConfigSetArgs = {
   key: string
@@ -33,7 +34,7 @@ const parseConfigValue = (raw: string): unknown => {
   return trimmed
 }
 
-export default class ConfigSet extends ConfigCommand {
+export default class ConfigSet extends BaseCommand {
   static override args = {
     key: Args.string({description: 'Config key', required: true}),
     value: Args.string({description: 'Config value', required: true}),
@@ -47,7 +48,7 @@ export default class ConfigSet extends ConfigCommand {
   public async run(): Promise<ConfigData> {
     const {args} = await this.parse()
     const typedArgs = args as ConfigSetArgs
-    const config = await this.loadConfig()
+    const config = await readConfig(this.config.configDir)
     let parsedValue: unknown
 
     try {
@@ -58,7 +59,7 @@ export default class ConfigSet extends ConfigCommand {
     }
 
     config[typedArgs.key] = parsedValue
-    await this.saveConfig(config)
+    await writeConfig(this.config.configDir, config)
 
     if (!this.jsonEnabled()) {
       this.log(`Set ${typedArgs.key}`)
