@@ -8,7 +8,7 @@ import {BaseCommand} from '../../base-command.js'
 import {createValueFormatter, formatField} from '../../helpers/table.js'
 
 type DocumentsAddArgs = {
-  path: string
+  path?: string
 }
 
 type DocumentsAddFlags = {
@@ -29,11 +29,17 @@ type UploadOutputFlags = {
 
 type UploadResult = Record<string, unknown>
 
+type UploadFileOptions = {
+  apiFlags: {headers: Record<string, string>; hostname: string; token: string}
+  filePath: string
+  payload: DocumentCreate
+}
+
 export default class DocumentsAdd extends BaseCommand {
   static override args = {
-    path: Args.string({description: 'Path to document file', required: true}),
+    path: Args.file({description: 'Document file path(s)'}),
   }
-  static override description = 'Upload a document'
+  static override description = 'Upload one or more documents. Supports multiple arguments or a glob.'
   static override examples = ['<%= config.bin %> <%= command.id %> ./receipt.pdf --title "Receipt"']
   static override flags = {
     'archive-serial-number': Flags.integer({description: 'Archive serial number'}),
@@ -44,6 +50,7 @@ export default class DocumentsAdd extends BaseCommand {
     tag: Flags.integer({description: 'Tag id (repeatable)', multiple: true}),
     title: Flags.string({description: 'Document title'}),
   }
+  static override strict = false
 
   protected buildPayload(flags: DocumentsAddFlags): DocumentCreate {
     return {
@@ -55,6 +62,40 @@ export default class DocumentsAdd extends BaseCommand {
       tags: flags.tag,
       title: flags.title,
     }
+  }
+
+  protected buildUploadFormData(payload: DocumentCreate, filename: string, fileContents: Buffer): FormData {
+    const formData = new FormData()
+    const arrayBuffer = fileContents.buffer.slice(
+      fileContents.byteOffset,
+      fileContents.byteOffset + fileContents.byteLength,
+    ) as ArrayBuffer
+    formData.set('document', new Blob([arrayBuffer]), filename)
+
+    const fields: Array<[string, string | undefined]> = [
+      ['title', payload.title],
+      ['correspondent', this.toOptionalString(payload.correspondent)],
+      ['document_type', this.toOptionalString(payload.document_type)],
+      ['storage_path', this.toOptionalString(payload.storage_path)],
+      ['created', payload.created],
+      ['archive_serial_number', this.toOptionalString(payload.archive_serial_number)],
+    ]
+
+    for (const [field, value] of fields) {
+      if (value === undefined) {
+        continue
+      }
+
+      formData.set(field, value)
+    }
+
+    if (payload.tags && payload.tags.length > 0) {
+      for (const tag of payload.tags) {
+        formData.append('tags', String(tag))
+      }
+    }
+
+    return formData
   }
 
   protected normalizeResult(result: unknown): UploadResult {
@@ -112,8 +153,18 @@ export default class DocumentsAdd extends BaseCommand {
     )
   }
 
-  public async run(): Promise<UploadResult> {
-    const {args, flags, metadata} = await this.parse()
+  protected resolveUploadPaths(args: DocumentsAddArgs, argv: unknown[]): string[] {
+    const rawPaths = argv.length > 0 ? (argv as string[]) : args.path ? [args.path] : []
+
+    if (rawPaths.length === 0) {
+      this.error('Provide at least one file path to upload.')
+    }
+
+    return rawPaths.map(String)
+  }
+
+  public async run(): Promise<UploadResult | UploadResult[]> {
+    const {args, argv, flags, metadata} = await this.parse()
     const {dateFormat, ...apiFlags} = await this.resolveGlobalFlags(flags, metadata)
     const outputFlags: UploadOutputFlags = {
       'date-format': dateFormat,
@@ -122,59 +173,72 @@ export default class DocumentsAdd extends BaseCommand {
     }
     const typedArgs = args as DocumentsAddArgs
     const typedFlags = flags as DocumentsAddFlags
+    const paths = this.resolveUploadPaths(typedArgs, argv)
     const payload = this.buildPayload(typedFlags)
-    let fileContents: Buffer
+    const results = await this.uploadFiles({apiFlags, paths, payload})
 
-    try {
-      fileContents = await readFile(typedArgs.path)
-    } catch (error) {
-      const message = error instanceof Error ? error.message : String(error)
-      this.error(`Failed to read file at ${typedArgs.path}: ${message}`)
-    }
-
-    const formData = new FormData()
-    const filename = path.basename(typedArgs.path)
-    const arrayBuffer = fileContents.buffer.slice(
-      fileContents.byteOffset,
-      fileContents.byteOffset + fileContents.byteLength,
-    ) as ArrayBuffer
-    formData.set('document', new Blob([arrayBuffer]), filename)
-
-    if (payload.title !== undefined) {
-      formData.set('title', payload.title)
-    }
-
-    if (payload.correspondent !== undefined) {
-      formData.set('correspondent', String(payload.correspondent))
-    }
-
-    if (payload.document_type !== undefined) {
-      formData.set('document_type', String(payload.document_type))
-    }
-
-    if (payload.storage_path !== undefined) {
-      formData.set('storage_path', String(payload.storage_path))
-    }
-
-    if (payload.created !== undefined) {
-      formData.set('created', payload.created)
-    }
-
-    if (payload.archive_serial_number !== undefined) {
-      formData.set('archive_serial_number', String(payload.archive_serial_number))
-    }
-
-    if (payload.tags && payload.tags.length > 0) {
-      for (const tag of payload.tags) {
-        formData.append('tags', String(tag))
+    if (!this.jsonEnabled()) {
+      for (const result of results) {
+        this.renderUploadOutput({flags: outputFlags, result})
       }
     }
 
+    return results.length === 1 ? results[0] : results
+  }
+
+  protected toOptionalString(value: null | number | undefined): string | undefined {
+    if (value === null || value === undefined) {
+      return
+    }
+
+    return String(value)
+  }
+
+  protected async uploadFile(options: UploadFileOptions): Promise<UploadResult> {
+    const {apiFlags, filePath, payload} = options
+    let fileContents: Buffer
+
+    try {
+      fileContents = await readFile(filePath)
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error)
+      this.error(`Failed to read file at ${filePath}: ${message}`)
+    }
+
+    const filename = path.basename(filePath)
+    const formData = this.buildUploadFormData(payload, filename, fileContents)
     const rawResult = await this.postApiFormData<unknown>(apiFlags, '/api/documents/post_document/', formData)
-    const result = this.normalizeResult(rawResult)
 
-    this.renderUploadOutput({flags: outputFlags, result})
+    return this.normalizeResult(rawResult)
+  }
 
-    return result
+  protected async uploadFiles(options: {
+    apiFlags: {headers: Record<string, string>; hostname: string; token: string}
+    paths: string[]
+    payload: DocumentCreate
+  }): Promise<UploadResult[]> {
+    const {apiFlags, paths, payload} = options
+    const results: UploadResult[] = []
+    const spinner = this.startSpinner('')
+
+    try {
+      for (let index = 0; index < paths.length; index += 1) {
+        const filePath = paths[index]
+        const filename = path.basename(filePath)
+        const prefix = paths.length > 1 ? `[${index + 1}/${paths.length}] ` : ''
+
+        if (spinner) {
+          spinner.text = `${prefix}Uploading ${filename}`
+        }
+
+        // eslint-disable-next-line no-await-in-loop -- uploads are sequential to keep spinner output in order.
+        const result = await this.uploadFile({apiFlags, filePath, payload})
+        results.push(result)
+      }
+    } finally {
+      spinner?.stop()
+    }
+
+    return results
   }
 }

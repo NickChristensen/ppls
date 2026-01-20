@@ -21,7 +21,7 @@ $ npm install -g ppls
 $ ppls COMMAND
 running command...
 $ ppls (--version)
-ppls/0.0.0 darwin-arm64 node-v24.13.0
+ppls/0.0.0 darwin-arm64 node-v25.3.0
 $ ppls --help [COMMAND]
 USAGE
   $ ppls COMMAND
@@ -57,7 +57,7 @@ Set the following environment variables before running the CLI (they are used as
 * [`ppls document-types list`](#ppls-document-types-list)
 * [`ppls document-types show ID`](#ppls-document-types-show-id)
 * [`ppls document-types update ID`](#ppls-document-types-update-id)
-* [`ppls documents add PATH`](#ppls-documents-add-path)
+* [`ppls documents add [PATH]`](#ppls-documents-add-path)
 * [`ppls documents delete ID`](#ppls-documents-delete-id)
 * [`ppls documents download ID`](#ppls-documents-download-id)
 * [`ppls documents list`](#ppls-documents-list)
@@ -790,18 +790,18 @@ EXAMPLES
 
 _See code: [src/commands/document-types/update.ts](https://github.com/nickchristensen/ppls/blob/v0.0.0/src/commands/document-types/update.ts)_
 
-## `ppls documents add PATH`
+## `ppls documents add [PATH]`
 
-Upload a document
+Upload one or more documents. Supports multiple arguments or a glob.
 
 ```
 USAGE
-  $ ppls documents add PATH [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>] [--archive-serial-number <value>] [--correspondent <value>] [--created
-    <value>] [--document-type <value>] [--storage-path <value>] [--tag <value>...] [--title <value>]
+  $ ppls documents add [PATH...] [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain |
+    --json | --table] [--sort <value>] [--token <value>] [--archive-serial-number <value>] [--correspondent <value>]
+    [--created <value>] [--document-type <value>] [--storage-path <value>] [--tag <value>...] [--title <value>]
 
 ARGUMENTS
-  PATH  Path to document file
+  [PATH...]  Document file path(s)
 
 FLAGS
   --archive-serial-number=<value>  Archive serial number
@@ -825,7 +825,7 @@ ENVIRONMENT FLAGS
   --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
 
 DESCRIPTION
-  Upload a document
+  Upload one or more documents. Supports multiple arguments or a glob.
 
 EXAMPLES
   $ ppls documents add ./receipt.pdf --title "Receipt"
