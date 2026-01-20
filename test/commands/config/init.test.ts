@@ -34,8 +34,15 @@ describe('config:init', () => {
     expect(payload.path).to.equal(configPath)
     expect(payload.overwritten).to.equal(false)
 
-    const contents = await readFile(configPath, 'utf8')
-    expect(contents.trim()).to.equal('{}')
+    const contents = JSON.parse(await readFile(configPath, 'utf8')) as Record<string, unknown>
+    expect(contents).to.deep.equal({
+      dateFormat: 'YYYY-MM-DD',
+      headers: {
+        'Custom-Header': 'value',
+      },
+      hostname: 'http://example.com',
+      token: 'your-api-token-here',
+    })
   })
 
   it('refuses to overwrite without --force', async () => {

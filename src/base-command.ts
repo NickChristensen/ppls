@@ -15,10 +15,8 @@ type ResolvedGlobalFlags = ApiFlags & {
 }
 
 type UserConfig = Partial<ApiFlags> & {
-  'date-format'?: string
   dateFormat?: string
-  header?: string | string[]
-  headers?: Record<string, unknown> | string | string[]
+  headers?: Record<string, unknown>
 }
 
 type CommandMetadata = {
@@ -219,20 +217,11 @@ export abstract class BaseCommand extends Command {
         continue
       }
 
-      const colonIndex = trimmed.indexOf(':')
       const equalsIndex = trimmed.indexOf('=')
-      let separatorIndex = -1
-
-      if (colonIndex === -1) {
-        separatorIndex = equalsIndex
-      } else if (equalsIndex === -1) {
-        separatorIndex = colonIndex
-      } else {
-        separatorIndex = Math.min(colonIndex, equalsIndex)
-      }
+      const separatorIndex = equalsIndex
 
       if (separatorIndex === -1) {
-        this.error(`Invalid header "${entry}" from ${source}. Use "Key: Value" or "Key=Value".`)
+        this.error(`Invalid header "${entry}" from ${source}. Use "Key=Value".`)
       }
 
       const key = trimmed.slice(0, separatorIndex).trim()
@@ -243,6 +232,28 @@ export abstract class BaseCommand extends Command {
       }
 
       headers[key] = value
+    }
+
+    return headers
+  }
+
+  protected parseHeadersConfig(input: unknown, source: string): Record<string, string> {
+    if (input === undefined || input === null) {
+      return {}
+    }
+
+    if (typeof input !== 'object' || Array.isArray(input)) {
+      this.error(`Invalid headers from ${source}. Expected an object of header key/value pairs.`)
+    }
+
+    const headers: Record<string, string> = {}
+
+    for (const [key, value] of Object.entries(input as Record<string, unknown>)) {
+      if (value === undefined || value === null) {
+        continue
+      }
+
+      headers[key] = String(value)
     }
 
     return headers
@@ -260,16 +271,6 @@ export abstract class BaseCommand extends Command {
         return {}
       }
 
-      if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
-        try {
-          const parsed = JSON.parse(trimmed)
-          return this.parseHeadersInput(parsed, `${source} JSON`)
-        } catch (error) {
-          const message = error instanceof Error ? error.message : String(error)
-          this.error(`Failed to parse headers from ${source}: ${message}`)
-        }
-      }
-
       return this.parseHeaderEntries([trimmed], source)
     }
 
@@ -283,21 +284,7 @@ export abstract class BaseCommand extends Command {
       return headers
     }
 
-    if (typeof input === 'object') {
-      const headers: Record<string, string> = {}
-
-      for (const [key, value] of Object.entries(input as Record<string, unknown>)) {
-        if (value === undefined || value === null) {
-          continue
-        }
-
-        headers[key] = String(value)
-      }
-
-      return headers
-    }
-
-    this.error(`Invalid headers from ${source}. Expected an object, array, or string.`)
+    this.error(`Invalid headers from ${source}. Expected a string or array of strings.`)
   }
 
   protected async patchApiJson<T>(flags: ApiFlags, path: string, body: unknown): Promise<T> {
@@ -382,7 +369,7 @@ export abstract class BaseCommand extends Command {
     metadata: CommandMetadata | undefined,
     userConfig: UserConfig,
   ): string {
-    const configDateFormat = userConfig['date-format'] ?? userConfig.dateFormat
+    const configDateFormat = userConfig.dateFormat
     const flagValue = flags['date-format'] as string | undefined
     const usedDefault = metadata?.flags?.['date-format']?.setFromDefault
 
@@ -416,7 +403,7 @@ export abstract class BaseCommand extends Command {
   }
 
   protected resolveHeaders(flags: Record<string, unknown>, userConfig: UserConfig): Record<string, string> {
-    const configHeaders = this.parseHeadersInput(userConfig.headers ?? userConfig.header, 'config.json headers')
+    const configHeaders = this.parseHeadersConfig(userConfig.headers, 'config.json headers')
     const envHeaders = this.parseHeadersInput(process.env.PPLS_HEADERS, 'PPLS_HEADERS')
     const flagHeaders = this.parseHeadersInput(flags.header, '--header')
 

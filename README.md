@@ -8,33 +8,41 @@ A node-based paperless-ngx cli
 
 <!-- toc -->
 * [ppls](#ppls)
-* [Usage](#usage)
+* [Quickstart](#quickstart)
 * [Configuration](#configuration)
 * [Commands](#commands)
 <!-- tocstop -->
 
-# Usage
-
-<!-- usage -->
-```sh-session
-$ npm install -g ppls
-$ ppls COMMAND
-running command...
-$ ppls (--version)
-ppls/0.0.0 darwin-arm64 node-v24.13.0
-$ ppls --help [COMMAND]
-USAGE
-  $ ppls COMMAND
-...
-```
-<!-- usagestop -->
+# Quickstart
+TODO
 
 # Configuration
 
-Set the following environment variables before running the CLI (they are used as defaults for `--hostname` and `--token` flags):
+Configuration options can be specified via config file (`$XDG_CONFIG_HOME/ppls/config.json`), environment variables, or command flags.
 
-- `PPLS_HOSTNAME`: Base URL for your paperless-ngx instance (for example, `https://paperless.example.com`)
-- `PPLS_TOKEN`: API token for your paperless-ngx user
+| Config file  | Env var            | Flag            | Notes                                                                                   |
+| ------------ | ------------------ | --------------- | --------------------------------------------------------------------------------------- |
+| `hostname`   | `PPLS_HOSTNAME`    | `--hostname`    | **Required**                                                                            |
+| `token`      | `PPLS_TOKEN`       | `--token`       | **Required**                                                                            |
+| `headers`    | `PPLS_HEADERS`     | `--header`      | `--header` and `PPLS_HEADERS` use `Key=Value` (repeat `--header` for multiple headers). |
+| `dateFormat` | `PPLS_DATE_FORMAT` | `--date-format` | uses [date-fns format tokens](https://date-fns.org/v3.6.0/docs/format)                  |
+
+Precedence: config file < environment variables < command flags.
+
+### Config file management
+
+See the `ppls config` commands (`init`, `set`, `get`, `list`, `remove`) to manage the config file.
+
+Examples:
+
+```
+$ ppls config init
+$ ppls config set hostname https://paperless.example.com
+$ ppls config set token your-api-token
+$ ppls config set headers '{"X-Api-Key":"token"}'
+$ ppls config list
+$ ppls config get hostname
+```
 
 # Commands
 
