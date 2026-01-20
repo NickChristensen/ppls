@@ -49,7 +49,6 @@ export abstract class BaseCommand extends Command {
       exclusive: ['json', 'table'],
       helpGroup: 'GLOBAL',
     }),
-    sort: Flags.string({description: 'Sort results by the provided field'}),
     table: Flags.boolean({
       description: 'Format output as table.',
       exclusive: ['json', 'plain'],

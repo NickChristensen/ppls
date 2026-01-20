@@ -35,6 +35,7 @@ export abstract class ListCommand<
       description: 'Filter by name substring',
       exclusive: ['id-in'],
     }),
+    sort: Flags.string({description: 'Sort results by the provided field'}),
   }
   protected abstract listPath: string
   protected abstract tableAttrs: TableColumnInput[]

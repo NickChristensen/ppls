@@ -21,7 +21,7 @@ $ npm install -g ppls
 $ ppls COMMAND
 running command...
 $ ppls (--version)
-ppls/0.0.0 darwin-arm64 node-v25.3.0
+ppls/0.0.0 darwin-arm64 node-v24.13.0
 $ ppls --help [COMMAND]
 USAGE
   $ ppls COMMAND
@@ -81,13 +81,10 @@ Get a config value
 ```
 USAGE
   $ ppls config get KEY [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>]
+    --table] [--token <value>]
 
 ARGUMENTS
   KEY  Config key
-
-FLAGS
-  --sort=<value>  Sort results by the provided field
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
@@ -116,11 +113,10 @@ Initialize a config file
 ```
 USAGE
   $ ppls config init [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>] [-f]
+    --table] [--token <value>] [-f]
 
 FLAGS
-  -f, --force         Overwrite existing config file
-      --sort=<value>  Sort results by the provided field
+  -f, --force  Overwrite existing config file
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
@@ -149,10 +145,7 @@ List config values
 ```
 USAGE
   $ ppls config list [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>]
-
-FLAGS
-  --sort=<value>  Sort results by the provided field
+    --table] [--token <value>]
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
@@ -181,13 +174,10 @@ Remove a config value
 ```
 USAGE
   $ ppls config remove KEY [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>]
+    --table] [--token <value>]
 
 ARGUMENTS
   KEY  Config key
-
-FLAGS
-  --sort=<value>  Sort results by the provided field
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
@@ -216,14 +206,11 @@ Set a config value
 ```
 USAGE
   $ ppls config set KEY VALUE [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain |
-    --json | --table] [--sort <value>] [--token <value>]
+    --json | --table] [--token <value>]
 
 ARGUMENTS
   KEY    Config key
   VALUE  Config value
-
-FLAGS
-  --sort=<value>  Sort results by the provided field
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
@@ -254,13 +241,10 @@ Create a correspondent
 ```
 USAGE
   $ ppls correspondents add NAME [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>]
+    --table] [--token <value>]
 
 ARGUMENTS
   NAME  Correspondent name
-
-FLAGS
-  --sort=<value>  Sort results by the provided field
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
@@ -289,14 +273,13 @@ Delete a correspondent
 ```
 USAGE
   $ ppls correspondents delete ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>] [-y]
+    --table] [--token <value>] [-y]
 
 ARGUMENTS
   ID  Correspondent id
 
 FLAGS
-  -y, --yes           Skip confirmation prompt
-      --sort=<value>  Sort results by the provided field
+  -y, --yes  Skip confirmation prompt
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
@@ -325,8 +308,8 @@ List correspondents
 ```
 USAGE
   $ ppls correspondents list [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>] [--page <value>] [--page-size <value>] [--id-in <value> |
-    --name-contains <value>]
+    --table] [--token <value>] [--page <value>] [--page-size <value>] [--id-in <value> | --name-contains <value>]
+    [--sort <value>]
 
 FLAGS
   --id-in=<value>          Filter by id list (comma-separated)
@@ -362,13 +345,10 @@ Show correspondent details
 ```
 USAGE
   $ ppls correspondents show ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>]
+    --table] [--token <value>]
 
 ARGUMENTS
   ID  Correspondent id
-
-FLAGS
-  --sort=<value>  Sort results by the provided field
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
@@ -397,14 +377,13 @@ Update a correspondent
 ```
 USAGE
   $ ppls correspondents update ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>] [--name <value>]
+    --table] [--token <value>] [--name <value>]
 
 ARGUMENTS
   ID  Correspondent id
 
 FLAGS
   --name=<value>  Correspondent name
-  --sort=<value>  Sort results by the provided field
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
@@ -433,8 +412,8 @@ Create a custom field
 ```
 USAGE
   $ ppls custom-fields add NAME --data-type boolean|date|integer|number|monetary|text|url|document link|select|long
-    text [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json | --table] [--sort
-    <value>] [--token <value>] [--option <value>...]
+    text [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json | --table] [--token
+    <value>] [--option <value>...]
 
 ARGUMENTS
   NAME  Custom field name
@@ -443,7 +422,6 @@ FLAGS
   --data-type=<option>  (required) Custom field data type
                         <options: boolean|date|integer|number|monetary|text|url|document link|select|long text>
   --option=<value>...   Select option label (repeatable)
-  --sort=<value>        Sort results by the provided field
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
@@ -472,14 +450,13 @@ Delete a custom field
 ```
 USAGE
   $ ppls custom-fields delete ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>] [-y]
+    --table] [--token <value>] [-y]
 
 ARGUMENTS
   ID  Custom field id
 
 FLAGS
-  -y, --yes           Skip confirmation prompt
-      --sort=<value>  Sort results by the provided field
+  -y, --yes  Skip confirmation prompt
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
@@ -508,8 +485,8 @@ List custom fields
 ```
 USAGE
   $ ppls custom-fields list [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>] [--page <value>] [--page-size <value>] [--id-in <value> |
-    --name-contains <value>]
+    --table] [--token <value>] [--page <value>] [--page-size <value>] [--id-in <value> | --name-contains <value>]
+    [--sort <value>]
 
 FLAGS
   --id-in=<value>          Filter by id list (comma-separated)
@@ -545,13 +522,10 @@ Show custom field details
 ```
 USAGE
   $ ppls custom-fields show ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>]
+    --table] [--token <value>]
 
 ARGUMENTS
   ID  Custom field id
-
-FLAGS
-  --sort=<value>  Sort results by the provided field
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
@@ -580,8 +554,8 @@ Update a custom field
 ```
 USAGE
   $ ppls custom-fields update ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>] [--data-type boolean|date|integer|number|monetary|text|url|document
-    link|select|long text] [--name <value>] [--option <value>...]
+    --table] [--token <value>] [--data-type boolean|date|integer|number|monetary|text|url|document link|select|long
+    text] [--name <value>] [--option <value>...]
 
 ARGUMENTS
   ID  Custom field id
@@ -591,7 +565,6 @@ FLAGS
                         <options: boolean|date|integer|number|monetary|text|url|document link|select|long text>
   --name=<value>        Custom field name
   --option=<value>...   Select option label (repeatable)
-  --sort=<value>        Sort results by the provided field
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
@@ -620,13 +593,10 @@ Create a document type
 ```
 USAGE
   $ ppls document-types add NAME [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>]
+    --table] [--token <value>]
 
 ARGUMENTS
   NAME  Document type name
-
-FLAGS
-  --sort=<value>  Sort results by the provided field
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
@@ -655,14 +625,13 @@ Delete a document type
 ```
 USAGE
   $ ppls document-types delete ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>] [-y]
+    --table] [--token <value>] [-y]
 
 ARGUMENTS
   ID  Document type id
 
 FLAGS
-  -y, --yes           Skip confirmation prompt
-      --sort=<value>  Sort results by the provided field
+  -y, --yes  Skip confirmation prompt
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
@@ -691,8 +660,8 @@ List document types
 ```
 USAGE
   $ ppls document-types list [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>] [--page <value>] [--page-size <value>] [--id-in <value> |
-    --name-contains <value>]
+    --table] [--token <value>] [--page <value>] [--page-size <value>] [--id-in <value> | --name-contains <value>]
+    [--sort <value>]
 
 FLAGS
   --id-in=<value>          Filter by id list (comma-separated)
@@ -728,13 +697,10 @@ Show document type details
 ```
 USAGE
   $ ppls document-types show ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>]
+    --table] [--token <value>]
 
 ARGUMENTS
   ID  Document type id
-
-FLAGS
-  --sort=<value>  Sort results by the provided field
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
@@ -763,14 +729,13 @@ Update a document type
 ```
 USAGE
   $ ppls document-types update ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>] [--name <value>]
+    --table] [--token <value>] [--name <value>]
 
 ARGUMENTS
   ID  Document type id
 
 FLAGS
   --name=<value>  Document type name
-  --sort=<value>  Sort results by the provided field
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
@@ -799,8 +764,8 @@ Upload one or more documents. Supports multiple arguments or a glob.
 ```
 USAGE
   $ ppls documents add [PATH...] [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain |
-    --json | --table] [--sort <value>] [--token <value>] [--archive-serial-number <value>] [--correspondent <value>]
-    [--created <value>] [--document-type <value>] [--storage-path <value>] [--tag <value>...] [--title <value>]
+    --json | --table] [--token <value>] [--archive-serial-number <value>] [--correspondent <value>] [--created <value>]
+    [--document-type <value>] [--storage-path <value>] [--tag <value>...] [--title <value>]
 
 ARGUMENTS
   [PATH...]  Document file path(s)
@@ -810,7 +775,6 @@ FLAGS
   --correspondent=<value>          Correspondent id
   --created=<value>                Document created date-time
   --document-type=<value>          Document type id
-  --sort=<value>                   Sort results by the provided field
   --storage-path=<value>           Storage path id
   --tag=<value>...                 Tag id (repeatable)
   --title=<value>                  Document title
@@ -842,14 +806,13 @@ Delete a document
 ```
 USAGE
   $ ppls documents delete ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>] [-y]
+    --table] [--token <value>] [-y]
 
 ARGUMENTS
   ID  Document id
 
 FLAGS
-  -y, --yes           Skip confirmation prompt
-      --sort=<value>  Sort results by the provided field
+  -y, --yes  Skip confirmation prompt
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
@@ -878,7 +841,7 @@ Download one or more documents
 ```
 USAGE
   $ ppls documents download ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>] [--original] [-o <value> | --output-dir <value>]
+    --table] [--token <value>] [--original] [-o <value> | --output-dir <value>]
 
 ARGUMENTS
   ID  Document id or comma-separated list of ids
@@ -887,7 +850,6 @@ FLAGS
   -o, --output=<value>      Output file path (single document)
       --original            Download original file
       --output-dir=<value>  Output directory (multiple documents)
-      --sort=<value>        Sort results by the provided field
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
@@ -918,8 +880,8 @@ List documents
 ```
 USAGE
   $ ppls documents list [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>] [--page <value>] [--page-size <value>] [--id-in <value> |
-    --name-contains <value>]
+    --table] [--token <value>] [--page <value>] [--page-size <value>] [--id-in <value> | --name-contains <value>]
+    [--sort <value>]
 
 FLAGS
   --id-in=<value>          Filter by id list (comma-separated)
@@ -955,13 +917,10 @@ Show document details
 ```
 USAGE
   $ ppls documents show ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>]
+    --table] [--token <value>]
 
 ARGUMENTS
   ID  Document id
-
-FLAGS
-  --sort=<value>  Sort results by the provided field
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
@@ -990,8 +949,8 @@ Update a document
 ```
 USAGE
   $ ppls documents update ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>] [--archive-serial-number <value>] [--content <value>] [--correspondent
-    <value>] [--created <value>] [--document-type <value>] [--storage-path <value>] [--tag <value>...] [--title <value>]
+    --table] [--token <value>] [--archive-serial-number <value>] [--content <value>] [--correspondent <value>]
+    [--created <value>] [--document-type <value>] [--storage-path <value>] [--tag <value>...] [--title <value>]
 
 ARGUMENTS
   ID  Document id
@@ -1002,7 +961,6 @@ FLAGS
   --correspondent=<value>          Correspondent id
   --created=<value>                Document created date
   --document-type=<value>          Document type id
-  --sort=<value>                   Sort results by the provided field
   --storage-path=<value>           Storage path id
   --tag=<value>...                 Tag id (repeatable)
   --title=<value>                  Document title
@@ -1054,10 +1012,7 @@ Show profile details
 ```
 USAGE
   $ ppls profile [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>]
-
-FLAGS
-  --sort=<value>  Sort results by the provided field
+    --table] [--token <value>]
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
@@ -1089,7 +1044,7 @@ Create a tag
 ```
 USAGE
   $ ppls tags add NAME [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>] [--color <value>] [--inbox] [--parent <value>]
+    --table] [--token <value>] [--color <value>] [--inbox] [--parent <value>]
 
 ARGUMENTS
   NAME  Tag name
@@ -1098,7 +1053,6 @@ FLAGS
   --color=<value>   Tag color (hex value)
   --inbox           Mark tag as an inbox tag
   --parent=<value>  Parent tag id
-  --sort=<value>    Sort results by the provided field
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
@@ -1127,14 +1081,13 @@ Delete a tag
 ```
 USAGE
   $ ppls tags delete ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>] [-y]
+    --table] [--token <value>] [-y]
 
 ARGUMENTS
   ID  Tag id
 
 FLAGS
-  -y, --yes           Skip confirmation prompt
-      --sort=<value>  Sort results by the provided field
+  -y, --yes  Skip confirmation prompt
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
@@ -1163,8 +1116,8 @@ List tags
 ```
 USAGE
   $ ppls tags list [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>] [--page <value>] [--page-size <value>] [--id-in <value> |
-    --name-contains <value>]
+    --table] [--token <value>] [--page <value>] [--page-size <value>] [--id-in <value> | --name-contains <value>]
+    [--sort <value>]
 
 FLAGS
   --id-in=<value>          Filter by id list (comma-separated)
@@ -1200,13 +1153,10 @@ Show tag details
 ```
 USAGE
   $ ppls tags show ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>]
+    --table] [--token <value>]
 
 ARGUMENTS
   ID  Tag id
-
-FLAGS
-  --sort=<value>  Sort results by the provided field
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
@@ -1235,7 +1185,7 @@ Update a tag
 ```
 USAGE
   $ ppls tags update ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>] [--color <value>] [--inbox] [--name <value>] [--parent <value>]
+    --table] [--token <value>] [--color <value>] [--inbox] [--name <value>] [--parent <value>]
 
 ARGUMENTS
   ID  Tag id
@@ -1245,7 +1195,6 @@ FLAGS
   --[no-]inbox      Mark tag as an inbox tag
   --name=<value>    Tag name
   --parent=<value>  Parent tag id
-  --sort=<value>    Sort results by the provided field
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
@@ -1274,10 +1223,7 @@ Show profile details
 ```
 USAGE
   $ ppls whoami [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--sort <value>] [--token <value>]
-
-FLAGS
-  --sort=<value>  Sort results by the provided field
+    --table] [--token <value>]
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
