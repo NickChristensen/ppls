@@ -102,8 +102,8 @@ export default class DocumentsDownload extends BaseCommand {
     }),
     'output-dir': Flags.directory({
       description: 'Output directory (multiple documents)',
-      exists: true,
       exclusive: ['output'],
+      exists: true,
     }),
   }
 
