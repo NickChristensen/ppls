@@ -86,7 +86,6 @@ $ ppls config get hostname
 * [`ppls tags list`](#ppls-tags-list)
 * [`ppls tags show ID`](#ppls-tags-show-id)
 * [`ppls tags update ID`](#ppls-tags-update-id)
-* [`ppls whoami`](#ppls-whoami)
 
 ## `ppls config get KEY`
 
@@ -109,7 +108,7 @@ EXAMPLES
   $ ppls config get hostname
 ```
 
-_See code: [src/commands/config/get.ts](https://github.com/nickchristensen/ppls/blob/v1.0.0/src/commands/config/get.ts)_
+_See code: [src/commands/config/get.ts](https://github.com/nickchristensen/ppls/blob/v1.0.1/src/commands/config/get.ts)_
 
 ## `ppls config init`
 
@@ -132,7 +131,7 @@ EXAMPLES
   $ ppls config init
 ```
 
-_See code: [src/commands/config/init.ts](https://github.com/nickchristensen/ppls/blob/v1.0.0/src/commands/config/init.ts)_
+_See code: [src/commands/config/init.ts](https://github.com/nickchristensen/ppls/blob/v1.0.1/src/commands/config/init.ts)_
 
 ## `ppls config list`
 
@@ -156,7 +155,7 @@ EXAMPLES
   $ ppls config list
 ```
 
-_See code: [src/commands/config/list.ts](https://github.com/nickchristensen/ppls/blob/v1.0.0/src/commands/config/list.ts)_
+_See code: [src/commands/config/list.ts](https://github.com/nickchristensen/ppls/blob/v1.0.1/src/commands/config/list.ts)_
 
 ## `ppls config remove KEY`
 
@@ -179,7 +178,7 @@ EXAMPLES
   $ ppls config remove token
 ```
 
-_See code: [src/commands/config/remove.ts](https://github.com/nickchristensen/ppls/blob/v1.0.0/src/commands/config/remove.ts)_
+_See code: [src/commands/config/remove.ts](https://github.com/nickchristensen/ppls/blob/v1.0.1/src/commands/config/remove.ts)_
 
 ## `ppls config set KEY VALUE`
 
@@ -205,7 +204,7 @@ EXAMPLES
   $ ppls config set headers '{"X-Api-Key":"token"}'
 ```
 
-_See code: [src/commands/config/set.ts](https://github.com/nickchristensen/ppls/blob/v1.0.0/src/commands/config/set.ts)_
+_See code: [src/commands/config/set.ts](https://github.com/nickchristensen/ppls/blob/v1.0.1/src/commands/config/set.ts)_
 
 ## `ppls correspondents add NAME`
 
@@ -237,7 +236,7 @@ EXAMPLES
   $ ppls correspondents add "Acme Corp"
 ```
 
-_See code: [src/commands/correspondents/add.ts](https://github.com/nickchristensen/ppls/blob/v1.0.0/src/commands/correspondents/add.ts)_
+_See code: [src/commands/correspondents/add.ts](https://github.com/nickchristensen/ppls/blob/v1.0.1/src/commands/correspondents/add.ts)_
 
 ## `ppls correspondents delete ID`
 
@@ -272,7 +271,7 @@ EXAMPLES
   $ ppls correspondents delete 123
 ```
 
-_See code: [src/commands/correspondents/delete.ts](https://github.com/nickchristensen/ppls/blob/v1.0.0/src/commands/correspondents/delete.ts)_
+_See code: [src/commands/correspondents/delete.ts](https://github.com/nickchristensen/ppls/blob/v1.0.1/src/commands/correspondents/delete.ts)_
 
 ## `ppls correspondents list`
 
@@ -309,7 +308,7 @@ EXAMPLES
   $ ppls correspondents list
 ```
 
-_See code: [src/commands/correspondents/list.ts](https://github.com/nickchristensen/ppls/blob/v1.0.0/src/commands/correspondents/list.ts)_
+_See code: [src/commands/correspondents/list.ts](https://github.com/nickchristensen/ppls/blob/v1.0.1/src/commands/correspondents/list.ts)_
 
 ## `ppls correspondents show ID`
 
@@ -341,7 +340,7 @@ EXAMPLES
   $ ppls correspondents show 123
 ```
 
-_See code: [src/commands/correspondents/show.ts](https://github.com/nickchristensen/ppls/blob/v1.0.0/src/commands/correspondents/show.ts)_
+_See code: [src/commands/correspondents/show.ts](https://github.com/nickchristensen/ppls/blob/v1.0.1/src/commands/correspondents/show.ts)_
 
 ## `ppls correspondents update ID`
 
@@ -376,7 +375,7 @@ EXAMPLES
   $ ppls correspondents update 123 --name "Acme Corp"
 ```
 
-_See code: [src/commands/correspondents/update.ts](https://github.com/nickchristensen/ppls/blob/v1.0.0/src/commands/correspondents/update.ts)_
+_See code: [src/commands/correspondents/update.ts](https://github.com/nickchristensen/ppls/blob/v1.0.1/src/commands/correspondents/update.ts)_
 
 ## `ppls custom-fields add NAME`
 
@@ -414,7 +413,7 @@ EXAMPLES
   $ ppls custom-fields add "Due Date" --data-type date
 ```
 
-_See code: [src/commands/custom-fields/add.ts](https://github.com/nickchristensen/ppls/blob/v1.0.0/src/commands/custom-fields/add.ts)_
+_See code: [src/commands/custom-fields/add.ts](https://github.com/nickchristensen/ppls/blob/v1.0.1/src/commands/custom-fields/add.ts)_
 
 ## `ppls custom-fields delete ID`
 
@@ -449,7 +448,7 @@ EXAMPLES
   $ ppls custom-fields delete 123
 ```
 
-_See code: [src/commands/custom-fields/delete.ts](https://github.com/nickchristensen/ppls/blob/v1.0.0/src/commands/custom-fields/delete.ts)_
+_See code: [src/commands/custom-fields/delete.ts](https://github.com/nickchristensen/ppls/blob/v1.0.1/src/commands/custom-fields/delete.ts)_
 
 ## `ppls custom-fields list`
 
@@ -486,7 +485,7 @@ EXAMPLES
   $ ppls custom-fields list
 ```
 
-_See code: [src/commands/custom-fields/list.ts](https://github.com/nickchristensen/ppls/blob/v1.0.0/src/commands/custom-fields/list.ts)_
+_See code: [src/commands/custom-fields/list.ts](https://github.com/nickchristensen/ppls/blob/v1.0.1/src/commands/custom-fields/list.ts)_
 
 ## `ppls custom-fields show ID`
 
@@ -518,7 +517,7 @@ EXAMPLES
   $ ppls custom-fields show 123
 ```
 
-_See code: [src/commands/custom-fields/show.ts](https://github.com/nickchristensen/ppls/blob/v1.0.0/src/commands/custom-fields/show.ts)_
+_See code: [src/commands/custom-fields/show.ts](https://github.com/nickchristensen/ppls/blob/v1.0.1/src/commands/custom-fields/show.ts)_
 
 ## `ppls custom-fields update ID`
 
@@ -557,7 +556,7 @@ EXAMPLES
   $ ppls custom-fields update 123 --name "Due Date"
 ```
 
-_See code: [src/commands/custom-fields/update.ts](https://github.com/nickchristensen/ppls/blob/v1.0.0/src/commands/custom-fields/update.ts)_
+_See code: [src/commands/custom-fields/update.ts](https://github.com/nickchristensen/ppls/blob/v1.0.1/src/commands/custom-fields/update.ts)_
 
 ## `ppls document-types add NAME`
 
@@ -589,7 +588,7 @@ EXAMPLES
   $ ppls document-types add "Invoice"
 ```
 
-_See code: [src/commands/document-types/add.ts](https://github.com/nickchristensen/ppls/blob/v1.0.0/src/commands/document-types/add.ts)_
+_See code: [src/commands/document-types/add.ts](https://github.com/nickchristensen/ppls/blob/v1.0.1/src/commands/document-types/add.ts)_
 
 ## `ppls document-types delete ID`
 
@@ -624,7 +623,7 @@ EXAMPLES
   $ ppls document-types delete 123
 ```
 
-_See code: [src/commands/document-types/delete.ts](https://github.com/nickchristensen/ppls/blob/v1.0.0/src/commands/document-types/delete.ts)_
+_See code: [src/commands/document-types/delete.ts](https://github.com/nickchristensen/ppls/blob/v1.0.1/src/commands/document-types/delete.ts)_
 
 ## `ppls document-types list`
 
@@ -661,7 +660,7 @@ EXAMPLES
   $ ppls document-types list
 ```
 
-_See code: [src/commands/document-types/list.ts](https://github.com/nickchristensen/ppls/blob/v1.0.0/src/commands/document-types/list.ts)_
+_See code: [src/commands/document-types/list.ts](https://github.com/nickchristensen/ppls/blob/v1.0.1/src/commands/document-types/list.ts)_
 
 ## `ppls document-types show ID`
 
@@ -693,7 +692,7 @@ EXAMPLES
   $ ppls document-types show 123
 ```
 
-_See code: [src/commands/document-types/show.ts](https://github.com/nickchristensen/ppls/blob/v1.0.0/src/commands/document-types/show.ts)_
+_See code: [src/commands/document-types/show.ts](https://github.com/nickchristensen/ppls/blob/v1.0.1/src/commands/document-types/show.ts)_
 
 ## `ppls document-types update ID`
 
@@ -728,7 +727,7 @@ EXAMPLES
   $ ppls document-types update 123 --name "Invoice"
 ```
 
-_See code: [src/commands/document-types/update.ts](https://github.com/nickchristensen/ppls/blob/v1.0.0/src/commands/document-types/update.ts)_
+_See code: [src/commands/document-types/update.ts](https://github.com/nickchristensen/ppls/blob/v1.0.1/src/commands/document-types/update.ts)_
 
 ## `ppls documents add [PATH]`
 
@@ -770,7 +769,7 @@ EXAMPLES
   $ ppls documents add ./receipt.pdf --title "Receipt"
 ```
 
-_See code: [src/commands/documents/add.ts](https://github.com/nickchristensen/ppls/blob/v1.0.0/src/commands/documents/add.ts)_
+_See code: [src/commands/documents/add.ts](https://github.com/nickchristensen/ppls/blob/v1.0.1/src/commands/documents/add.ts)_
 
 ## `ppls documents delete ID`
 
@@ -805,7 +804,7 @@ EXAMPLES
   $ ppls documents delete 123
 ```
 
-_See code: [src/commands/documents/delete.ts](https://github.com/nickchristensen/ppls/blob/v1.0.0/src/commands/documents/delete.ts)_
+_See code: [src/commands/documents/delete.ts](https://github.com/nickchristensen/ppls/blob/v1.0.1/src/commands/documents/delete.ts)_
 
 ## `ppls documents download ID`
 
@@ -844,7 +843,7 @@ EXAMPLES
   $ ppls documents download 123,124 --output-dir ./downloads
 ```
 
-_See code: [src/commands/documents/download.ts](https://github.com/nickchristensen/ppls/blob/v1.0.0/src/commands/documents/download.ts)_
+_See code: [src/commands/documents/download.ts](https://github.com/nickchristensen/ppls/blob/v1.0.1/src/commands/documents/download.ts)_
 
 ## `ppls documents list`
 
@@ -881,7 +880,7 @@ EXAMPLES
   $ ppls documents list
 ```
 
-_See code: [src/commands/documents/list.ts](https://github.com/nickchristensen/ppls/blob/v1.0.0/src/commands/documents/list.ts)_
+_See code: [src/commands/documents/list.ts](https://github.com/nickchristensen/ppls/blob/v1.0.1/src/commands/documents/list.ts)_
 
 ## `ppls documents show ID`
 
@@ -913,7 +912,7 @@ EXAMPLES
   $ ppls documents show 123
 ```
 
-_See code: [src/commands/documents/show.ts](https://github.com/nickchristensen/ppls/blob/v1.0.0/src/commands/documents/show.ts)_
+_See code: [src/commands/documents/show.ts](https://github.com/nickchristensen/ppls/blob/v1.0.1/src/commands/documents/show.ts)_
 
 ## `ppls documents update ID`
 
@@ -956,7 +955,7 @@ EXAMPLES
   $ ppls documents update 123 --title "Receipt"
 ```
 
-_See code: [src/commands/documents/update.ts](https://github.com/nickchristensen/ppls/blob/v1.0.0/src/commands/documents/update.ts)_
+_See code: [src/commands/documents/update.ts](https://github.com/nickchristensen/ppls/blob/v1.0.1/src/commands/documents/update.ts)_
 
 ## `ppls help [COMMAND]`
 
@@ -1008,7 +1007,7 @@ EXAMPLES
   $ ppls profile
 ```
 
-_See code: [src/commands/profile.ts](https://github.com/nickchristensen/ppls/blob/v1.0.0/src/commands/profile.ts)_
+_See code: [src/commands/profile.ts](https://github.com/nickchristensen/ppls/blob/v1.0.1/src/commands/profile.ts)_
 
 ## `ppls tags add NAME`
 
@@ -1045,7 +1044,7 @@ EXAMPLES
   $ ppls tags add Inbox
 ```
 
-_See code: [src/commands/tags/add.ts](https://github.com/nickchristensen/ppls/blob/v1.0.0/src/commands/tags/add.ts)_
+_See code: [src/commands/tags/add.ts](https://github.com/nickchristensen/ppls/blob/v1.0.1/src/commands/tags/add.ts)_
 
 ## `ppls tags delete ID`
 
@@ -1080,7 +1079,7 @@ EXAMPLES
   $ ppls tags delete 123
 ```
 
-_See code: [src/commands/tags/delete.ts](https://github.com/nickchristensen/ppls/blob/v1.0.0/src/commands/tags/delete.ts)_
+_See code: [src/commands/tags/delete.ts](https://github.com/nickchristensen/ppls/blob/v1.0.1/src/commands/tags/delete.ts)_
 
 ## `ppls tags list`
 
@@ -1117,7 +1116,7 @@ EXAMPLES
   $ ppls tags list
 ```
 
-_See code: [src/commands/tags/list.ts](https://github.com/nickchristensen/ppls/blob/v1.0.0/src/commands/tags/list.ts)_
+_See code: [src/commands/tags/list.ts](https://github.com/nickchristensen/ppls/blob/v1.0.1/src/commands/tags/list.ts)_
 
 ## `ppls tags show ID`
 
@@ -1149,7 +1148,7 @@ EXAMPLES
   $ ppls tags show 123
 ```
 
-_See code: [src/commands/tags/show.ts](https://github.com/nickchristensen/ppls/blob/v1.0.0/src/commands/tags/show.ts)_
+_See code: [src/commands/tags/show.ts](https://github.com/nickchristensen/ppls/blob/v1.0.1/src/commands/tags/show.ts)_
 
 ## `ppls tags update ID`
 
@@ -1187,35 +1186,5 @@ EXAMPLES
   $ ppls tags update 123 --name Inbox
 ```
 
-_See code: [src/commands/tags/update.ts](https://github.com/nickchristensen/ppls/blob/v1.0.0/src/commands/tags/update.ts)_
-
-## `ppls whoami`
-
-Show profile details
-
-```
-USAGE
-  $ ppls whoami [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--token <value>]
-
-GLOBAL FLAGS
-  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
-  --json                 Format output as json.
-  --plain                Format output as plain text.
-  --table                Format output as table.
-
-ENVIRONMENT FLAGS
-  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
-  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
-  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
-
-DESCRIPTION
-  Show profile details
-
-ALIASES
-  $ ppls whoami
-
-EXAMPLES
-  $ ppls whoami
-```
+_See code: [src/commands/tags/update.ts](https://github.com/nickchristensen/ppls/blob/v1.0.1/src/commands/tags/update.ts)_
 <!-- commandsstop -->
