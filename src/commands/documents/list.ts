@@ -8,6 +8,18 @@ export default class DocumentsList extends ListCommand<Document> {
   protected listPath = '/api/documents/'
   protected tableAttrs = ['id', 'title', 'created', 'added', 'correspondent', 'document_type', 'tags']
 
+  protected override listParams(
+    flags: Parameters<ListCommand['listParams']>[0],
+  ): Record<string, number | string | undefined> {
+    const params = super.listParams(flags)
+
+    delete params.name__icontains
+    // eslint-disable-next-line camelcase -- API uses double-underscore field names.
+    params.title__icontains = flags['name-contains']
+
+    return params
+  }
+
   protected plainTemplate(document: Document): string | undefined {
     const title = document.title?.trim()
     if (!title) {

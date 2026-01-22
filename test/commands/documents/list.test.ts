@@ -124,6 +124,27 @@ describe('documents:list', () => {
     expect(requestUrl.searchParams.get('ordering')).to.equal('title')
   })
 
+  it('supports name-contains filtering', async () => {
+    globalThis.fetch = async (input) => {
+      requests.push(String(input))
+      return new Response(
+        JSON.stringify({
+          next: null,
+          results: [{title: 'BFPR100'}],
+        }),
+        {
+          headers: {'Content-Type': 'application/json'},
+          status: 200,
+        },
+      )
+    }
+
+    await runCommand('documents:list --name-contains BFPR100')
+    const requestUrl = new URL(requests[0])
+
+    expect(requestUrl.searchParams.get('title__icontains')).to.equal('BFPR100')
+  })
+
   it('respects page size without auto-pagination', async () => {
     globalThis.fetch = async (input) => {
       requests.push(String(input))
