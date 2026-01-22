@@ -35,7 +35,7 @@ describe('tags:list', () => {
     const responses = [
       {
         body: {
-          next: '/api/tags/?page=2',
+          next: 'http://paperless.example.test/api/tags/?page=2',
           results: [{children: [], 'document_count': 2, id: 1, name: 'Inbox', slug: 'inbox'}],
         },
         status: 200,
@@ -68,6 +68,7 @@ describe('tags:list', () => {
     expect(stdout).to.contain('Inbox')
     expect(stdout).to.contain('Tax')
     expect(requests).to.have.lengthOf(2)
+    expect(requests[1]).to.match(/^https:\/\//)
   })
 
   it('respects page and page size flags', async () => {

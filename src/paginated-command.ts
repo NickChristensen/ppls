@@ -75,9 +75,10 @@ export abstract class PaginatedCommand extends BaseCommand {
       let nextUrl: null | URL = url
 
       while (nextUrl) {
+        const currentUrl = nextUrl
         // eslint-disable-next-line no-await-in-loop -- pagination is sequential and depends on the next page URL.
         const payload: PaginatedResponse<T> = await this.fetchJson<PaginatedResponse<T>>(
-          nextUrl,
+          currentUrl,
           token,
           headers,
         )
@@ -88,7 +89,8 @@ export abstract class PaginatedCommand extends BaseCommand {
         }
 
         try {
-          nextUrl = new URL(payload.next, nextUrl)
+          const parsedNext = new URL(payload.next, currentUrl)
+          nextUrl = this.normalizeNextUrl(parsedNext, currentUrl)
         } catch {
           this.error('API returned an invalid next URL for pagination.')
         }
@@ -116,6 +118,17 @@ export abstract class PaginatedCommand extends BaseCommand {
     })
   }
 
+  protected normalizeNextUrl(nextUrl: URL, currentUrl: URL): URL {
+    if (currentUrl.protocol === 'https:' && nextUrl.protocol === 'http:' && nextUrl.hostname === currentUrl.hostname) {
+      nextUrl.protocol = currentUrl.protocol
+      if (currentUrl.port) {
+        nextUrl.port = currentUrl.port
+      }
+    }
+
+    return nextUrl
+  }
+
   protected async *paginate<T>(
     url: URL,
     tokenValue: string,
@@ -125,9 +138,10 @@ export abstract class PaginatedCommand extends BaseCommand {
     let nextUrl: null | URL = url
 
     while (nextUrl) {
+      const currentUrl = nextUrl
       // eslint-disable-next-line no-await-in-loop -- pagination is sequential and depends on the next page URL.
       const payload: PaginatedResponse<T> = await this.fetchJson<PaginatedResponse<T>>(
-        nextUrl,
+        currentUrl,
         tokenValue,
         headers,
       )
@@ -142,7 +156,8 @@ export abstract class PaginatedCommand extends BaseCommand {
       }
 
       try {
-        nextUrl = new URL(payload.next, nextUrl)
+        const parsedNext = new URL(payload.next, currentUrl)
+        nextUrl = this.normalizeNextUrl(parsedNext, currentUrl)
       } catch {
         this.error('API returned an invalid next URL for pagination.')
       }
