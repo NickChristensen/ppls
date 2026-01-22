@@ -83,8 +83,7 @@
     "prepack": "oclif manifest && oclif readme --no-aliases",
     "postbuild": "oclif manifest && oclif readme --no-aliases",
     "test": "mocha --forbid-only \"test/**/*.test.ts\"",
-    "version": "oclif readme --no-aliases && git add README.md",
-    "publish": "npm publish --access public"
+    "version": "oclif readme --no-aliases && git add README.md"
   },
   "types": "dist/index.d.ts"
 }
