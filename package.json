@@ -4,7 +4,7 @@
   "version": "1.0.3",
   "author": "Nick Christensen",
   "bin": {
-    "ppls": "./bin/run.js"
+    "ppls": "bin/run.js"
   },
   "bugs": "https://github.com/nickchristensen/ppls/issues",
   "dependencies": {
@@ -68,7 +68,10 @@
       "tags": {}
     }
   },
-  "repository": "nickchristensen/ppls",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nickchristensen/ppls.git"
+  },
   "publishConfig": {
     "access": "public"
   },
