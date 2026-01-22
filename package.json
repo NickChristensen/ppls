@@ -1,7 +1,7 @@
 {
   "name": "@nickchristensen/ppls",
   "description": "A node-based paperless-ngx cli",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "Nick Christensen",
   "bin": {
     "ppls": "./bin/run.js"
