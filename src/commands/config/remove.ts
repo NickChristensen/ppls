@@ -1,17 +1,17 @@
-import {Args} from '@oclif/core'
+import {Args, Command} from '@oclif/core'
 
-import {BaseCommand} from '../../base-command.js'
 import {type ConfigData, readConfig, writeConfig} from '../../helpers/config-store.js'
 
 type ConfigRemoveArgs = {
   key: string
 }
 
-export default class ConfigRemove extends BaseCommand {
+export default class ConfigRemove extends Command {
   static override args = {
     key: Args.string({description: 'Config key', required: true}),
   }
   static override description = 'Remove a config value'
+  static override enableJsonFlag = true
   static override examples = ['<%= config.bin %> <%= command.id %> token']
 
   public async run(): Promise<ConfigData> {

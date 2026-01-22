@@ -1,17 +1,17 @@
-import {Args} from '@oclif/core'
+import {Args, Command} from '@oclif/core'
 
-import {BaseCommand} from '../../base-command.js'
 import {type ConfigData, readConfig} from '../../helpers/config-store.js'
 
 type ConfigGetArgs = {
   key: string
 }
 
-export default class ConfigGet extends BaseCommand {
+export default class ConfigGet extends Command {
   static override args = {
     key: Args.string({description: 'Config key', required: true}),
   }
   static override description = 'Get a config value'
+  static override enableJsonFlag = true
   static override examples = ['<%= config.bin %> <%= command.id %> hostname']
 
   public async run(): Promise<ConfigData> {

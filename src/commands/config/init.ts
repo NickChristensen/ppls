@@ -1,7 +1,6 @@
-import {Flags} from '@oclif/core'
+import {Command, Flags} from '@oclif/core'
 import {stat} from 'node:fs/promises'
 
-import {BaseCommand} from '../../base-command.js'
 import {configPath, writeConfig} from '../../helpers/config-store.js'
 
 type ConfigInitFlags = {
@@ -13,8 +12,9 @@ type ConfigInitResult = {
   path: string
 }
 
-export default class ConfigInit extends BaseCommand {
+export default class ConfigInit extends Command {
   static override description = 'Initialize a config file'
+  static override enableJsonFlag = true
   static override examples = ['<%= config.bin %> <%= command.id %>']
   static override flags = {
     force: Flags.boolean({char: 'f', description: 'Overwrite existing config file'}),

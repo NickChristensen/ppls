@@ -1,6 +1,5 @@
-import {Args} from '@oclif/core'
+import {Args, Command} from '@oclif/core'
 
-import {BaseCommand} from '../../base-command.js'
 import {type ConfigData, readConfig, writeConfig} from '../../helpers/config-store.js'
 
 type ConfigSetArgs = {
@@ -34,12 +33,13 @@ const parseConfigValue = (raw: string): unknown => {
   return trimmed
 }
 
-export default class ConfigSet extends BaseCommand {
+export default class ConfigSet extends Command {
   static override args = {
     key: Args.string({description: 'Config key', required: true}),
     value: Args.string({description: 'Config value', required: true}),
   }
   static override description = 'Set a config value'
+  static override enableJsonFlag = true
   static override examples = [
     '<%= config.bin %> <%= command.id %> hostname https://paperless.example.com',
     '<%= config.bin %> <%= command.id %> headers \'{"X-Api-Key":"token"}\'',

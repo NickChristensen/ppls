@@ -392,11 +392,11 @@ export abstract class BaseCommand extends Command {
     const headers = this.resolveHeaders(flags, userConfig)
 
     if (!hostname) {
-      this.error('Missing required hostname. Set --hostname, PPLS_HOSTNAME, or config.json.')
+      this.error('hostname required. Use --hostname, set PPLS_HOSTNAME, or use `ppls config set hostname <value>`')
     }
 
     if (!token) {
-      this.error('Missing required token. Set --token, PPLS_TOKEN, or config.json.')
+      this.error('token required. Use --token, set PPLS_TOKEN, or use `ppls config set token <value>`')
     }
 
     return {dateFormat, headers, hostname, token}

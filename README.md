@@ -3,8 +3,8 @@
 A node-based paperless-ngx cli
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
-[![Version](https://img.shields.io/npm/v/ppls.svg)](https://npmjs.org/package/ppls)
-[![Downloads/week](https://img.shields.io/npm/dw/ppls.svg)](https://npmjs.org/package/ppls)
+[![Version](https://img.shields.io/npm/v/%40nickchristensen%2Fppls.svg)](https://npmjs.org/package/@nickchristensen/ppls)
+[![Downloads/week](https://img.shields.io/npm/dw/%40nickchristensen%2Fppls.svg)](https://npmjs.org/package/@nickchristensen/ppls)
 
 <!-- toc -->
 * [ppls](#ppls)
@@ -14,7 +14,13 @@ A node-based paperless-ngx cli
 <!-- tocstop -->
 
 # Quickstart
-TODO
+
+```
+$ npm install -g @nickchristensen/ppls
+$ ppls config set hostname http://your-paperless-installation
+$ ppls config set token your-api-auth-token
+$ ppls --help
+```
 
 # Configuration
 
@@ -27,7 +33,7 @@ Configuration options can be specified via config file (`$XDG_CONFIG_HOME/ppls/c
 | `headers`    | `PPLS_HEADERS`     | `--header`      | `--header` and `PPLS_HEADERS` use `Key=Value` (repeat `--header` for multiple headers). |
 | `dateFormat` | `PPLS_DATE_FORMAT` | `--date-format` | uses [date-fns format tokens](https://date-fns.org/v3.6.0/docs/format)                  |
 
-Precedence: config file < environment variables < command flags.
+Precedence: command flags > environment variables > config file.
 
 ### Config file management
 
@@ -87,22 +93,13 @@ Get a config value
 
 ```
 USAGE
-  $ ppls config get KEY [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--token <value>]
+  $ ppls config get KEY [--json]
 
 ARGUMENTS
   KEY  Config key
 
 GLOBAL FLAGS
-  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
-  --json                 Format output as json.
-  --plain                Format output as plain text.
-  --table                Format output as table.
-
-ENVIRONMENT FLAGS
-  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
-  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
-  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
+  --json  Format output as json.
 
 DESCRIPTION
   Get a config value
@@ -119,22 +116,13 @@ Initialize a config file
 
 ```
 USAGE
-  $ ppls config init [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--token <value>] [-f]
+  $ ppls config init [--json] [-f]
 
 FLAGS
   -f, --force  Overwrite existing config file
 
 GLOBAL FLAGS
-  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
-  --json                 Format output as json.
-  --plain                Format output as plain text.
-  --table                Format output as table.
-
-ENVIRONMENT FLAGS
-  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
-  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
-  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
+  --json  Format output as json.
 
 DESCRIPTION
   Initialize a config file
@@ -151,19 +139,14 @@ List config values
 
 ```
 USAGE
-  $ ppls config list [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--token <value>]
+  $ ppls config list [--plain | --json | --table]
+
+FLAGS
+  --plain  Format output as plain text.
+  --table  Format output as table.
 
 GLOBAL FLAGS
-  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
-  --json                 Format output as json.
-  --plain                Format output as plain text.
-  --table                Format output as table.
-
-ENVIRONMENT FLAGS
-  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
-  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
-  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
+  --json  Format output as json.
 
 DESCRIPTION
   List config values
@@ -180,22 +163,13 @@ Remove a config value
 
 ```
 USAGE
-  $ ppls config remove KEY [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--token <value>]
+  $ ppls config remove KEY [--json]
 
 ARGUMENTS
   KEY  Config key
 
 GLOBAL FLAGS
-  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
-  --json                 Format output as json.
-  --plain                Format output as plain text.
-  --table                Format output as table.
-
-ENVIRONMENT FLAGS
-  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
-  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
-  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
+  --json  Format output as json.
 
 DESCRIPTION
   Remove a config value
@@ -212,23 +186,14 @@ Set a config value
 
 ```
 USAGE
-  $ ppls config set KEY VALUE [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain |
-    --json | --table] [--token <value>]
+  $ ppls config set KEY VALUE [--json]
 
 ARGUMENTS
   KEY    Config key
   VALUE  Config value
 
 GLOBAL FLAGS
-  --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
-  --json                 Format output as json.
-  --plain                Format output as plain text.
-  --table                Format output as table.
-
-ENVIRONMENT FLAGS
-  --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
-  --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
-  --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
+  --json  Format output as json.
 
 DESCRIPTION
   Set a config value

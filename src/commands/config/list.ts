@@ -1,4 +1,5 @@
-import {BaseCommand} from '../../base-command.js'
+import {Command, Flags} from '@oclif/core'
+
 import {type ConfigData, readConfig} from '../../helpers/config-store.js'
 import {renderTable} from '../../helpers/table.js'
 
@@ -28,9 +29,20 @@ const formatConfigValue = (value: unknown): string => {
   return JSON.stringify(value)
 }
 
-export default class ConfigList extends BaseCommand {
+export default class ConfigList extends Command {
   static override description = 'List config values'
+  static override enableJsonFlag = true
   static override examples = ['<%= config.bin %> <%= command.id %>']
+  static override flags = {
+    plain: Flags.boolean({
+      description: 'Format output as plain text.',
+      exclusive: ['json', 'table'],
+    }),
+    table: Flags.boolean({
+      description: 'Format output as table.',
+      exclusive: ['json', 'plain'],
+    }),
+  }
 
   public async run(): Promise<ConfigData> {
     const {flags} = await this.parse()
