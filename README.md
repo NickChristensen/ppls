@@ -284,7 +284,7 @@ USAGE
     <value>]
 
 FLAGS
-  --id-in=<value>          Filter by id list (comma-separated)
+  --id-in=<value>          Filter by id list (repeatable or comma-separated)
   --name-contains=<value>  Filter by name substring
   --page=<value>           Page number to fetch
   --page-size=<value>      [default: disable pagination, all results] Number of results per page
@@ -461,7 +461,7 @@ USAGE
     <value>]
 
 FLAGS
-  --id-in=<value>          Filter by id list (comma-separated)
+  --id-in=<value>          Filter by id list (repeatable or comma-separated)
   --name-contains=<value>  Filter by name substring
   --page=<value>           Page number to fetch
   --page-size=<value>      [default: disable pagination, all results] Number of results per page
@@ -636,7 +636,7 @@ USAGE
     <value>]
 
 FLAGS
-  --id-in=<value>          Filter by id list (comma-separated)
+  --id-in=<value>          Filter by id list (repeatable or comma-separated)
   --name-contains=<value>  Filter by name substring
   --page=<value>           Page number to fetch
   --page-size=<value>      [default: disable pagination, all results] Number of results per page
@@ -856,7 +856,7 @@ USAGE
     <value>]
 
 FLAGS
-  --id-in=<value>          Filter by id list (comma-separated)
+  --id-in=<value>          Filter by id list (repeatable or comma-separated)
   --name-contains=<value>  Filter by name substring
   --page=<value>           Page number to fetch
   --page-size=<value>      [default: disable pagination, all results] Number of results per page
@@ -1092,7 +1092,7 @@ USAGE
     <value>]
 
 FLAGS
-  --id-in=<value>          Filter by id list (comma-separated)
+  --id-in=<value>          Filter by id list (repeatable or comma-separated)
   --name-contains=<value>  Filter by name substring
   --page=<value>           Page number to fetch
   --page-size=<value>      [default: disable pagination, all results] Number of results per page

@@ -10,7 +10,7 @@ export default class DocumentsList extends ListCommand<Document> {
 
   protected override listParams(
     flags: Parameters<ListCommand['listParams']>[0],
-  ): Record<string, number | string | undefined> {
+  ): Record<string, number | string | string[] | undefined> {
     const params = super.listParams(flags)
 
     delete params.name__icontains

@@ -10,6 +10,8 @@ export type ApiFlags = {
   token: string
 }
 
+type QueryParams = Record<string, number | string | string[] | undefined>
+
 type ResolvedGlobalFlags = ApiFlags & {
   dateFormat: string
 }
@@ -64,7 +66,7 @@ export abstract class BaseCommand extends Command {
   protected buildApiUrl(
     hostnameValue: string,
     path: string,
-    params: Record<string, number | string | undefined> = {},
+    params: QueryParams = {},
   ): URL {
     let url: URL
 
@@ -86,7 +88,7 @@ export abstract class BaseCommand extends Command {
   protected buildApiUrlFromFlags(
     flags: ApiFlags,
     path: string,
-    params: Record<string, number | string | undefined> = {},
+    params: QueryParams = {},
   ): URL {
     return this.buildApiUrl(flags.hostname, path, params)
   }
@@ -124,7 +126,7 @@ export abstract class BaseCommand extends Command {
   protected async fetchApiBinary(
     flags: ApiFlags,
     path: string,
-    params: Record<string, number | string | undefined> = {},
+    params: QueryParams = {},
   ): Promise<{data: Uint8Array; headers: Headers}> {
     const url = this.buildApiUrlFromFlags(flags, path, params)
     const requestHeaders: Record<string, string> = {
@@ -149,7 +151,7 @@ export abstract class BaseCommand extends Command {
   protected async fetchApiJson<T>(
     flags: ApiFlags,
     path: string,
-    params: Record<string, number | string | undefined> = {},
+    params: QueryParams = {},
   ): Promise<T> {
     const url = this.buildApiUrlFromFlags(flags, path, params)
     return this.fetchJson<T>(url, flags.token, flags.headers)
