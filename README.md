@@ -280,14 +280,14 @@ List correspondents
 ```
 USAGE
   $ ppls correspondents list [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--token <value>] [--page <value>] [--page-size <value>] [--id-in <value> | --name-contains <value>]
-    [--sort <value>]
+    --table] [--token <value>] [--id-in <value> | --name-contains <value>] [--page <value> --page-size <value>] [--sort
+    <value>]
 
 FLAGS
   --id-in=<value>          Filter by id list (comma-separated)
   --name-contains=<value>  Filter by name substring
   --page=<value>           Page number to fetch
-  --page-size=<value>      Number of results per page
+  --page-size=<value>      [default: disable pagination, all results] Number of results per page
   --sort=<value>           Sort results by the provided field
 
 GLOBAL FLAGS
@@ -457,14 +457,14 @@ List custom fields
 ```
 USAGE
   $ ppls custom-fields list [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--token <value>] [--page <value>] [--page-size <value>] [--id-in <value> | --name-contains <value>]
-    [--sort <value>]
+    --table] [--token <value>] [--id-in <value> | --name-contains <value>] [--page <value> --page-size <value>] [--sort
+    <value>]
 
 FLAGS
   --id-in=<value>          Filter by id list (comma-separated)
   --name-contains=<value>  Filter by name substring
   --page=<value>           Page number to fetch
-  --page-size=<value>      Number of results per page
+  --page-size=<value>      [default: disable pagination, all results] Number of results per page
   --sort=<value>           Sort results by the provided field
 
 GLOBAL FLAGS
@@ -632,14 +632,14 @@ List document types
 ```
 USAGE
   $ ppls document-types list [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--token <value>] [--page <value>] [--page-size <value>] [--id-in <value> | --name-contains <value>]
-    [--sort <value>]
+    --table] [--token <value>] [--id-in <value> | --name-contains <value>] [--page <value> --page-size <value>] [--sort
+    <value>]
 
 FLAGS
   --id-in=<value>          Filter by id list (comma-separated)
   --name-contains=<value>  Filter by name substring
   --page=<value>           Page number to fetch
-  --page-size=<value>      Number of results per page
+  --page-size=<value>      [default: disable pagination, all results] Number of results per page
   --sort=<value>           Sort results by the provided field
 
 GLOBAL FLAGS
@@ -852,14 +852,14 @@ List documents
 ```
 USAGE
   $ ppls documents list [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--token <value>] [--page <value>] [--page-size <value>] [--id-in <value> | --name-contains <value>]
-    [--sort <value>]
+    --table] [--token <value>] [--id-in <value> | --name-contains <value>] [--page <value> --page-size <value>] [--sort
+    <value>]
 
 FLAGS
   --id-in=<value>          Filter by id list (comma-separated)
   --name-contains=<value>  Filter by name substring
   --page=<value>           Page number to fetch
-  --page-size=<value>      Number of results per page
+  --page-size=<value>      [default: disable pagination, all results] Number of results per page
   --sort=<value>           Sort results by the provided field
 
 GLOBAL FLAGS
@@ -1088,14 +1088,14 @@ List tags
 ```
 USAGE
   $ ppls tags list [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--token <value>] [--page <value>] [--page-size <value>] [--id-in <value> | --name-contains <value>]
-    [--sort <value>]
+    --table] [--token <value>] [--id-in <value> | --name-contains <value>] [--page <value> --page-size <value>] [--sort
+    <value>]
 
 FLAGS
   --id-in=<value>          Filter by id list (comma-separated)
   --name-contains=<value>  Filter by name substring
   --page=<value>           Page number to fetch
-  --page-size=<value>      Number of results per page
+  --page-size=<value>      [default: disable pagination, all results] Number of results per page
   --sort=<value>           Sort results by the provided field
 
 GLOBAL FLAGS

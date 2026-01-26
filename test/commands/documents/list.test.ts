@@ -31,48 +31,32 @@ describe('documents:list', () => {
     globalThis.fetch = originalFetch
   })
 
-  it('lists documents across pages by default', async () => {
-    const responses = [
-      {
-        body: {
+  it('requests a single page with the default page size', async () => {
+    globalThis.fetch = async (input) => {
+      requests.push(String(input))
+      return new Response(
+        JSON.stringify({
           next: '/api/documents/?page=2',
           results: [
             {added: '2024-01-02T01:02:03Z', correspondent: 1, created: '2024-01-01', 'document_type': 2, id: 1, title: 'First Doc'},
           ],
+        }),
+        {
+          headers: {'Content-Type': 'application/json'},
+          status: 200,
         },
-        status: 200,
-      },
-      {
-        body: {
-          next: null,
-          results: [
-            {added: '2024-01-03T01:02:03Z', correspondent: 2, created: '2024-01-02', 'document_type': 3, id: 2, title: 'Second Doc'},
-          ],
-        },
-        status: 200,
-      },
-    ]
-
-    globalThis.fetch = async (input) => {
-      requests.push(String(input))
-      const response = responses.shift()
-
-      if (!response) {
-        throw new Error('Unexpected fetch call')
-      }
-
-      return new Response(JSON.stringify(response.body), {
-        headers: {'Content-Type': 'application/json'},
-        status: response.status,
-      })
+      )
     }
 
     const {stdout} = await runCommand('documents:list')
     const normalized = stdout.replaceAll(/\s+/g, ' ')
     expect(normalized).to.contain('Title')
     expect(normalized).to.contain('First')
-    expect(normalized).to.contain('Second')
-    expect(requests).to.have.lengthOf(2)
+    expect(requests).to.have.lengthOf(1)
+
+    const requestUrl = new URL(requests[0])
+    expect(requestUrl.searchParams.get('page')).to.equal(null)
+    expect(requestUrl.searchParams.get('page_size')).to.equal(String(Number.MAX_SAFE_INTEGER))
   })
 
   it('respects page and page size flags', async () => {
@@ -145,7 +129,7 @@ describe('documents:list', () => {
     expect(requestUrl.searchParams.get('title__icontains')).to.equal('BFPR100')
   })
 
-  it('respects page size without auto-pagination', async () => {
+  it('respects page size overrides', async () => {
     globalThis.fetch = async (input) => {
       requests.push(String(input))
       return new Response(
@@ -173,40 +157,22 @@ describe('documents:list', () => {
   })
 
   it('returns the payload when json is enabled', async () => {
-    const responses = [
-      {
-        body: {
+    globalThis.fetch = async () =>
+      new Response(
+        JSON.stringify({
           next: 'https://paperless.example.test/api/documents/?page=2',
           results: [{title: 'First Doc'}],
+        }),
+        {
+          headers: {'Content-Type': 'application/json'},
+          status: 200,
         },
-        status: 200,
-      },
-      {
-        body: {
-          next: null,
-          results: [{title: 'Second Doc'}],
-        },
-        status: 200,
-      },
-    ]
-
-    globalThis.fetch = async () => {
-      const response = responses.shift()
-
-      if (!response) {
-        throw new Error('Unexpected fetch call')
-      }
-
-      return new Response(JSON.stringify(response.body), {
-        headers: {'Content-Type': 'application/json'},
-        status: response.status,
-      })
-    }
+      )
 
     const {stdout} = await runCommand('documents:list --json')
     const payload = JSON.parse(stdout) as Array<{title: string}>
 
-    expect(payload.map((item) => item.title)).to.deep.equal(['First Doc', 'Second Doc'])
+    expect(payload.map((item) => item.title)).to.deep.equal(['First Doc'])
   })
 
   it('renders a plain list when requested', async () => {

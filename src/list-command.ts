@@ -2,14 +2,14 @@ import {Flags} from '@oclif/core'
 
 import type {ApiFlags} from './base-command.js'
 
+import {BaseCommand} from './base-command.js'
 import {createValueFormatter, type TableColumn, type TableRow} from './helpers/table.js'
-import {PaginatedCommand} from './paginated-command.js'
 
 type ListCommandFlags = ApiFlags & {
   'id-in'?: string
   'name-contains'?: string
   page?: number
-  'page-size'?: number
+  'page-size': number
   sort?: string
 }
 
@@ -21,12 +21,16 @@ type ListOutputFlags = ListCommandFlags & {
 
 type TableColumnInput = string | TableColumn
 
+type PaginatedResponse<T> = {
+  results?: T[]
+}
+
 export abstract class ListCommand<
   TRaw extends TableRow = TableRow,
   TOutput extends TableRow = TRaw,
-> extends PaginatedCommand {
+> extends BaseCommand {
   static baseFlags = {
-    ...PaginatedCommand.baseFlags,
+    ...BaseCommand.baseFlags,
     'id-in': Flags.string({
       description: 'Filter by id list (comma-separated)',
       exclusive: ['name-contains'],
@@ -34,6 +38,17 @@ export abstract class ListCommand<
     'name-contains': Flags.string({
       description: 'Filter by name substring',
       exclusive: ['id-in'],
+    }),
+    page: Flags.integer({
+      dependsOn: ['page-size'],
+      description: 'Page number to fetch',
+      min: 1,
+    }),
+    'page-size': Flags.integer({
+      default: async ({flags}) => (flags.page === undefined ? Number.MAX_SAFE_INTEGER : undefined),
+      defaultHelp: async () => 'disable pagination, all results',
+      description: 'Number of results per page',
+      min: 1,
     }),
     sort: Flags.string({description: 'Sort results by the provided field'}),
   }
@@ -46,7 +61,7 @@ export abstract class ListCommand<
     path: string
   }): Promise<T[]> {
     const {flags, params = {}, path} = options
-    const url = this.buildPaginatedUrlFromFlags({
+    const url = this.buildListUrl({
       flags,
       params: {
         ordering: flags.sort,
@@ -54,12 +69,14 @@ export abstract class ListCommand<
       },
       path,
     })
+    const spinner = this.startSpinner(`Fetching ${url.pathname}`)
 
-    return this.fetchPaginatedResultsFromFlags<T>({
-      autoPaginate: this.shouldAutoPaginate(flags),
-      flags,
-      url,
-    })
+    try {
+      const payload = await this.fetchJson<PaginatedResponse<T>>(url, flags.token, flags.headers)
+      return payload.results ?? []
+    } finally {
+      spinner?.stop()
+    }
   }
 
   protected listParams(flags: ListCommandFlags): Record<string, number | string | undefined> {
@@ -102,6 +119,7 @@ export abstract class ListCommand<
   public async run(): Promise<TOutput[]> {
     const {flags, metadata} = await this.parse()
     const {dateFormat, ...apiFlags} = await this.resolveGlobalFlags(flags, metadata)
+
     const listFlags: ListCommandFlags = {
       headers: apiFlags.headers,
       hostname: apiFlags.hostname,
@@ -133,15 +151,27 @@ export abstract class ListCommand<
     return results
   }
 
-  protected shouldAutoPaginate(flags: ListCommandFlags): boolean {
-    return flags.page === undefined && flags['page-size'] === undefined
-  }
-
   protected transformResult(result: TRaw): TOutput {
     return result as unknown as TOutput
   }
 
   protected transformResults(results: TRaw[]): TOutput[] {
     return results.map((result) => this.transformResult(result))
+  }
+
+  private buildListUrl(options: {
+    flags: ListCommandFlags
+    params?: Record<string, number | string | undefined>
+    path: string
+  }): URL {
+    const {flags, params = {}, path} = options
+    const {page} = flags
+    const pageSize = flags['page-size']
+
+    return this.buildApiUrl(flags.hostname, path, {
+      ...params,
+      page,
+      'page_size': pageSize,
+    })
   }
 }

@@ -31,43 +31,29 @@ describe('document-types:list', () => {
     globalThis.fetch = originalFetch
   })
 
-  it('lists document types across pages by default', async () => {
-    const responses = [
-      {
-        body: {
-          next: '/api/document_types/?page=2',
-          results: [{'document_count': 2, id: 1, name: 'Bill', slug: 'bill'}],
-        },
-        status: 200,
-      },
-      {
-        body: {
-          next: null,
-          results: [{'document_count': 5, id: 2, name: 'Receipt', slug: 'receipt'}],
-        },
-        status: 200,
-      },
-    ]
-
+  it('requests a single page with the default page size', async () => {
     globalThis.fetch = async (input) => {
       requests.push(String(input))
-      const response = responses.shift()
-
-      if (!response) {
-        throw new Error('Unexpected fetch call')
-      }
-
-      return new Response(JSON.stringify(response.body), {
-        headers: {'Content-Type': 'application/json'},
-        status: response.status,
-      })
+      return new Response(
+        JSON.stringify({
+          next: '/api/document_types/?page=2',
+          results: [{'document_count': 2, id: 1, name: 'Bill', slug: 'bill'}],
+        }),
+        {
+          headers: {'Content-Type': 'application/json'},
+          status: 200,
+        },
+      )
     }
 
     const {stdout} = await runCommand('document-types:list')
     expect(stdout).to.contain('Name')
     expect(stdout).to.contain('Bill')
-    expect(stdout).to.contain('Receipt')
-    expect(requests).to.have.lengthOf(2)
+    expect(requests).to.have.lengthOf(1)
+
+    const requestUrl = new URL(requests[0])
+    expect(requestUrl.searchParams.get('page')).to.equal(null)
+    expect(requestUrl.searchParams.get('page_size')).to.equal(String(Number.MAX_SAFE_INTEGER))
   })
 
   it('respects page and page size flags', async () => {
@@ -115,7 +101,7 @@ describe('document-types:list', () => {
     expect(requestUrl.searchParams.get('ordering')).to.equal('name')
   })
 
-  it('respects page size without auto-pagination', async () => {
+  it('respects page size overrides', async () => {
     globalThis.fetch = async (input) => {
       requests.push(String(input))
       return new Response(
@@ -139,40 +125,22 @@ describe('document-types:list', () => {
   })
 
   it('returns the payload when json is enabled', async () => {
-    const responses = [
-      {
-        body: {
+    globalThis.fetch = async () =>
+      new Response(
+        JSON.stringify({
           next: 'https://paperless.example.test/api/document_types/?page=2',
           results: [{name: 'Bill'}],
+        }),
+        {
+          headers: {'Content-Type': 'application/json'},
+          status: 200,
         },
-        status: 200,
-      },
-      {
-        body: {
-          next: null,
-          results: [{name: 'Receipt'}],
-        },
-        status: 200,
-      },
-    ]
-
-    globalThis.fetch = async () => {
-      const response = responses.shift()
-
-      if (!response) {
-        throw new Error('Unexpected fetch call')
-      }
-
-      return new Response(JSON.stringify(response.body), {
-        headers: {'Content-Type': 'application/json'},
-        status: response.status,
-      })
-    }
+      )
 
     const {stdout} = await runCommand('document-types:list --json')
     const payload = JSON.parse(stdout) as Array<{name: string}>
 
-    expect(payload.map((item) => item.name)).to.deep.equal(['Bill', 'Receipt'])
+    expect(payload.map((item) => item.name)).to.deep.equal(['Bill'])
   })
 
   it('renders a plain list when requested', async () => {

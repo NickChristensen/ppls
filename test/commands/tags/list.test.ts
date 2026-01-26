@@ -31,44 +31,29 @@ describe('tags:list', () => {
     globalThis.fetch = originalFetch
   })
 
-  it('lists tags across pages by default', async () => {
-    const responses = [
-      {
-        body: {
-          next: 'http://paperless.example.test/api/tags/?page=2',
-          results: [{children: [], 'document_count': 2, id: 1, name: 'Inbox', slug: 'inbox'}],
-        },
-        status: 200,
-      },
-      {
-        body: {
-          next: null,
-          results: [{children: [], 'document_count': 5, id: 2, name: 'Tax', slug: 'tax'}],
-        },
-        status: 200,
-      },
-    ]
-
+  it('requests a single page with the default page size', async () => {
     globalThis.fetch = async (input) => {
       requests.push(String(input))
-      const response = responses.shift()
-
-      if (!response) {
-        throw new Error('Unexpected fetch call')
-      }
-
-      return new Response(JSON.stringify(response.body), {
-        headers: {'Content-Type': 'application/json'},
-        status: response.status,
-      })
+      return new Response(
+        JSON.stringify({
+          next: 'http://paperless.example.test/api/tags/?page=2',
+          results: [{children: [], 'document_count': 2, id: 1, name: 'Inbox', slug: 'inbox'}],
+        }),
+        {
+          headers: {'Content-Type': 'application/json'},
+          status: 200,
+        },
+      )
     }
 
     const {stdout} = await runCommand('tags:list')
     expect(stdout).to.contain('Name')
     expect(stdout).to.contain('Inbox')
-    expect(stdout).to.contain('Tax')
-    expect(requests).to.have.lengthOf(2)
-    expect(requests[1]).to.match(/^https:\/\//)
+    expect(requests).to.have.lengthOf(1)
+
+    const requestUrl = new URL(requests[0])
+    expect(requestUrl.searchParams.get('page')).to.equal(null)
+    expect(requestUrl.searchParams.get('page_size')).to.equal(String(Number.MAX_SAFE_INTEGER))
   })
 
   it('respects page and page size flags', async () => {
@@ -95,6 +80,17 @@ describe('tags:list', () => {
     expect(requestUrl.searchParams.get('page_size')).to.equal('1')
   })
 
+  it('requires page size when page is provided', async () => {
+    globalThis.fetch = async () => {
+      throw new Error('Unexpected fetch call')
+    }
+
+    const {error} = await runCommand('tags:list --page 2')
+
+    expect(error).to.be.instanceOf(Error)
+    expect(error?.message).to.match(/page-size/i)
+  })
+
   it('supports sort ordering', async () => {
     globalThis.fetch = async (input) => {
       requests.push(String(input))
@@ -116,7 +112,7 @@ describe('tags:list', () => {
     expect(requestUrl.searchParams.get('ordering')).to.equal('name')
   })
 
-  it('respects page size without auto-pagination', async () => {
+  it('respects page size overrides', async () => {
     globalThis.fetch = async (input) => {
       requests.push(String(input))
       return new Response(
@@ -140,40 +136,22 @@ describe('tags:list', () => {
   })
 
   it('returns the payload when json is enabled', async () => {
-    const responses = [
-      {
-        body: {
+    globalThis.fetch = async () =>
+      new Response(
+        JSON.stringify({
           next: 'https://paperless.example.test/api/tags/?page=2',
           results: [{children: [], name: 'Inbox'}],
+        }),
+        {
+          headers: {'Content-Type': 'application/json'},
+          status: 200,
         },
-        status: 200,
-      },
-      {
-        body: {
-          next: null,
-          results: [{children: [], name: 'Tax'}],
-        },
-        status: 200,
-      },
-    ]
-
-    globalThis.fetch = async () => {
-      const response = responses.shift()
-
-      if (!response) {
-        throw new Error('Unexpected fetch call')
-      }
-
-      return new Response(JSON.stringify(response.body), {
-        headers: {'Content-Type': 'application/json'},
-        status: response.status,
-      })
-    }
+      )
 
     const {stdout} = await runCommand('tags:list --json')
     const payload = JSON.parse(stdout) as Array<{name: string}>
 
-    expect(payload.map((item) => item.name)).to.deep.equal(['Inbox', 'Tax'])
+    expect(payload.map((item) => item.name)).to.deep.equal(['Inbox'])
   })
 
   it('renders a plain list when requested', async () => {
