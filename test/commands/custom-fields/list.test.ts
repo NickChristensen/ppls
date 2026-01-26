@@ -31,43 +31,29 @@ describe('custom-fields:list', () => {
     globalThis.fetch = originalFetch
   })
 
-  it('lists custom fields across pages by default', async () => {
-    const responses = [
-      {
-        body: {
-          next: '/api/custom_fields/?page=2',
-          results: [{'data_type': 'string', 'document_count': 2, id: 1, name: 'VIN'}],
-        },
-        status: 200,
-      },
-      {
-        body: {
-          next: null,
-          results: [{'data_type': 'integer', 'document_count': 5, id: 2, name: 'Mileage'}],
-        },
-        status: 200,
-      },
-    ]
-
+  it('requests a single page with the default page size', async () => {
     globalThis.fetch = async (input) => {
       requests.push(String(input))
-      const response = responses.shift()
-
-      if (!response) {
-        throw new Error('Unexpected fetch call')
-      }
-
-      return new Response(JSON.stringify(response.body), {
-        headers: {'Content-Type': 'application/json'},
-        status: response.status,
-      })
+      return new Response(
+        JSON.stringify({
+          next: '/api/custom_fields/?page=2',
+          results: [{'data_type': 'string', 'document_count': 2, id: 1, name: 'VIN'}],
+        }),
+        {
+          headers: {'Content-Type': 'application/json'},
+          status: 200,
+        },
+      )
     }
 
     const {stdout} = await runCommand('custom-fields:list')
     expect(stdout).to.contain('Name')
     expect(stdout).to.contain('VIN')
-    expect(stdout).to.contain('Mileage')
-    expect(requests).to.have.lengthOf(2)
+    expect(requests).to.have.lengthOf(1)
+
+    const requestUrl = new URL(requests[0])
+    expect(requestUrl.searchParams.get('page')).to.equal(null)
+    expect(requestUrl.searchParams.get('page_size')).to.equal(String(Number.MAX_SAFE_INTEGER))
   })
 
   it('respects page and page size flags', async () => {
@@ -115,7 +101,7 @@ describe('custom-fields:list', () => {
     expect(requestUrl.searchParams.get('ordering')).to.equal('name')
   })
 
-  it('respects page size without auto-pagination', async () => {
+  it('respects page size overrides', async () => {
     globalThis.fetch = async (input) => {
       requests.push(String(input))
       return new Response(
@@ -139,40 +125,22 @@ describe('custom-fields:list', () => {
   })
 
   it('returns the payload when json is enabled', async () => {
-    const responses = [
-      {
-        body: {
+    globalThis.fetch = async () =>
+      new Response(
+        JSON.stringify({
           next: 'https://paperless.example.test/api/custom_fields/?page=2',
           results: [{name: 'VIN'}],
+        }),
+        {
+          headers: {'Content-Type': 'application/json'},
+          status: 200,
         },
-        status: 200,
-      },
-      {
-        body: {
-          next: null,
-          results: [{name: 'Mileage'}],
-        },
-        status: 200,
-      },
-    ]
-
-    globalThis.fetch = async () => {
-      const response = responses.shift()
-
-      if (!response) {
-        throw new Error('Unexpected fetch call')
-      }
-
-      return new Response(JSON.stringify(response.body), {
-        headers: {'Content-Type': 'application/json'},
-        status: response.status,
-      })
-    }
+      )
 
     const {stdout} = await runCommand('custom-fields:list --json')
     const payload = JSON.parse(stdout) as Array<{name: string}>
 
-    expect(payload.map((item) => item.name)).to.deep.equal(['VIN', 'Mileage'])
+    expect(payload.map((item) => item.name)).to.deep.equal(['VIN'])
   })
 
   it('renders a plain list when requested', async () => {

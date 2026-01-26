@@ -38,43 +38,29 @@ describe('correspondents:list', () => {
     globalThis.fetch = originalFetch
   })
 
-  it('lists correspondent names across pages by default', async () => {
-    const responses = [
-      {
-        body: {
-          next: '/api/correspondents/?page=2',
-          results: [{'document_count': 2, id: 1, name: 'Acme', slug: 'acme'}],
-        },
-        status: 200,
-      },
-      {
-        body: {
-          next: null,
-          results: [{'document_count': 5, id: 2, name: 'Umbrella Corp', slug: 'umbrella'}],
-        },
-        status: 200,
-      },
-    ]
-
+  it('requests a single page with the default page size', async () => {
     globalThis.fetch = async (input) => {
       requests.push(String(input))
-      const response = responses.shift()
-
-      if (!response) {
-        throw new Error('Unexpected fetch call')
-      }
-
-      return new Response(JSON.stringify(response.body), {
-        headers: {'Content-Type': 'application/json'},
-        status: response.status,
-      })
+      return new Response(
+        JSON.stringify({
+          next: '/api/correspondents/?page=2',
+          results: [{'document_count': 2, id: 1, name: 'Acme', slug: 'acme'}],
+        }),
+        {
+          headers: {'Content-Type': 'application/json'},
+          status: 200,
+        },
+      )
     }
 
     const {stdout} = await runCommand('correspondents:list')
     expect(stdout).to.contain('Name')
     expect(stdout).to.contain('Acme')
-    expect(stdout).to.contain('Umbrella Corp')
-    expect(requests).to.have.lengthOf(2)
+    expect(requests).to.have.lengthOf(1)
+
+    const requestUrl = new URL(requests[0])
+    expect(requestUrl.searchParams.get('page')).to.equal(null)
+    expect(requestUrl.searchParams.get('page_size')).to.equal(String(Number.MAX_SAFE_INTEGER))
   })
 
   it('respects page and page size flags', async () => {
@@ -120,6 +106,28 @@ describe('correspondents:list', () => {
     const requestUrl = new URL(requests[0])
 
     expect(requestUrl.searchParams.get('ordering')).to.equal('name')
+  })
+
+  it('rejects non-positive page values', async () => {
+    globalThis.fetch = async () => {
+      throw new Error('Unexpected fetch call')
+    }
+
+    const {error} = await runCommand('correspondents:list --page 0 --page-size 1')
+
+    expect(error).to.be.instanceOf(Error)
+    expect(error?.message).to.match(/greater than or equal to 1/i)
+  })
+
+  it('rejects non-positive page size values', async () => {
+    globalThis.fetch = async () => {
+      throw new Error('Unexpected fetch call')
+    }
+
+    const {error} = await runCommand('correspondents:list --page-size 0')
+
+    expect(error).to.be.instanceOf(Error)
+    expect(error?.message).to.match(/greater than or equal to 1/i)
   })
 
   it('supports id and name filters', async () => {
@@ -170,7 +178,7 @@ describe('correspondents:list', () => {
     expect(requests).to.have.lengthOf(1)
   })
 
-  it('respects page size without auto-pagination', async () => {
+  it('respects page size overrides', async () => {
     globalThis.fetch = async (input) => {
       requests.push(String(input))
       return new Response(
@@ -194,40 +202,22 @@ describe('correspondents:list', () => {
   })
 
   it('returns the payload when json is enabled', async () => {
-    const responses = [
-      {
-        body: {
+    globalThis.fetch = async () =>
+      new Response(
+        JSON.stringify({
           next: 'https://paperless.example.test/api/correspondents/?page=2',
           results: [{name: 'Acme'}],
+        }),
+        {
+          headers: {'Content-Type': 'application/json'},
+          status: 200,
         },
-        status: 200,
-      },
-      {
-        body: {
-          next: null,
-          results: [{name: 'Umbrella Corp'}],
-        },
-        status: 200,
-      },
-    ]
-
-    globalThis.fetch = async () => {
-      const response = responses.shift()
-
-      if (!response) {
-        throw new Error('Unexpected fetch call')
-      }
-
-      return new Response(JSON.stringify(response.body), {
-        headers: {'Content-Type': 'application/json'},
-        status: response.status,
-      })
-    }
+      )
 
     const {stdout} = await runCommand('correspondents:list --json')
     const payload = JSON.parse(stdout) as Array<{name: string}>
 
-    expect(payload.map((item) => item.name)).to.deep.equal(['Acme', 'Umbrella Corp'])
+    expect(payload.map((item) => item.name)).to.deep.equal(['Acme'])
   })
 
   it('renders a plain list when requested', async () => {
