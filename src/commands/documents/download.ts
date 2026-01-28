@@ -5,7 +5,7 @@ import path from 'node:path'
 import {BaseCommand} from '../../base-command.js'
 
 type DocumentsDownloadArgs = {
-  id: string
+  id: number[]
 }
 
 type DocumentsDownloadFlags = {
@@ -84,9 +84,40 @@ const resolveOutputPath = async (output: string | undefined, filename: string): 
   return resolved
 }
 
+const splitDelimitedValues = (input: string, delimiter: string): string[] => {
+  const splitRegex = new RegExp(`(?<!\\\\)${delimiter}`)
+
+  return input
+    .split(splitRegex)
+    .map((value) => value.trim())
+    .map((value) =>
+      value
+        .replaceAll(new RegExp(`\\\\${delimiter}`, 'g'), delimiter)
+        .replace(/^"(.*)"$/, '$1')
+        .replace(/^'(.*)'$/, '$1'),
+    )
+    .filter((value) => value.length > 0)
+}
+
 export default class DocumentsDownload extends BaseCommand {
   static override args = {
-    id: Args.string({description: 'Document id or comma-separated list of ids', required: true}),
+    id: Args.custom<number[]>({
+      async parse(input) {
+        const values = splitDelimitedValues(input, ',')
+
+        if (values.length === 0) {
+          throw new Error('Provide at least one document id.')
+        }
+
+        return values.map((value) => {
+          if (!/^-?\d+$/.test(value)) {
+            throw new Error(`Invalid document id: ${value}`)
+          }
+
+          return Number.parseInt(value, 10)
+        })
+      },
+    })({description: 'Document id or comma-separated list of ids', required: true}),
   }
   static override description = 'Download one or more documents'
   static override examples = [
@@ -155,32 +186,13 @@ export default class DocumentsDownload extends BaseCommand {
     return results
   }
 
-  protected parseIds(raw: string): number[] {
-    const values = raw
-      .split(',')
-      .map((value) => value.trim())
-      .filter((value) => value.length > 0)
-
-    if (values.length === 0) {
-      this.error('Provide at least one document id.')
-    }
-
-    return values.map((value) => {
-      if (!/^-?\d+$/.test(value)) {
-        this.error(`Invalid document id: ${value}`)
-      }
-
-      return Number.parseInt(value, 10)
-    })
-  }
-
   public async run(): Promise<DownloadResult | DownloadResult[]> {
     const {args, flags, metadata} = await this.parse()
     const {headers: apiHeaders, hostname, token} = await this.resolveGlobalFlags(flags, metadata)
     const apiFlags = {headers: apiHeaders, hostname, token}
     const typedArgs = args as DocumentsDownloadArgs
     const typedFlags = flags as DocumentsDownloadFlags
-    const ids = this.parseIds(typedArgs.id)
+    const ids = typedArgs.id
     let outputDir = typedFlags['output-dir']
 
     if (ids.length > 1) {

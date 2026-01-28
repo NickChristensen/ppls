@@ -113,4 +113,26 @@ describe('documents:download', () => {
     expect(contents12).to.equal('data-12')
     expect(contents34).to.equal('data-34')
   })
+
+  it('rejects escaped delimiters that yield non-numeric ids', async () => {
+    globalThis.fetch = async () => {
+      throw new Error('Unexpected fetch call')
+    }
+
+    const {error} = await runCommand(String.raw`documents:download 12\,34`)
+
+    expect(error).to.be.instanceOf(Error)
+    expect(error?.message).to.contain('Invalid document id: 12,34')
+  })
+
+  it('rejects empty comma-separated input', async () => {
+    globalThis.fetch = async () => {
+      throw new Error('Unexpected fetch call')
+    }
+
+    const {error} = await runCommand('documents:download ","')
+
+    expect(error).to.be.instanceOf(Error)
+    expect(error?.message).to.contain('Provide at least one document id.')
+  })
 })
