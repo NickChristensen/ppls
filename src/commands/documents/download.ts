@@ -96,7 +96,6 @@ const splitDelimitedValues = (input: string, delimiter: string): string[] => {
 }
 
 export default class DocumentsDownload extends BaseCommand {
-  static override strict = false
   static override args = {
     id: Args.string({description: 'Document id (repeatable or comma-separated)'}),
   }
@@ -119,6 +118,7 @@ export default class DocumentsDownload extends BaseCommand {
       exists: true,
     }),
   }
+  static override strict = false
 
   protected async downloadDocument(options: DownloadDocumentOptions): Promise<DownloadResult> {
     const {apiFlags, id, original, output, outputDir} = options
