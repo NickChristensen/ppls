@@ -4,10 +4,6 @@ import path from 'node:path'
 
 import {BaseCommand} from '../../base-command.js'
 
-type DocumentsDownloadArgs = {
-  id: number[]
-}
-
 type DocumentsDownloadFlags = {
   original?: boolean
   output?: string
@@ -100,29 +96,15 @@ const splitDelimitedValues = (input: string, delimiter: string): string[] => {
 }
 
 export default class DocumentsDownload extends BaseCommand {
+  static override strict = false
   static override args = {
-    id: Args.custom<number[]>({
-      async parse(input) {
-        const values = splitDelimitedValues(input, ',')
-
-        if (values.length === 0) {
-          throw new Error('Provide at least one document id.')
-        }
-
-        return values.map((value) => {
-          if (!/^-?\d+$/.test(value)) {
-            throw new Error(`Invalid document id: ${value}`)
-          }
-
-          return Number.parseInt(value, 10)
-        })
-      },
-    })({description: 'Document id or comma-separated list of ids', required: true}),
+    id: Args.string({description: 'Document id (repeatable or comma-separated)'}),
   }
   static override description = 'Download one or more documents'
   static override examples = [
-    '<%= config.bin %> <%= command.id %> 123 --output document.pdf',
-    '<%= config.bin %> <%= command.id %> 123,124 --output-dir ./downloads',
+    '<%= config.bin %> <%= command.id %> --output document.pdf 123',
+    '<%= config.bin %> <%= command.id %> --output-dir ./downloads 123 456',
+    '<%= config.bin %> <%= command.id %> --output-dir ./downloads 123,456',
   ]
   static override flags = {
     original: Flags.boolean({description: 'Download original file'}),
@@ -187,12 +169,24 @@ export default class DocumentsDownload extends BaseCommand {
   }
 
   public async run(): Promise<DownloadResult | DownloadResult[]> {
-    const {args, flags, metadata} = await this.parse()
+    const {flags, metadata, raw} = await this.parse()
     const {headers: apiHeaders, hostname, token} = await this.resolveGlobalFlags(flags, metadata)
     const apiFlags = {headers: apiHeaders, hostname, token}
-    const typedArgs = args as DocumentsDownloadArgs
     const typedFlags = flags as DocumentsDownloadFlags
-    const ids = typedArgs.id
+    const rawArgs = raw.filter((token) => token.type === 'arg').map((token) => token.input)
+    const values = rawArgs.flatMap((value) => splitDelimitedValues(value, ','))
+
+    if (values.length === 0) {
+      this.error('Provide at least one document id.')
+    }
+
+    const ids = values.map((value) => {
+      if (!/^-?\d+$/.test(value)) {
+        this.error(`Invalid document id: ${value}`)
+      }
+
+      return Number.parseInt(value, 10)
+    })
     let outputDir = typedFlags['output-dir']
 
     if (ids.length > 1) {

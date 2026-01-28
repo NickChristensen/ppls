@@ -86,8 +86,36 @@ describe('documents:download', () => {
     expect(contents).to.equal('data')
   })
 
-  it('downloads multiple documents to an output directory', async () => {
+  it('downloads multiple documents to an output directory with repeated args', async () => {
     const outputDir = path.join(tempDir, 'downloads')
+    await mkdir(outputDir)
+
+    globalThis.fetch = async (input) => {
+      requests.push(String(input))
+      const idMatch = /\/documents\/(\d+)\/download/.exec(String(input))
+      const id = idMatch ? idMatch[1] : 'unknown'
+      return new Response(new TextEncoder().encode(`data-${id}`), {
+        headers: {'Content-Disposition': `attachment; filename="doc-${id}.pdf"`},
+        status: 200,
+      })
+    }
+
+    const {stdout} = await runCommand(`documents:download 12 34 --output-dir ${outputDir} --json`)
+    const payload = JSON.parse(stdout) as Array<{filename: string; output: string}>
+
+    expect(payload).to.have.length(2)
+    expect(payload[0]?.output).to.equal(path.join(outputDir, 'doc-12.pdf'))
+    expect(payload[1]?.output).to.equal(path.join(outputDir, 'doc-34.pdf'))
+
+    const contents12 = await readFile(path.join(outputDir, 'doc-12.pdf'), 'utf8')
+    const contents34 = await readFile(path.join(outputDir, 'doc-34.pdf'), 'utf8')
+
+    expect(contents12).to.equal('data-12')
+    expect(contents34).to.equal('data-34')
+  })
+
+  it('supports comma-separated ids', async () => {
+    const outputDir = path.join(tempDir, 'downloads-comma')
     await mkdir(outputDir)
 
     globalThis.fetch = async (input) => {
@@ -106,12 +134,6 @@ describe('documents:download', () => {
     expect(payload).to.have.length(2)
     expect(payload[0]?.output).to.equal(path.join(outputDir, 'doc-12.pdf'))
     expect(payload[1]?.output).to.equal(path.join(outputDir, 'doc-34.pdf'))
-
-    const contents12 = await readFile(path.join(outputDir, 'doc-12.pdf'), 'utf8')
-    const contents34 = await readFile(path.join(outputDir, 'doc-34.pdf'), 'utf8')
-
-    expect(contents12).to.equal('data-12')
-    expect(contents34).to.equal('data-34')
   })
 
   it('rejects escaped delimiters that yield non-numeric ids', async () => {

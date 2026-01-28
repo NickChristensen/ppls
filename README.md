@@ -75,7 +75,7 @@ $ ppls config get hostname
 * [`ppls document-types update ID`](#ppls-document-types-update-id)
 * [`ppls documents add [PATH]`](#ppls-documents-add-path)
 * [`ppls documents delete ID`](#ppls-documents-delete-id)
-* [`ppls documents download ID`](#ppls-documents-download-id)
+* [`ppls documents download [ID]`](#ppls-documents-download-id)
 * [`ppls documents list`](#ppls-documents-list)
 * [`ppls documents show ID`](#ppls-documents-show-id)
 * [`ppls documents update ID`](#ppls-documents-update-id)
@@ -280,11 +280,11 @@ List correspondents
 ```
 USAGE
   $ ppls correspondents list [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--token <value>] [--id-in <value> | --name-contains <value>] [--page <value> --page-size <value>] [--sort
-    <value>]
+    --table] [--token <value>] [--id-in <value>... | --name-contains <value>] [--page <value> --page-size <value>]
+    [--sort <value>]
 
 FLAGS
-  --id-in=<value>          Filter by id list (repeatable or comma-separated)
+  --id-in=<value>...       Filter by id list (repeatable or comma-separated)
   --name-contains=<value>  Filter by name substring
   --page=<value>           Page number to fetch
   --page-size=<value>      [default: disable pagination, all results] Number of results per page
@@ -457,11 +457,11 @@ List custom fields
 ```
 USAGE
   $ ppls custom-fields list [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--token <value>] [--id-in <value> | --name-contains <value>] [--page <value> --page-size <value>] [--sort
-    <value>]
+    --table] [--token <value>] [--id-in <value>... | --name-contains <value>] [--page <value> --page-size <value>]
+    [--sort <value>]
 
 FLAGS
-  --id-in=<value>          Filter by id list (repeatable or comma-separated)
+  --id-in=<value>...       Filter by id list (repeatable or comma-separated)
   --name-contains=<value>  Filter by name substring
   --page=<value>           Page number to fetch
   --page-size=<value>      [default: disable pagination, all results] Number of results per page
@@ -632,11 +632,11 @@ List document types
 ```
 USAGE
   $ ppls document-types list [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--token <value>] [--id-in <value> | --name-contains <value>] [--page <value> --page-size <value>] [--sort
-    <value>]
+    --table] [--token <value>] [--id-in <value>... | --name-contains <value>] [--page <value> --page-size <value>]
+    [--sort <value>]
 
 FLAGS
-  --id-in=<value>          Filter by id list (repeatable or comma-separated)
+  --id-in=<value>...       Filter by id list (repeatable or comma-separated)
   --name-contains=<value>  Filter by name substring
   --page=<value>           Page number to fetch
   --page-size=<value>      [default: disable pagination, all results] Number of results per page
@@ -806,17 +806,17 @@ EXAMPLES
 
 _See code: [src/commands/documents/delete.ts](https://github.com/nickchristensen/ppls/blob/v1.1.0/src/commands/documents/delete.ts)_
 
-## `ppls documents download ID`
+## `ppls documents download [ID]`
 
 Download one or more documents
 
 ```
 USAGE
-  $ ppls documents download ID [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--token <value>] [--original] [-o <value> | --output-dir <value>]
+  $ ppls documents download [ID...] [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json
+    | --table] [--token <value>] [--original] [-o <value> | --output-dir <value>]
 
 ARGUMENTS
-  ID  Document id or comma-separated list of ids
+  [ID...]  Document id (repeatable or comma-separated)
 
 FLAGS
   -o, --output=<value>      Output file path (single document)
@@ -838,9 +838,11 @@ DESCRIPTION
   Download one or more documents
 
 EXAMPLES
-  $ ppls documents download 123 --output document.pdf
+  $ ppls documents download --output document.pdf 123
 
-  $ ppls documents download 123,124 --output-dir ./downloads
+  $ ppls documents download --output-dir ./downloads 123 456
+
+  $ ppls documents download --output-dir ./downloads 123,456
 ```
 
 _See code: [src/commands/documents/download.ts](https://github.com/nickchristensen/ppls/blob/v1.1.0/src/commands/documents/download.ts)_
@@ -852,11 +854,11 @@ List documents
 ```
 USAGE
   $ ppls documents list [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--token <value>] [--id-in <value> | --name-contains <value>] [--page <value> --page-size <value>] [--sort
-    <value>]
+    --table] [--token <value>] [--id-in <value>... | --name-contains <value>] [--page <value> --page-size <value>]
+    [--sort <value>]
 
 FLAGS
-  --id-in=<value>          Filter by id list (repeatable or comma-separated)
+  --id-in=<value>...       Filter by id list (repeatable or comma-separated)
   --name-contains=<value>  Filter by name substring
   --page=<value>           Page number to fetch
   --page-size=<value>      [default: disable pagination, all results] Number of results per page
@@ -1088,11 +1090,11 @@ List tags
 ```
 USAGE
   $ ppls tags list [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--token <value>] [--id-in <value> | --name-contains <value>] [--page <value> --page-size <value>] [--sort
-    <value>]
+    --table] [--token <value>] [--id-in <value>... | --name-contains <value>] [--page <value> --page-size <value>]
+    [--sort <value>]
 
 FLAGS
-  --id-in=<value>          Filter by id list (repeatable or comma-separated)
+  --id-in=<value>...       Filter by id list (repeatable or comma-separated)
   --name-contains=<value>  Filter by name substring
   --page=<value>           Page number to fetch
   --page-size=<value>      [default: disable pagination, all results] Number of results per page
