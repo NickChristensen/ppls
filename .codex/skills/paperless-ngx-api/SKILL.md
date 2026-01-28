@@ -1,6 +1,6 @@
 ---
 name: paperless-ngx-api
-description: Use when working with the Paperless-ngx REST API: looking up endpoints, request/response shapes, auth requirements, filtering/pagination, or generating example requests/responses from the OpenAPI spec. Trigger for tasks involving Paperless-ngx API integrations, client code, curl examples, or schema details.
+description: Use when working with the Paperless-ngx REST API; looking up endpoints, request/response shapes, auth requirements, filtering/pagination, or generating example requests/responses from the OpenAPI spec. Trigger for tasks involving Paperless-ngx API integrations, client code, curl examples, or schema details.
 ---
 
 # Paperless Ngx Api
@@ -44,4 +44,5 @@ Common `yq` snippets (adjust selectors based on the spec structure):
 ## Resources
 
 ### references/
+
 - `paperless-ngx-rest-api.yaml` (OpenAPI spec)
