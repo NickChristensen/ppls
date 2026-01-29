@@ -284,11 +284,9 @@ USAGE
     [--sort <value>]
 
 FLAGS
-  --id-in=<value>...       Filter by id list (repeatable or comma-separated)
-  --name-contains=<value>  Filter by name substring
-  --page=<value>           Page number to fetch
-  --page-size=<value>      [default: disable pagination, all results] Number of results per page
-  --sort=<value>           Sort results by the provided field
+  --page=<value>       Page number to fetch
+  --page-size=<value>  [default: disable pagination, all results] Number of results per page
+  --sort=<value>       Sort results by the provided field
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
@@ -300,6 +298,10 @@ ENVIRONMENT FLAGS
   --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
   --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
   --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
+
+FILTER FLAGS
+  --id-in=<value>...       Filter by id list (repeatable or comma-separated)
+  --name-contains=<value>  Filter by name substring
 
 DESCRIPTION
   List correspondents
@@ -461,11 +463,9 @@ USAGE
     [--sort <value>]
 
 FLAGS
-  --id-in=<value>...       Filter by id list (repeatable or comma-separated)
-  --name-contains=<value>  Filter by name substring
-  --page=<value>           Page number to fetch
-  --page-size=<value>      [default: disable pagination, all results] Number of results per page
-  --sort=<value>           Sort results by the provided field
+  --page=<value>       Page number to fetch
+  --page-size=<value>  [default: disable pagination, all results] Number of results per page
+  --sort=<value>       Sort results by the provided field
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
@@ -477,6 +477,10 @@ ENVIRONMENT FLAGS
   --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
   --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
   --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
+
+FILTER FLAGS
+  --id-in=<value>...       Filter by id list (repeatable or comma-separated)
+  --name-contains=<value>  Filter by name substring
 
 DESCRIPTION
   List custom fields
@@ -636,11 +640,9 @@ USAGE
     [--sort <value>]
 
 FLAGS
-  --id-in=<value>...       Filter by id list (repeatable or comma-separated)
-  --name-contains=<value>  Filter by name substring
-  --page=<value>           Page number to fetch
-  --page-size=<value>      [default: disable pagination, all results] Number of results per page
-  --sort=<value>           Sort results by the provided field
+  --page=<value>       Page number to fetch
+  --page-size=<value>  [default: disable pagination, all results] Number of results per page
+  --sort=<value>       Sort results by the provided field
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
@@ -652,6 +654,10 @@ ENVIRONMENT FLAGS
   --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
   --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
   --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
+
+FILTER FLAGS
+  --id-in=<value>...       Filter by id list (repeatable or comma-separated)
+  --name-contains=<value>  Filter by name substring
 
 DESCRIPTION
   List document types
@@ -854,15 +860,37 @@ List documents
 ```
 USAGE
   $ ppls documents list [--date-format <value>] [--header <value>...] [--hostname <value>] [--plain | --json |
-    --table] [--token <value>] [--id-in <value>... | --name-contains <value>] [--page <value> --page-size <value>]
-    [--sort <value>]
+    --table] [--token <value>] [--page <value> --page-size <value>] [--sort <value>] [--added-after YYYY-MM-DD|ISO-8601
+    | [--id-in <value>... | --name-contains <value>]] [--added-before YYYY-MM-DD|ISO-8601 | ] [--created-after
+    YYYY-MM-DD|ISO-8601 | ] [--created-before YYYY-MM-DD|ISO-8601 | ] [--modified-after YYYY-MM-DD|ISO-8601 | ]
+    [--modified-before YYYY-MM-DD|ISO-8601 | ] [--no-correspondent | [--correspondent <value>... | ] |
+    [--correspondent-not <value>... | ] | ] [--no-document-type | [--document-type <value>... | ] | [--document-type-not
+    <value>... | ] | ] [--no-tag | --tag <value>... | --tag-all <value>... | --tag-not <value>... | ]
 
 FLAGS
-  --id-in=<value>...       Filter by id list (repeatable or comma-separated)
-  --name-contains=<value>  Filter by name substring
-  --page=<value>           Page number to fetch
-  --page-size=<value>      [default: disable pagination, all results] Number of results per page
-  --sort=<value>           Sort results by the provided field
+  --page=<value>       Page number to fetch
+  --page-size=<value>  [default: disable pagination, all results] Number of results per page
+  --sort=<value>       Sort results by the provided field
+
+FILTER FLAGS
+  --added-after=YYYY-MM-DD|ISO-8601      Filter by added date (YYYY-MM-DD) or datetime (ISO 8601) >= value
+  --added-before=YYYY-MM-DD|ISO-8601     Filter by added date (YYYY-MM-DD) or datetime (ISO 8601) <= value
+  --correspondent=<value>...             Filter by correspondent ids (repeatable or comma-separated)
+  --correspondent-not=<value>...         Exclude correspondent ids (repeatable or comma-separated)
+  --created-after=YYYY-MM-DD|ISO-8601    Filter by created date (YYYY-MM-DD) or datetime (ISO 8601) >= value
+  --created-before=YYYY-MM-DD|ISO-8601   Filter by created date (YYYY-MM-DD) or datetime (ISO 8601) <= value
+  --document-type=<value>...             Filter by document type ids (repeatable or comma-separated)
+  --document-type-not=<value>...         Exclude document type ids (repeatable or comma-separated)
+  --id-in=<value>...                     Filter by id list (repeatable or comma-separated)
+  --modified-after=YYYY-MM-DD|ISO-8601   Filter by modified date (YYYY-MM-DD) or datetime (ISO 8601) >= value
+  --modified-before=YYYY-MM-DD|ISO-8601  Filter by modified date (YYYY-MM-DD) or datetime (ISO 8601) <= value
+  --name-contains=<value>                Filter by name substring
+  --no-correspondent                     Filter documents with no correspondent
+  --no-document-type                     Filter documents with no document type
+  --no-tag                               Filter documents with no tags
+  --tag=<value>...                       Filter by tag ids (repeatable or comma-separated, OR)
+  --tag-all=<value>...                   Filter by tag ids (repeatable or comma-separated, AND)
+  --tag-not=<value>...                   Exclude tag ids (repeatable or comma-separated)
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
@@ -1094,11 +1122,9 @@ USAGE
     [--sort <value>]
 
 FLAGS
-  --id-in=<value>...       Filter by id list (repeatable or comma-separated)
-  --name-contains=<value>  Filter by name substring
-  --page=<value>           Page number to fetch
-  --page-size=<value>      [default: disable pagination, all results] Number of results per page
-  --sort=<value>           Sort results by the provided field
+  --page=<value>       Page number to fetch
+  --page-size=<value>  [default: disable pagination, all results] Number of results per page
+  --sort=<value>       Sort results by the provided field
 
 GLOBAL FLAGS
   --date-format=<value>  [default: yyyy-MM-dd, env: PPLS_DATE_FORMAT] Format output dates using a template.
@@ -1110,6 +1136,10 @@ ENVIRONMENT FLAGS
   --header=<value>...  [env: PPLS_HEADERS] Add a custom request header (repeatable, format: Key=Value)
   --hostname=<value>   [env: PPLS_HOSTNAME] Paperless-ngx base URL
   --token=<value>      [env: PPLS_TOKEN] Paperless-ngx API token
+
+FILTER FLAGS
+  --id-in=<value>...       Filter by id list (repeatable or comma-separated)
+  --name-contains=<value>  Filter by name substring
 
 DESCRIPTION
   List tags
