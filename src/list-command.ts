@@ -57,6 +57,10 @@ export abstract class ListCommand<
   protected abstract listPath: string
   protected abstract tableAttrs: TableColumnInput[]
 
+  protected extraListFlags(_flags: Record<string, unknown>): Record<string, unknown> {
+    return {}
+  }
+
   protected async fetchListResults<T>(options: {
     flags: ListCommandFlags
     params?: Record<string, number | string | string[] | undefined>
@@ -122,7 +126,7 @@ export abstract class ListCommand<
     const {flags, metadata} = await this.parse()
     const {dateFormat, ...apiFlags} = await this.resolveGlobalFlags(flags, metadata)
 
-    const listFlags: ListCommandFlags = {
+    const listFlags: ListCommandFlags & Record<string, unknown> = {
       headers: apiFlags.headers,
       hostname: apiFlags.hostname,
       'id-in': flags['id-in'],
@@ -131,6 +135,7 @@ export abstract class ListCommand<
       'page-size': flags['page-size'],
       sort: flags.sort,
       token: apiFlags.token,
+      ...this.extraListFlags(flags),
     }
     const outputFlags: ListOutputFlags = {
       ...listFlags,
