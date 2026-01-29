@@ -35,11 +35,13 @@ export abstract class ListCommand<
       delimiter: ',',
       description: 'Filter by id list (repeatable or comma-separated)',
       exclusive: ['name-contains'],
+      helpGroup: 'FILTER',
       multiple: true,
     }),
     'name-contains': Flags.string({
       description: 'Filter by name substring',
       exclusive: ['id-in'],
+      helpGroup: 'FILTER',
     }),
     page: Flags.integer({
       dependsOn: ['page-size'],
@@ -63,7 +65,7 @@ export abstract class ListCommand<
 
   protected async fetchListResults<T>(options: {
     flags: ListCommandFlags
-    params?: Record<string, number | string | string[] | undefined>
+    params?: Record<string, number | number[] | string | string[] | undefined>
     path: string
   }): Promise<T[]> {
     const {flags, params = {}, path} = options
@@ -85,7 +87,7 @@ export abstract class ListCommand<
     }
   }
 
-  protected listParams(flags: ListCommandFlags): Record<string, number | string | string[] | undefined> {
+  protected listParams(flags: ListCommandFlags): Record<string, number | number[] | string | string[] | undefined> {
     return {
       'id__in': flags['id-in'],
       'name__icontains': flags['name-contains'],
@@ -168,7 +170,7 @@ export abstract class ListCommand<
 
   private buildListUrl(options: {
     flags: ListCommandFlags
-    params?: Record<string, number | string | string[] | undefined>
+    params?: Record<string, number | number[] | string | string[] | undefined>
     path: string
   }): URL {
     const {flags, params = {}, path} = options

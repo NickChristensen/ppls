@@ -10,7 +10,7 @@ export type ApiFlags = {
   token: string
 }
 
-type QueryParams = Record<string, number | string | string[] | undefined>
+type QueryParams = Record<string, number | number[] | string | string[] | undefined>
 
 type ResolvedGlobalFlags = ApiFlags & {
   dateFormat: string

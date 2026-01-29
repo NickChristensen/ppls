@@ -4,7 +4,7 @@ import {isDateOnly, isDateTime} from '../helpers/date-utils.js'
 
 export const dateLike = Flags.custom<string>({
   helpValue: 'YYYY-MM-DD|ISO-8601',
-  parse: async (input: string): Promise<string> => {
+  async parse(input: string): Promise<string> {
     if (isDateOnly(input) || isDateTime(input)) {
       return input
     }
